@@ -84,8 +84,8 @@ easyKeyList conf =
     -- Move focus to the master window
     , ("M-m"         , windows W.focusMaster)
     -- Swap the focused window and the master window
-    , ("M-S-m"       , windows W.swapMaster)
-    , ("M-S-<Return>"  , windows W.swapMaster)
+    , ("M-S-m"       , windows W.shiftMaster)
+    , ("M-S-<Return>", windows W.shiftMaster)
     -- Swap the focused window with the next window
     , ("M-S-j"       , windows W.swapDown)
     -- Swap the focused window with the previous window
