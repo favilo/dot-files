@@ -13,6 +13,8 @@ def main():
      local.env.home / ".config" / "taffybar" / "taffybar.hs"] & FG
   ln["-sf", local.cwd / "vimrc", 
      local.env.home / ".vimrc"] & FG
+  ln["-sf", local.cwd / "bashrc", 
+     local.env.home / ".bashrc"] & FG
 
 
 if __name__ == '__main__':
