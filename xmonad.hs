@@ -35,9 +35,15 @@ import Control.Exception as E
 import qualified Data.Map        as M
 import qualified XMonad.StackSet as W
 
+myTaffybarPP = taffybarPP {
+    ppTitle = taffybarEscape . shorten 300
+}
+
 main = do
     dbus <- D.connectSession
-    xmonad $ ewmh $ myConfig { logHook = dbusLogWithPP dbus taffybarPP >> logHook myConfig }
+    xmonad $ ewmh $ myConfig { 
+        logHook = dbusLogWithPP dbus myTaffybarPP >> logHook myConfig
+    }
 
 
 myConfig = defaultConfig 
