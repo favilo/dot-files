@@ -33,10 +33,11 @@ import Control.Concurrent
 import Control.Exception as E
 
 import qualified Data.Map        as M
+import Data.List
 import qualified XMonad.StackSet as W
 
 myTaffybarPP = taffybarPP {
-    ppTitle = taffybarEscape . shorten 300
+    ppTitle = taffybarColor "green" "" . shorten 300
 }
 
 main = do
@@ -180,12 +181,13 @@ manageWindows :: ManageHook
 manageWindows = composeAll . concat $
     [ [ resource   =? r --> doIgnore               | r <- myIgnores ]
     , [ className  =? c --> doCenterFloat          | c <- myFloatCC ]
+    , [ fmap (c `isInfixOf`) name --> unfloat      | c <- myUnfloatCC ]
     , [ name       =? n --> doCenterFloat          | n <- myFloatCN ]
     , [ name       =? n --> doSideFloat NW         | n <- myFloatSN ]
     , [ windowRole =? n --> doSideFloat SW         | n <- myFloatSR ]
     , [ className  =? c --> doF W.focusDown        | c <- myFocusDC ]
-    , [ isFullscreen   --> doFullFloat 
-      , isDialog       --> doCenterFloat
+    , [ isFullscreen    --> doFullFloat 
+      , isDialog        --> doCenterFloat
       ]
     ] where
         name       = stringProperty "WM_NAME"
@@ -214,7 +216,10 @@ manageWindows = composeAll . concat $
         myFloatSN  = ["Event Tester"]
         myFloatSR  = ["pop-up"]
         myFocusDC  = ["Event Tester", "Notify-osd"]
+        -- Chrome Secure Shell
+        myUnfloatCC = ["Secure Shell"] 
         keepMaster c = assertSlave <+> assertMaster where
             assertSlave = fmap (/= c) className --> doF W.swapDown
             assertMaster = className =? c --> doF W.swapMaster
+        unfloat    = ask >>= doF . W.sink
  

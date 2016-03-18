@@ -30,7 +30,6 @@ set tw=80
 
 set listchars=tab:▸\ ,eol:¬
 
-execute pathogen#infect()
 syntax on
 
 set cinoptions=:0,p0,t0
@@ -114,7 +113,7 @@ Plugin 'chiphogg/vim-airline'
 Plugin 'jnwhiteh/vim-golang'
 '
 "Plugin 'Townk/vim-autoclose'
-Plugin 'nanotech/jellybeans.vim'
+"Plugin 'nanotech/jellybeans.vim'
 
 Plugin 'nsf/gocode', {'rtp': 'vim/'}
 
@@ -133,7 +132,7 @@ Plugin 'google/vim-glaive'
 
 set t_Co=256
 set background=dark
-colors jellybeans
+"colorscheme jellybeans
 
 if filereadable(expand('~/.at_google'))
   " Google only
