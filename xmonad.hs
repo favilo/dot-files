@@ -165,6 +165,7 @@ myLogHook = do
 myStartupHook = do
     spawn "taffybar"
     spawn "nm-applet"
+    spawn "/usr/share/goobuntu-indicator/goobuntu_indicator.py"
     takeTopFocus
     return ()
     checkKeymap myConfig 
