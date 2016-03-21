@@ -128,7 +128,6 @@ Plugin 'junegunn/fzf'
 
 Plugin 'google/vim-maktaba'
 
-Plugin 'google/vim-glaive'
 
 set t_Co=256
 set background=dark
@@ -141,6 +140,7 @@ else
   " Non-google only
   Plugin 'Valloric/YouCompleteMe'
   Plugin 'google/vim-codefmt'
+  Plugin 'google/vim-glaive'
 endif
 
 call vundle#end()
