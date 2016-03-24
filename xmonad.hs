@@ -127,14 +127,16 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
  
     -- Deincrement the number of windows in the master area
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
-    , ((0                 , 0x1008FF11, spawn "amixer set Master 2-")
-    , ((0                 , 0x1008FF13, spawn "amixer set Master 2+")
-    , ((0                 , 0x1008FF12, spawn "amixer set Master toggle")
  
     ------------------------------------------------------------
     -- Special Keys
     ------------------------------------------------------------
-    --
+    , ((0,     xF86XK_AudioLowerVolume),
+            spawn "amixer -D pulse set Master 2-")
+    , ((0      xF86XK_AudioRaiseVolume),
+            spawn "amixer -D pulse set Master 2+")
+    , ((0      xF86XK_AudioMute       ),
+            spawn "amixer -D pulse set Master toggle")
     ]
     ++
     --
@@ -168,6 +170,7 @@ myLogHook = do
 myStartupHook = do
     spawn "taffybar"
     spawn "nm-applet"
+    spawn "gnome-sound-applet"
     spawn "/usr/share/goobuntu-indicator/goobuntu_indicator.py"
     takeTopFocus
     return ()
