@@ -127,6 +127,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
  
     -- Deincrement the number of windows in the master area
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
+    , ((0                 , 0x1008FF11, spawn "amixer set Master 2-")
+    , ((0                 , 0x1008FF13, spawn "amixer set Master 2+")
+    , ((0                 , 0x1008FF12, spawn "amixer set Master toggle")
  
     ------------------------------------------------------------
     -- Special Keys
