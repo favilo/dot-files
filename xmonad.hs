@@ -132,9 +132,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Special Keys
     ------------------------------------------------------------
     , ((0,     xF86XK_AudioLowerVolume),
-            spawn "amixer -D pulse set Master 2-")
+            spawn "amixer -D pulse set Master 2%-")
     , ((0      xF86XK_AudioRaiseVolume),
-            spawn "amixer -D pulse set Master 2+")
+            spawn "amixer -D pulse set Master 2%+")
     , ((0      xF86XK_AudioMute       ),
             spawn "amixer -D pulse set Master toggle")
     ]
