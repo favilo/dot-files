@@ -133,9 +133,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     ------------------------------------------------------------
     , ((0,     xF86XK_AudioLowerVolume),
             spawn "amixer -D pulse set Master 2%-")
-    , ((0      xF86XK_AudioRaiseVolume),
+    , ((0,     xF86XK_AudioRaiseVolume),
             spawn "amixer -D pulse set Master 2%+")
-    , ((0      xF86XK_AudioMute       ),
+    , ((0,     xF86XK_AudioMute       ),
             spawn "amixer -D pulse set Master toggle")
     ]
     ++
@@ -168,14 +168,22 @@ myLogHook = do
     return ()
 
 myStartupHook = do
-    spawn "taffybar"
-    spawn "nm-applet"
-    spawn "gnome-sound-applet"
-    spawn "/usr/share/goobuntu-indicator/goobuntu_indicator.py"
-    takeTopFocus
-    return ()
-    checkKeymap myConfig 
-        (easyKeyList myConfig)
+        spawn "taffybar"
+        spawn "nm-applet"
+        spawn "syndaemon"
+        spawn "gnome-sound-applet"
+        spawn "/usr/share/goobuntu-indicator/goobuntu_indicator.py"
+        spawn xautolock
+        takeTopFocus
+        return ()
+        checkKeymap myConfig 
+            (easyKeyList myConfig)
+    where
+        xautolock =  "xautolock -secure -time 10 " ++ locker ++ notifier
+        locker = "-locker \"i3lock -duc 003355\" "
+        notifier = "-notify 15 --notifier \"notify-send -t 5000 " ++
+            "-i dialog-password -u low 'Security advisory' " ++ 
+            "'\nLocking session in 15 seconds'\""
 
 
 myManageHook :: ManageHook
