@@ -139,6 +139,7 @@ export PATH=$PATH:/google/data/ro/projects/tonic
 export PATH=$PATH:/google/data/ro/projects/goops
 export PATH=$PATH:/usr/games
 export PATH=$PATH:~/bin
+export PATH=$PATH:/opt/android-studio/bin
 
 git5-ps() {
   command git5 start "$@" java{,tests}/com/google/photos/be java{,tests}/com/google/photos/common java{,tests}/com/google/photos/base photos/service photos/spanner production/{monitoring,borg}/photos production/config/cdd/photos production/borgcron/prod/photos-mr
@@ -154,3 +155,9 @@ ECLIPSE_HOME="/usr/local/google/users/${USER}/${eclipse_version}/${profile}"
 ECLIPSE_MEM_MAX='4096m'
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# The next line updates PATH for the Google Cloud SDK.
+source '/home/favilo/google-cloud-sdk/path.bash.inc'
+
+# The next line enables shell command completion for gcloud.
+source '/home/favilo/google-cloud-sdk/completion.bash.inc'
