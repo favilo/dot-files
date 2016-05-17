@@ -100,7 +100,7 @@ easyKeyList conf =
     , ("M-S-z"       , spawn 
                     "gnome-screensaver-command --activate")
     , ("M-C-w"       , spawn "google-chrome")
-    , ("M-C-e"       , spawn "eclipse44")
+    , ("M-C-e"       , spawn "eclipse45")
     -- Cycle Keyboard layouts
     , ("M-<Escape>"  , spawn "~/bin/layout_switch.sh")
     -- Quit xmonad

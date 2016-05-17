@@ -119,6 +119,7 @@ alias magic_clean='magicbuild -po -a --clean'
 alias g5='/google/data/ro/projects/shelltoys/g5.sar'
 
 alias iblaze=/google/data/ro/teams/iblaze/iblaze
+alias pcldiff=/google/data/ro/projects/docs-sre/pcldiff
 
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
