@@ -128,10 +128,13 @@ Plugin 'junegunn/fzf'
 
 Plugin 'google/vim-maktaba'
 
+Plugin 'flazz/vim-colorschemes'
+
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
 
 set t_Co=256
 set background=dark
-"colorscheme jellybeans
 
 if filereadable(expand('~/.at_google'))
   " Google only
@@ -146,6 +149,8 @@ endif
 call vundle#end()
 call glaive#Install()
 Glaive codefmt plugin[mappings]
+
+colorscheme grb256
 
 let g:ycm_filetype_specific_completion_to_disable = {'cpp': 1, 'py': 1}
 
@@ -177,6 +182,9 @@ inoremap <expr> <PageUp>   pumvisible() ? "\<C-e>\<PageUp>"   : "\<PageUp>"
 
 cnoremap <leader>ff <C-R>=fzf#run({'down': '40%'})<CR><CR>
 
+nnoremap <silent> <buffer> <leader>i :JavaImport<cr>
+nnoremap <silent> <buffer> <leader>C :JavaCorrect<cr>
+
 let g:gofmt_command = "goimports"
 set rtp+=$GOROOT/misc/vim
 
@@ -195,5 +203,7 @@ endfunction
 
 autocmd FileType go autocmd BufWritePre <buffer> Fmt
 autocmd BufWritePost *.go call RunGlaze()
+
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 filetype plugin indent on

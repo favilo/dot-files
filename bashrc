@@ -120,6 +120,10 @@ alias g5='/google/data/ro/projects/shelltoys/g5.sar'
 
 alias iblaze=/google/data/ro/teams/iblaze/iblaze
 alias pcldiff=/google/data/ro/projects/docs-sre/pcldiff
+alias g3python=/google/data/ro/projects/g3python/g3python
+alias menu='/google/data/ro/projects/menu/menu.par siliconbeach'
+alias hex='printf "%x\n"'
+
 
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
@@ -157,7 +161,7 @@ ECLIPSE_MEM_MAX='4096m'
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # The next line updates PATH for the Google Cloud SDK.
-source '/home/favilo/google-cloud-sdk/path.bash.inc'
+source "$HOME/google-cloud-sdk/path.bash.inc"
 
 # The next line enables shell command completion for gcloud.
-source '/home/favilo/google-cloud-sdk/completion.bash.inc'
+source "$HOME/google-cloud-sdk/completion.bash.inc"
