@@ -123,6 +123,9 @@ alias pcldiff=/google/data/ro/projects/docs-sre/pcldiff
 alias g3python=/google/data/ro/projects/g3python/g3python
 alias menu='/google/data/ro/projects/menu/menu.par siliconbeach'
 alias hex='printf "%x\n"'
+alias @dbg=/google/data/ro/teams/ads-test-debugger/@dbg
+alias borgtail=/google/data/ro/users/ds/dsal/bin/borgtail
+
 
 
 bind '"\e[A": history-search-backward'
@@ -142,7 +145,7 @@ export PATH=$PATH:/google/src/head/depot/google3/tools/java:/google/data/ro/proj
 export PATH=$PATH:/google/data/ro/projects/tonic
 export PATH=$PATH:/google/data/ro/projects/goops
 export PATH=$PATH:/usr/games
-export PATH=$PATH:~/bin
+export PATH=$PATH:~/bin:~/.local/bin
 export PATH=$PATH:/opt/android-studio/bin
 
 git5-ps() {
@@ -165,3 +168,17 @@ source "$HOME/google-cloud-sdk/path.bash.inc"
 
 # The next line enables shell command completion for gcloud.
 source "$HOME/google-cloud-sdk/completion.bash.inc"
+
+# Codi
+# Usage: codi [filetype] [filename]
+codi() {
+  local syntax="${1:-python}"
+  shift
+  vim -c \
+    "let g:startify_disable_at_vimenter = 1 |\
+    set bt=nofile ls=0 noru nonu nornu |\
+    hi ColorColumn ctermbg=NONE |\
+    hi VertSplit ctermbg=NONE |\
+    hi NonText ctermfg=0 |\
+    Codi $syntax" "$@"
+}

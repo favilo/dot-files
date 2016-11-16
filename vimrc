@@ -89,49 +89,55 @@ filetype off
 
 let mapleader=","
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+if empty(glob("~/.vim/autoload/plug.vim"))
+  execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+endif
 
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-Plugin 'git://git.wincent.com/command-t.git'
-Plugin 'airblade/vim-gitgutter'
+call plug#begin()
+
+Plug 'Lokaltog/vim-easymotion'
+Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plug 'git://git.wincent.com/command-t.git'
+Plug 'airblade/vim-gitgutter'
 
 "Plugin 'scrooloose/syntastic.git'
 
-Plugin 'tpope/vim-vinegar'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-surround'
+"Plugin 'tpope/vim-fugitive'
 
 "Plugin 'klen/python-mode'
 
-Plugin 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc'
 
-Plugin 'chiphogg/vim-airline'
+Plug 'chiphogg/vim-airline'
 
-Plugin 'jnwhiteh/vim-golang'
+Plug 'jnwhiteh/vim-golang'
 '
 "Plugin 'Townk/vim-autoclose'
 "Plugin 'nanotech/jellybeans.vim'
 
-Plugin 'nsf/gocode', {'rtp': 'vim/'}
+Plug 'nsf/gocode', {'rtp': 'vim/'}
 
-Plugin 'vimwiki/vimwiki'
+Plug 'vimwiki/vimwiki'
 
 " Plugin 'kien/ctrlp.vim'
 
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 
-Plugin 'junegunn/fzf'
+Plug 'junegunn/fzf'
 
-Plugin 'google/vim-maktaba'
+Plug 'google/vim-maktaba'
 
-Plugin 'flazz/vim-colorschemes'
+Plug 'flazz/vim-colorschemes'
 
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+Plug 'metakirby5/codi.vim'
+
+Plug 'kana/vim-textobj-user'
+Plug 'Julian/vim-textobj-variable-segment'
 
 set t_Co=256
 set background=dark
@@ -146,7 +152,7 @@ else
   Plugin 'google/vim-glaive'
 endif
 
-call vundle#end()
+call plug#end()
 call glaive#Install()
 Glaive codefmt plugin[mappings]
 
