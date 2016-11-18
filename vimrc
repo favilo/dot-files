@@ -52,7 +52,7 @@ set number        " number lines
 set mouse=a
 set clipboard=unnamedplus
 
-set statusline=%{fugitive#statusline()}
+" set statusline=%{fugitive#statusline()}
 
 set diffopt=horizontal
 
@@ -98,7 +98,7 @@ call plug#begin()
 Plug 'Lokaltog/vim-easymotion'
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plug 'git://git.wincent.com/command-t.git'
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
 
 "Plugin 'scrooloose/syntastic.git'
 
@@ -139,6 +139,10 @@ Plug 'metakirby5/codi.vim'
 Plug 'kana/vim-textobj-user'
 Plug 'Julian/vim-textobj-variable-segment'
 
+Plug 'bkad/CamelCaseMotion'
+
+Plug 'reedes/vim-pencil'
+
 set t_Co=256
 set background=dark
 
@@ -147,9 +151,9 @@ if filereadable(expand('~/.at_google'))
   source ~/.vimrc.google
 else
   " Non-google only
-  Plugin 'Valloric/YouCompleteMe'
-  Plugin 'google/vim-codefmt'
-  Plugin 'google/vim-glaive'
+  Plug 'Valloric/YouCompleteMe'
+  Plug 'google/vim-codefmt'
+  Plug 'google/vim-glaive'
 endif
 
 call plug#end()
