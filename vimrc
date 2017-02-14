@@ -89,9 +89,15 @@ filetype off
 
 let mapleader=","
 
-if empty(glob("~/.vim/autoload/plug.vim"))
-  execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
-endif
+if has('nvim')
+  if empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
+    execute '!curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  endif 
+else
+  if empty(glob("~/.vim/autoload/plug.vim"))
+    execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+  endif
+endif 
 
 call plug#begin()
 
@@ -126,7 +132,8 @@ Plug 'vimwiki/vimwiki'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 Plug 'google/vim-maktaba'
 
@@ -142,8 +149,9 @@ Plug 'Julian/vim-textobj-variable-segment'
 Plug 'bkad/CamelCaseMotion'
 
 Plug 'reedes/vim-pencil'
+"Plug 'artur-shaik/vim-javacomplete2'
 
-set t_Co=256
+se t_Co=256
 set background=dark
 
 if filereadable(expand('~/.at_google'))
@@ -190,7 +198,12 @@ inoremap <expr> <Up>       pumvisible() ? "\<C-e>\<Up>"       : "\<Up>"
 inoremap <expr> <PageDown> pumvisible() ? "\<C-e>\<PageDown>" : "\<PageDown>"
 inoremap <expr> <PageUp>   pumvisible() ? "\<C-e>\<PageUp>"   : "\<PageUp>"
 
-cnoremap <leader>ff <C-R>=fzf#run({'down': '40%'})<CR><CR>
+nnoremap <leader>ff :FZF<CR>
+"
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
 
 nnoremap <silent> <buffer> <leader>i :JavaImport<cr>
 nnoremap <silent> <buffer> <leader>C :JavaCorrect<cr>

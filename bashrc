@@ -86,6 +86,7 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias vim='nvim'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -147,6 +148,9 @@ export PATH=$PATH:/google/data/ro/projects/goops
 export PATH=$PATH:/usr/games
 export PATH=$PATH:~/bin:~/.local/bin
 export PATH=$PATH:/opt/android-studio/bin
+
+export FZF_DEFAULT_COMMAND='ag -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 git5-ps() {
   command git5 start "$@" java{,tests}/com/google/photos/be java{,tests}/com/google/photos/common java{,tests}/com/google/photos/base photos/service photos/spanner production/{monitoring,borg}/photos production/config/cdd/photos production/borgcron/prod/photos-mr
