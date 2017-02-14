@@ -112,7 +112,7 @@ easyKeyList conf =
             killAndExit = 
                 io (exitWith ExitSuccess)
             killAndRestart = 
-                (spawn "/usr/bin/killall dzen2") <+>
+                --(spawn "/usr/bin/killall dzen2") <+>
                 (liftIO $ threadDelay 1000000) <+>
                 (restart "xmonad" True)
 
@@ -157,7 +157,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         | (key, sc) <- zip [xK_w, xK_e] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
  
-myLayout = desktopLayoutModifiers $ Tall nmaster delta ratio ||| Full
+myLayout = desktopLayoutModifiers $ Tall nmaster delta ratio ||| Mirror (Tall nmaster delta ratio) ||| Full
     where
     nmaster = 1
     ratio = 5/7

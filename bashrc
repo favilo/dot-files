@@ -35,6 +35,7 @@ fi
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
     xterm-color) color_prompt=yes;;
+    xterm) color_prompt=yes;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -148,6 +149,7 @@ export PATH=$PATH:/google/data/ro/projects/goops
 export PATH=$PATH:/usr/games
 export PATH=$PATH:~/bin:~/.local/bin
 export PATH=$PATH:/opt/android-studio/bin
+export PATH=$JAVA_HOME/jre/bin:$PATH
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -167,11 +169,13 @@ ECLIPSE_MEM_MAX='4096m'
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-# The next line updates PATH for the Google Cloud SDK.
-source "$HOME/google-cloud-sdk/path.bash.inc"
+if [ -d "$HOME/google-cloud-sdk" ]; then
+    # The next line updates PATH for the Google Cloud SDK.
+    source "$HOME/google-cloud-sdk/path.bash.inc"
 
-# The next line enables shell command completion for gcloud.
-source "$HOME/google-cloud-sdk/completion.bash.inc"
+    # The next line enables shell command completion for gcloud.
+    source "$HOME/google-cloud-sdk/completion.bash.inc"
+fi
 
 # Codi
 # Usage: codi [filetype] [filename]
