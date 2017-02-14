@@ -15,6 +15,8 @@ def main():
      local.env.home / ".vimrc"] & FG
   ln["-sf", local.cwd / "bashrc", 
      local.env.home / ".bashrc"] & FG
+  ln["-sf", local.cwd / "tmux.conf", 
+     local.env.home / ".tmux.conf"] & FG
 
 
 if __name__ == '__main__':
