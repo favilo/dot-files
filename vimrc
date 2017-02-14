@@ -229,4 +229,7 @@ autocmd BufWritePost *.go call RunGlaze()
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
+
 filetype plugin indent on
