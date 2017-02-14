@@ -167,6 +167,8 @@ eclipse_version=eclipse45
 ECLIPSE_HOME="/usr/local/google/users/${USER}/${eclipse_version}/${profile}"
 ECLIPSE_MEM_MAX='4096m'
 
+export EDITOR=vim
+
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 if [ -d "$HOME/google-cloud-sdk" ]; then

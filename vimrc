@@ -61,7 +61,7 @@ let html_number_lines = 0
 let html_no_pre = 1
 
 " If buffer modified, update any 'Last modified: ' in the first 20 lines.
-" 'Last modified: ' can have up to 10 characters before (they are retained).
+" 'Last modified: Tue Feb 14, 2017  10:42AM
 " Restores cursor and window position using save_cursor variable.
 function! LastModified()
     if &modified
