@@ -3,6 +3,9 @@ import XMonad
 import XMonad.Config.Desktop
 
 import XMonad.Layout.Gaps
+import XMonad.Layout.Grid
+import XMonad.Layout.Named
+import XMonad.Layout.NoBorders
 import XMonad.Layout
 
 import XMonad.Hooks.DynamicHooks
@@ -59,6 +62,8 @@ myConfig = defaultConfig
     , startupHook = myStartupHook
     } `additionalKeysP` (easyKeyList myConfig)
 
+toggleStrutsKey XConfig { modMask = modm } = (modm, xK_b)
+
 easyKeys conf = mkKeymap conf $ easyKeyList conf
 
 easyKeyList conf =
@@ -94,6 +99,7 @@ easyKeyList conf =
     , ("M-h"         , sendMessage Shrink)
     -- Expand the master area
     , ("M-l"         , sendMessage Expand)
+    , ("M-b"         , sendMessage ToggleStruts)
     -- Push window back into tiling
     , ("M-t"         , withFocused $ windows . W.sink)
     -- Lock screen
@@ -157,11 +163,16 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         | (key, sc) <- zip [xK_w, xK_e] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
  
-myLayout = desktopLayoutModifiers $ Tall nmaster delta ratio ||| Full
+myLayout = avoidStruts $ desktopLayoutModifiers $ tall ||| wide ||| full
     where
     nmaster = 1
     ratio = 5/7
     delta = 5/100
+    tall = avoidStruts $ Tall nmaster delta ratio
+    wide = named "wide" $ avoidStruts $ Mirror $ Tall nmaster delta ratio
+    full = avoidStruts $ noBorders Full
+    grid = Grid
+    
 
 myLogHook = do
     takeTopFocus
