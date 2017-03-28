@@ -52,7 +52,7 @@ set number        " number lines
 set mouse=a
 set clipboard=unnamedplus
 
-set statusline=%{fugitive#statusline()}
+" set statusline=%{fugitive#statusline()}
 
 set diffopt=horizontal
 
@@ -61,7 +61,7 @@ let html_number_lines = 0
 let html_no_pre = 1
 
 " If buffer modified, update any 'Last modified: ' in the first 20 lines.
-" 'Last modified: ' can have up to 10 characters before (they are retained).
+" 'Last modified: Tue Feb 14, 2017  10:42AM
 " Restores cursor and window position using save_cursor variable.
 function! LastModified()
     if &modified
@@ -89,63 +89,86 @@ filetype off
 
 let mapleader=","
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+if has('nvim')
+  if empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
+    execute '!curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  endif 
+else
+  if empty(glob("~/.vim/autoload/plug.vim"))
+    execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+  endif
+endif 
 
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-Plugin 'git://git.wincent.com/command-t.git'
-Plugin 'airblade/vim-gitgutter'
+call plug#begin()
+
+Plug 'Lokaltog/vim-easymotion'
+Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plug 'git://git.wincent.com/command-t.git'
+" Plug 'airblade/vim-gitgutter'
 
 "Plugin 'scrooloose/syntastic.git'
 
-Plugin 'tpope/vim-vinegar'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-surround'
+"Plugin 'tpope/vim-fugitive'
 
 "Plugin 'klen/python-mode'
 
-Plugin 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc'
 
-Plugin 'chiphogg/vim-airline'
+Plug 'chiphogg/vim-airline'
 
-Plugin 'jnwhiteh/vim-golang'
+Plug 'jnwhiteh/vim-golang'
 '
 "Plugin 'Townk/vim-autoclose'
 "Plugin 'nanotech/jellybeans.vim'
 
-Plugin 'nsf/gocode', {'rtp': 'vim/'}
+Plug 'nsf/gocode', {'rtp': 'vim/'}
 
-Plugin 'vimwiki/vimwiki'
+Plug 'vimwiki/vimwiki'
 
 " Plugin 'kien/ctrlp.vim'
 
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 
-Plugin 'junegunn/fzf'
+Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
-Plugin 'google/vim-maktaba'
+Plug 'google/vim-maktaba'
 
+Plug 'flazz/vim-colorschemes'
 
-set t_Co=256
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+Plug 'metakirby5/codi.vim'
+
+Plug 'kana/vim-textobj-user'
+Plug 'Julian/vim-textobj-variable-segment'
+
+Plug 'bkad/CamelCaseMotion'
+
+Plug 'reedes/vim-pencil'
+"Plug 'artur-shaik/vim-javacomplete2'
+
+se t_Co=256
 set background=dark
-"colorscheme jellybeans
 
 if filereadable(expand('~/.at_google'))
   " Google only
   source ~/.vimrc.google
 else
   " Non-google only
-  Plugin 'Valloric/YouCompleteMe'
-  Plugin 'google/vim-codefmt'
-  Plugin 'google/vim-glaive'
+  Plug 'Valloric/YouCompleteMe'
+  Plug 'google/vim-codefmt'
+  Plug 'google/vim-glaive'
 endif
 
-call vundle#end()
+call plug#end()
 call glaive#Install()
 Glaive codefmt plugin[mappings]
+
+colorscheme grb256
 
 let g:ycm_filetype_specific_completion_to_disable = {'cpp': 1, 'py': 1}
 
@@ -175,7 +198,15 @@ inoremap <expr> <Up>       pumvisible() ? "\<C-e>\<Up>"       : "\<Up>"
 inoremap <expr> <PageDown> pumvisible() ? "\<C-e>\<PageDown>" : "\<PageDown>"
 inoremap <expr> <PageUp>   pumvisible() ? "\<C-e>\<PageUp>"   : "\<PageUp>"
 
-cnoremap <leader>ff <C-R>=fzf#run({'down': '40%'})<CR><CR>
+nnoremap <leader>ff :FZF<CR>
+"
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+nnoremap <silent> <buffer> <leader>i :JavaImport<cr>
+nnoremap <silent> <buffer> <leader>C :JavaCorrect<cr>
 
 let g:gofmt_command = "goimports"
 set rtp+=$GOROOT/misc/vim
@@ -195,5 +226,10 @@ endfunction
 
 autocmd FileType go autocmd BufWritePre <buffer> Fmt
 autocmd BufWritePost *.go call RunGlaze()
+
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
 filetype plugin indent on

@@ -106,7 +106,7 @@ easyKeyList conf =
     , ("M-S-z"       , spawn 
                     "gnome-screensaver-command --activate")
     , ("M-C-w"       , spawn "google-chrome")
-    , ("M-C-e"       , spawn "eclipse44")
+    , ("M-C-e"       , spawn "eclipse45")
     -- Cycle Keyboard layouts
     , ("M-<Escape>"  , spawn "~/bin/layout_switch.sh")
     -- Quit xmonad
@@ -118,7 +118,7 @@ easyKeyList conf =
             killAndExit = 
                 io (exitWith ExitSuccess)
             killAndRestart = 
-                (spawn "/usr/bin/killall dzen2") <+>
+                --(spawn "/usr/bin/killall dzen2") <+>
                 (liftIO $ threadDelay 1000000) <+>
                 (restart "xmonad" True)
 
@@ -163,7 +163,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         | (key, sc) <- zip [xK_w, xK_e] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
  
-myLayout = avoidStruts $ desktopLayoutModifiers $ tall ||| wide ||| full
+myLayout = avoidStruts $ desktopLayoutModifiers $ tall ||| wide ||| full ||| grid
     where
     nmaster = 1
     ratio = 5/7

@@ -35,6 +35,7 @@ fi
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
     xterm-color) color_prompt=yes;;
+    xterm) color_prompt=yes;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -53,7 +54,7 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-if [ "$color_prompt" = yes ]; then
+if [ "$color_prompt" = yes ] && [[ -e ~/.short.pwd.py ]]; then
     #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
     PROMPT_COMMAND='PS1="$(python ~/.short.pwd.py)"'
 else
@@ -86,6 +87,8 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias vim='nvim'
+alias tmux="tmux -2"
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -119,6 +122,14 @@ alias magic_clean='magicbuild -po -a --clean'
 alias g5='/google/data/ro/projects/shelltoys/g5.sar'
 
 alias iblaze=/google/data/ro/teams/iblaze/iblaze
+alias pcldiff=/google/data/ro/projects/docs-sre/pcldiff
+alias g3python=/google/data/ro/projects/g3python/g3python
+alias menu='/google/data/ro/projects/menu/menu.par siliconbeach'
+alias hex='printf "%x\n"'
+alias @dbg=/google/data/ro/teams/ads-test-debugger/@dbg
+alias borgtail=/google/data/ro/users/ds/dsal/bin/borgtail
+
+
 
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
@@ -137,8 +148,12 @@ export PATH=$PATH:/google/src/head/depot/google3/tools/java:/google/data/ro/proj
 export PATH=$PATH:/google/data/ro/projects/tonic
 export PATH=$PATH:/google/data/ro/projects/goops
 export PATH=$PATH:/usr/games
-export PATH=$PATH:~/bin
+export PATH=$PATH:~/bin:~/.local/bin
 export PATH=$PATH:/opt/android-studio/bin
+export PATH=$JAVA_HOME/jre/bin:$PATH
+
+export FZF_DEFAULT_COMMAND='ag -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 git5-ps() {
   command git5 start "$@" java{,tests}/com/google/photos/be java{,tests}/com/google/photos/common java{,tests}/com/google/photos/base photos/service photos/spanner production/{monitoring,borg}/photos production/config/cdd/photos production/borgcron/prod/photos-mr
@@ -153,10 +168,28 @@ eclipse_version=eclipse45
 ECLIPSE_HOME="/usr/local/google/users/${USER}/${eclipse_version}/${profile}"
 ECLIPSE_MEM_MAX='4096m'
 
+export EDITOR=vim
+
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-# The next line updates PATH for the Google Cloud SDK.
-source '/home/favilo/google-cloud-sdk/path.bash.inc'
+if [ -d "$HOME/google-cloud-sdk" ]; then
+    # The next line updates PATH for the Google Cloud SDK.
+    source "$HOME/google-cloud-sdk/path.bash.inc"
 
-# The next line enables shell command completion for gcloud.
-source '/home/favilo/google-cloud-sdk/completion.bash.inc'
+    # The next line enables shell command completion for gcloud.
+    source "$HOME/google-cloud-sdk/completion.bash.inc"
+fi
+
+# Codi
+# Usage: codi [filetype] [filename]
+codi() {
+  local syntax="${1:-python}"
+  shift
+  vim -c \
+    "let g:startify_disable_at_vimenter = 1 |\
+    set bt=nofile ls=0 noru nonu nornu |\
+    hi ColorColumn ctermbg=NONE |\
+    hi VertSplit ctermbg=NONE |\
+    hi NonText ctermfg=0 |\
+    Codi $syntax" "$@"
+}
