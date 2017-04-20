@@ -126,6 +126,7 @@ Plug 'jnwhiteh/vim-golang'
 Plug 'nsf/gocode', {'rtp': 'vim/'}
 
 Plug 'vimwiki/vimwiki'
+Plug 'mattn/calendar-vim'
 
 " Plugin 'kien/ctrlp.vim'
 
@@ -181,6 +182,13 @@ let g:UltiSnipsExpandTrigger = "<c-j>"
 let g:UltiSnipsJumpForwardTrigger = "<c-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
 
+let g:vimwiki_list = [{'syntax': 'markdown', 'ext': '.md'}]
+
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_toc_autofit = 1
+
+set conceallevel=2
+
 noremap <leader>ve :edit $HOME/.vimrc<CR>
 noremap <leader>vs :source $HOME/.vimrc<CR>
 noremap <leader>fl :FormatLines<CR>
@@ -199,6 +207,8 @@ inoremap <expr> <PageDown> pumvisible() ? "\<C-e>\<PageDown>" : "\<PageDown>"
 inoremap <expr> <PageUp>   pumvisible() ? "\<C-e>\<PageUp>"   : "\<PageUp>"
 
 nnoremap <leader>ff :FZF<CR>
+nnoremap <leader>mc :call ToggleConceal()<CR>
+nnoremap <leader>mt :Toch<CR>
 "
 " Mapping selecting mappings
 nmap <leader><tab> <plug>(fzf-maps-n)
@@ -222,6 +232,16 @@ function RunGlaze()
     exe w . "wincmd w"
     redraw!
   endif
+endfunction
+
+function! ToggleConceal()
+    if &conceallevel != 0
+        set conceallevel=0
+        echo "Conceal Off"
+    else
+        set conceallevel=2
+        echo "Conceal on"
+    endif
 endfunction
 
 autocmd FileType go autocmd BufWritePre <buffer> Fmt

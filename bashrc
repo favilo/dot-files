@@ -193,3 +193,16 @@ codi() {
     hi NonText ctermfg=0 |\
     Codi $syntax" "$@"
 }
+
+gaiafromemail() {
+ command /home/build/static/projects/gaia/gaiaclient/GaiaClient.par --gaia_instance=prod LookupUser $1 | grep UserID
+}
+
+gaiafromdevemail() {
+ command /home/build/static/projects/gaia/gaiaclient/GaiaClient.par --gaia_instance=test LookupUser $1 | grep UserID
+}
+
+
+emailfromgaia() {
+ command /home/build/static/projects/gaia/gaiaclient/GaiaClient.par --gaia_instance=prod LookupUserByID $1 | grep "^Email\:"
+}

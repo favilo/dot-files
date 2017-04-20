@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3  
 from plumbum import FG
 from plumbum import local
 from plumbum.cmd import ln
