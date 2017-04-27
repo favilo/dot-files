@@ -36,6 +36,7 @@ fi
 case "$TERM" in
     xterm-color) color_prompt=yes;;
     xterm) color_prompt=yes;;
+    screen) color_prompt=yes;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -149,6 +150,9 @@ export PATH=$PATH:/usr/games
 export PATH=$PATH:~/bin:~/.local/bin
 export PATH=$PATH:/opt/android-studio/bin
 export PATH=$JAVA_HOME/jre/bin:$PATH
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/computecpp/lib"
+export CUDA_HOME=/usr/local/cuda
+
 
 git5-ps() {
   command git5 start "$@" java{,tests}/com/google/photos/be java{,tests}/com/google/photos/common java{,tests}/com/google/photos/base photos/service photos/spanner production/{monitoring,borg}/photos production/config/cdd/photos production/borgcron/prod/photos-mr
@@ -162,6 +166,9 @@ profile=${ECLIPSE_PROFILE:-stable}
 eclipse_version=eclipse45
 ECLIPSE_HOME="/usr/local/google/users/${USER}/${eclipse_version}/${profile}"
 ECLIPSE_MEM_MAX='4096m'
+
+export FZF_DEFAULT_COMMAND='ag -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
@@ -186,3 +193,13 @@ codi() {
     hi NonText ctermfg=0 |\
     Codi $syntax" "$@"
 }
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f /home/klah/google-cloud-sdk/path.bash.inc ]; then
+  source '/home/klah/google-cloud-sdk/path.bash.inc'
+fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f /home/klah/google-cloud-sdk/completion.bash.inc ]; then
+  source '/home/klah/google-cloud-sdk/completion.bash.inc'
+fi

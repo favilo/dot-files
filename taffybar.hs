@@ -2,9 +2,10 @@ import System.Taffybar
 
 import System.Taffybar.Battery
 import System.Taffybar.Systray
-import System.Taffybar.XMonadLog
+import System.Taffybar.TaffyPager
 import System.Taffybar.SimpleClock
--- import System.Taffybar.FreedesktopNotifications
+import System.Taffybar.FreedesktopNotifications
+import System.Taffybar.MPRIS
 
 import System.Taffybar.Widgets.PollingBar
 import System.Taffybar.Widgets.PollingGraph
@@ -30,14 +31,16 @@ main = do
                                   , graphLabel = Just "cpu"
                                   }
   let clock = textClockNew Nothing "%a %b %_d %H:%M" 1
-      log = xmonadLogNew
+      pager = taffyPagerNew defaultPagerConfig
+      note = notifyAreaNew defaultNotificationConfig
       mem = pollingGraphNew memCfg 1 memCallback
       cpu = pollingGraphNew cpuCfg 0.5 cpuCallback
       tray = systrayNew
+      mpris = mprisNew defaultMPRISConfig
       battery = batteryBarNew defaultBatteryConfig 60
   defaultTaffybar defaultTaffybarConfig {
       barHeight = 24
-    , startWidgets = [ log ]
-    , endWidgets = [ clock, tray, battery, mem, cpu ]
+    , startWidgets = [ pager, note ]
+    , endWidgets = [ clock, tray, battery, mem, cpu, mpris ]
   }
 
