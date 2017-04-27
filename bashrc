@@ -88,6 +88,8 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias vim='nvim'
+alias tmux="tmux -2"
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -154,6 +156,9 @@ export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/computecpp/lib"
 export CUDA_HOME=/usr/local/cuda
 
 
+export FZF_DEFAULT_COMMAND='ag -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
 git5-ps() {
   command git5 start "$@" java{,tests}/com/google/photos/be java{,tests}/com/google/photos/common java{,tests}/com/google/photos/base photos/service photos/spanner production/{monitoring,borg}/photos production/config/cdd/photos production/borgcron/prod/photos-mr
 }
@@ -169,6 +174,7 @@ ECLIPSE_MEM_MAX='4096m'
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export EDITOR=vim
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
@@ -203,3 +209,16 @@ fi
 if [ -f /home/klah/google-cloud-sdk/completion.bash.inc ]; then
   source '/home/klah/google-cloud-sdk/completion.bash.inc'
 fi
+
+gaiafromemail() {
+ command /home/build/static/projects/gaia/gaiaclient/GaiaClient.par --gaia_instance=prod LookupUser $1 | grep UserID
+}
+
+gaiafromdevemail() {
+ command /home/build/static/projects/gaia/gaiaclient/GaiaClient.par --gaia_instance=test LookupUser $1 | grep UserID
+}
+
+
+emailfromgaia() {
+ command /home/build/static/projects/gaia/gaiaclient/GaiaClient.par --gaia_instance=prod LookupUserByID $1 | grep "^Email\:"
+}

@@ -61,7 +61,7 @@ let html_number_lines = 0
 let html_no_pre = 1
 
 " If buffer modified, update any 'Last modified: ' in the first 20 lines.
-" 'Last modified: ' can have up to 10 characters before (they are retained).
+" 'Last modified: Tue Feb 14, 2017  10:42AM
 " Restores cursor and window position using save_cursor variable.
 function! LastModified()
     if &modified
@@ -89,9 +89,15 @@ filetype off
 
 let mapleader=","
 
-if empty(glob("~/.vim/autoload/plug.vim"))
-  execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
-endif
+if has('nvim')
+  if empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
+    execute '!curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  endif 
+else
+  if empty(glob("~/.vim/autoload/plug.vim"))
+    execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+  endif
+endif 
 
 call plug#begin()
 
@@ -120,13 +126,15 @@ Plug 'jnwhiteh/vim-golang'
 Plug 'nsf/gocode', {'rtp': 'vim/'}
 
 Plug 'vimwiki/vimwiki'
+Plug 'mattn/calendar-vim'
 
 " Plugin 'kien/ctrlp.vim'
 
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 Plug 'google/vim-maktaba'
 
@@ -142,8 +150,9 @@ Plug 'Julian/vim-textobj-variable-segment'
 Plug 'bkad/CamelCaseMotion'
 
 Plug 'reedes/vim-pencil'
+"Plug 'artur-shaik/vim-javacomplete2'
 
-set t_Co=256
+se t_Co=256
 set background=dark
 
 if filereadable(expand('~/.at_google'))
@@ -173,6 +182,13 @@ let g:UltiSnipsExpandTrigger = "<c-j>"
 let g:UltiSnipsJumpForwardTrigger = "<c-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
 
+let g:vimwiki_list = [{'syntax': 'markdown', 'ext': '.md'}]
+
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_toc_autofit = 1
+
+set conceallevel=2
+
 noremap <leader>ve :edit $HOME/.vimrc<CR>
 noremap <leader>vs :source $HOME/.vimrc<CR>
 noremap <leader>fl :FormatLines<CR>
@@ -190,7 +206,14 @@ inoremap <expr> <Up>       pumvisible() ? "\<C-e>\<Up>"       : "\<Up>"
 inoremap <expr> <PageDown> pumvisible() ? "\<C-e>\<PageDown>" : "\<PageDown>"
 inoremap <expr> <PageUp>   pumvisible() ? "\<C-e>\<PageUp>"   : "\<PageUp>"
 
-cnoremap <leader>ff <C-R>=fzf#run({'down': '40%'})<CR><CR>
+nnoremap <leader>ff :FZF<CR>
+nnoremap <leader>mc :call ToggleConceal()<CR>
+nnoremap <leader>mt :Toch<CR>
+"
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
 
 nnoremap <silent> <buffer> <leader>i :JavaImport<cr>
 nnoremap <silent> <buffer> <leader>C :JavaCorrect<cr>
@@ -211,9 +234,22 @@ function RunGlaze()
   endif
 endfunction
 
+function! ToggleConceal()
+    if &conceallevel != 0
+        set conceallevel=0
+        echo "Conceal Off"
+    else
+        set conceallevel=2
+        echo "Conceal on"
+    endif
+endfunction
+
 autocmd FileType go autocmd BufWritePre <buffer> Fmt
 autocmd BufWritePost *.go call RunGlaze()
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
 filetype plugin indent on

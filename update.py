@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3  
 from plumbum import FG
 from plumbum import local
 from plumbum.cmd import ln
@@ -15,6 +15,8 @@ def main():
      local.env.home / ".vimrc"] & FG
   ln["-sf", local.cwd / "bashrc", 
      local.env.home / ".bashrc"] & FG
+  ln["-sf", local.cwd / "tmux.conf", 
+     local.env.home / ".tmux.conf"] & FG
 
 
 if __name__ == '__main__':
