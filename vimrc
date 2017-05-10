@@ -141,7 +141,7 @@ Plug 'google/vim-maktaba'
 Plug 'flazz/vim-colorschemes'
 
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+Plug 'gabrielelana/vim-markdown', { 'for': 'markdown' }
 Plug 'metakirby5/codi.vim'
 
 Plug 'kana/vim-textobj-user'
@@ -167,7 +167,12 @@ endif
 
 call plug#end()
 call glaive#Install()
-Glaive codefmt plugin[mappings]
+
+augroup autoformat_settings
+  autocmd FileType bzl AutoFormatBuffer buildifier
+  autocmd FileType go AutoFormatBuffer gofmt
+  autocmd FileType markdown AutoFormatBuffer mdformat
+augroup END
 
 colorscheme grb256
 
@@ -195,6 +200,11 @@ noremap <leader>fl :FormatLines<CR>
 
 noremap <leader>y "+y
 
+nnoremap tk :tabprevious<CR>
+nnoremap tj :tabnext<CR>
+nnoremap tn :tabnew<CR>
+nnoremap tt :tabedit<Space>
+
 " noremap <leader>e :CtrlP<CR>
 
 inoremap <F1> <nop>
@@ -220,19 +230,6 @@ nnoremap <silent> <buffer> <leader>C :JavaCorrect<cr>
 
 let g:gofmt_command = "goimports"
 set rtp+=$GOROOT/misc/vim
-
-function RunGlaze()
-  let path = expand('%:p')
-  if match(path, "/google3/") > 0
-    let dir = fnamemodify(path, ':h')
-    silent exe "!glaze " . dir . " 2>/tmp/vim.glaze.$USER.err"
-    let w = winnr()
-    cf /tmp/vim.glaze.$USER.err
-    cwindow 3
-    exe w . "wincmd w"
-    redraw!
-  endif
-endfunction
 
 function! ToggleConceal()
     if &conceallevel != 0

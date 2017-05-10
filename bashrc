@@ -112,14 +112,6 @@ fi
 
 PAGER=less
 
-magic_init() {
-  command magicbuild -a -p java{,tests}/com/google/photos/be/...:all --scope //java,javatests/com/google/photos/be/... //java,javatests/com/google/photos/common/... //java,javatests/com/google/photos/base/... //photos/service/... //photos/spanner/... //production/monitoring/photos/... //production/borg/photos/... //production/config/cdd/photos/... "$@";
-}
-
-alias magic_refresh='magicbuild -po -a'
-alias magic_clean='magicbuild -po -a --clean'
-
-alias g5='/google/data/ro/projects/shelltoys/g5.sar'
 
 alias iblaze=/google/data/ro/teams/iblaze/iblaze
 alias pcldiff=/google/data/ro/projects/docs-sre/pcldiff
@@ -128,6 +120,7 @@ alias menu='/google/data/ro/projects/menu/menu.par siliconbeach'
 alias hex='printf "%x\n"'
 alias @dbg=/google/data/ro/teams/ads-test-debugger/@dbg
 alias borgtail=/google/data/ro/users/ds/dsal/bin/borgtail
+alias mdformat=/google/data/ro/teams/g3doc/mdformat
 
 
 
@@ -154,6 +147,8 @@ export PATH=$JAVA_HOME/jre/bin:$PATH
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+export NVIM_LISTEN_ADDRESS=/tmp/nvimsocket
 
 git5-ps() {
   command git5 start "$@" java{,tests}/com/google/photos/be java{,tests}/com/google/photos/common java{,tests}/com/google/photos/base photos/service photos/spanner production/{monitoring,borg}/photos production/config/cdd/photos production/borgcron/prod/photos-mr
