@@ -118,12 +118,8 @@ Plug 'vim-pandoc/vim-pandoc'
 
 Plug 'chiphogg/vim-airline'
 
-Plug 'jnwhiteh/vim-golang'
-'
 "Plugin 'Townk/vim-autoclose'
 "Plugin 'nanotech/jellybeans.vim'
-
-Plug 'nsf/gocode', {'rtp': 'vim/'}
 
 Plug 'vimwiki/vimwiki'
 Plug 'mattn/calendar-vim'
@@ -150,6 +146,7 @@ Plug 'Julian/vim-textobj-variable-segment'
 Plug 'bkad/CamelCaseMotion'
 
 Plug 'reedes/vim-pencil'
+Plug 'fatih/vim-go'
 "Plug 'artur-shaik/vim-javacomplete2'
 
 se t_Co=256
@@ -218,7 +215,10 @@ omap <leader><tab> <plug>(fzf-maps-o)
 nnoremap <silent> <buffer> <leader>i :JavaImport<cr>
 nnoremap <silent> <buffer> <leader>C :JavaCorrect<cr>
 
-let g:gofmt_command = "goimports"
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
+
 set rtp+=$GOROOT/misc/vim
 
 function RunGlaze()
@@ -244,10 +244,9 @@ function! ToggleConceal()
     endif
 endfunction
 
-autocmd FileType go autocmd BufWritePre <buffer> Fmt
-autocmd BufWritePost *.go call RunGlaze()
-
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd FileType go nmap <leader>b <Plug>(go-build)
+autocmd Filetype go nmap <leader>r <Plug>(go-run)
 
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0

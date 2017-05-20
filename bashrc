@@ -142,9 +142,8 @@ git() {
   fi; 
 }
 
-export GOROOT=/usr/lib/google-golang
-export GOPATH=$HOME/gocode
-export PATH=$PATH:/google/data/ro/projects/photos:/google/data/ro/teams/social-backend/:$GOPATH/bin
+export PATH=$PATH:/usr/local/go/bin:~/go/bin
+export PATH=$PATH:/google/data/ro/projects/photos:/google/data/ro/teams/social-backend/
 export PATH=$PATH:/google/src/head/depot/google3/tools/java:/google/data/ro/projects/production/tools
 export PATH=$PATH:/google/data/ro/projects/tonic
 export PATH=$PATH:/google/data/ro/projects/goops
