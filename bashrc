@@ -92,8 +92,10 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+
 alias vim='nvim'
-alias tmux="tmux -2"
+alias tmux='TERM=xterm-256color tmux -2'
+alias ta='TERM=xterm-256color tmux -2 attach-session'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -139,9 +141,7 @@ git() {
   fi; 
 }
 
-export GOROOT=/usr/lib/google-golang
-export GOPATH=$HOME/gocode
-export PATH=$PATH:/google/data/ro/projects/photos:/google/data/ro/teams/social-backend/:$GOPATH/bin
+export PATH=$PATH:/google/data/ro/projects/photos:/google/data/ro/teams/social-backend/
 export PATH=$PATH:/google/src/head/depot/google3/tools/java:/google/data/ro/projects/production/tools
 export PATH=$PATH:/google/data/ro/projects/tonic
 export PATH=$PATH:/google/data/ro/projects/goops
@@ -149,6 +149,7 @@ export PATH=$PATH:/usr/games
 export PATH=$PATH:~/bin:~/.local/bin
 export PATH=$PATH:/opt/android-studio/bin
 export PATH=$JAVA_HOME/jre/bin:$PATH
+export PATH=$PATH:/usr/local/go/bin:~/go/bin
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -205,4 +206,13 @@ gaiafromdevemail() {
 
 emailfromgaia() {
  command /home/build/static/projects/gaia/gaiaclient/GaiaClient.par --gaia_instance=prod LookupUserByID $1 | grep "^Email\:"
+}
+
+PSH_VLC=vlc
+vlc2mp3 () 
+{ 
+   ( set -x;
+   local stream=$1;
+   local output=$2;
+   ${PSH_VLC} -vvv "${stream}" --sout="#transcode{acodec=mp3,ab=128,vcodec=dummy}:std{access=file,mux=raw,dst=${output}" vlc://quit )
 }

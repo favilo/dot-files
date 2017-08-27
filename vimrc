@@ -152,7 +152,7 @@ Plug 'bkad/CamelCaseMotion'
 Plug 'reedes/vim-pencil'
 "Plug 'artur-shaik/vim-javacomplete2'
 
-se t_Co=256
+set t_Co=256
 set background=dark
 
 if filereadable(expand('~/.at_google'))
@@ -174,6 +174,7 @@ augroup autoformat_settings
   autocmd FileType markdown AutoFormatBuffer mdformat
 augroup END
 
+set t_Co=256
 colorscheme grb256
 
 let g:ycm_filetype_specific_completion_to_disable = {'cpp': 1, 'py': 1}
@@ -246,7 +247,7 @@ autocmd BufWritePost *.go call RunGlaze()
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+"let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
 filetype plugin indent on
