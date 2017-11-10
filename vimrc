@@ -15,7 +15,7 @@ set viminfo='20,\"500,%    " ' Maximum number of previously edited files for whi
             "   without a file name and buffers for help files are not written
             "   to the viminfo file.
 set history=1000     " keep {number} lines of command line history
-set tabstop=8        " ts, number of spaces that a tab read from a file is equivalent to
+set tabstop=4        " ts, number of spaces that a tab read from a file is equivalent to
 set softtabstop=4    " number of spaces that a tab read from the keyboard, keymap or
                         "   abbreviation is equivalent to
 set shiftwidth=4    " sw, number of spaces shifted left and right when issuing << and >>
@@ -81,9 +81,16 @@ let g:ledger_maxwidth = 80
 let g:ledger_fillstring = '   »   »'
 
 let g:miniBufExplMapWindowNavVim=1
+let g:miniBufExplMapWindowNavArrows = 1 
+let g:miniBufExplMapCTabSwitchBufs = 1 
+let g:miniBufExplModSelTarget = 1 
+
+
 
 map gn :bn<cr>
 map gp :bp<cr>
+
+map <C-n> :NERDTreeToggle<CR>
 
 filetype off
 
@@ -107,6 +114,7 @@ Plug 'git://git.wincent.com/command-t.git'
 " Plug 'airblade/vim-gitgutter'
 
 "Plugin 'scrooloose/syntastic.git'
+Plug 'scrooloose/nerdtree'
 
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
@@ -118,7 +126,10 @@ Plug 'vim-pandoc/vim-pandoc'
 
 Plug 'chiphogg/vim-airline'
 
-Plug 'jnwhiteh/vim-golang'
+Plug 'fatih/vim-go'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'godoctor/godoctor.vim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 '
 "Plugin 'Townk/vim-autoclose'
 "Plugin 'nanotech/jellybeans.vim'
@@ -132,6 +143,7 @@ Plug 'mattn/calendar-vim'
 
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'vim-scripts/minibufexpl.vim'
 
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -152,7 +164,9 @@ Plug 'bkad/CamelCaseMotion'
 Plug 'reedes/vim-pencil'
 "Plug 'artur-shaik/vim-javacomplete2'
 
-set t_Co=256
+"Plug 'wakatime/vim-wakatime'
+
+se t_Co=256
 set background=dark
 
 if filereadable(expand('~/.at_google'))
@@ -161,7 +175,6 @@ if filereadable(expand('~/.at_google'))
 else
   " Non-google only
   Plug 'Valloric/YouCompleteMe'
-  Plug 'google/vim-codefmt'
   Plug 'google/vim-glaive'
 endif
 
@@ -170,8 +183,6 @@ call glaive#Install()
 
 augroup autoformat_settings
   autocmd FileType bzl AutoFormatBuffer buildifier
-  autocmd FileType go AutoFormatBuffer gofmt
-  autocmd FileType markdown AutoFormatBuffer mdformat
 augroup END
 
 set t_Co=256
@@ -192,6 +203,8 @@ let g:vimwiki_list = [{'syntax': 'markdown', 'ext': '.md'}]
 
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_toc_autofit = 1
+
+let g:deoplete#enable_at_startup = 1
 
 set conceallevel=2
 
@@ -226,10 +239,37 @@ nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
 
-nnoremap <silent> <buffer> <leader>i :JavaImport<cr>
-nnoremap <silent> <buffer> <leader>C :JavaCorrect<cr>
+" vim-go mappings
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
 
-let g:gofmt_command = "goimports"
+autocmd FileType go nmap <leader>r <Plug>(go-run)
+autocmd FileType go nmap <leader>t <Plug>(go-test)
+autocmd FileType go nmap <leader>c <Plug>(go-coverage-toggle)
+autocmd FileType go nmap <Leader>i <Plug>(go-info)
+
+
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+
+
+let g:go_list_type = "quickfix"
+let g:go_auto_type_info = 0
+let g:go_auto_sameids = 1
+"let g:go_fmt_command = "goimports"
+
+" END vim-go mappings
+
 set rtp+=$GOROOT/misc/vim
 
 function! ToggleConceal()
@@ -241,9 +281,6 @@ function! ToggleConceal()
         echo "Conceal on"
     endif
 endfunction
-
-autocmd FileType go autocmd BufWritePre <buffer> Fmt
-autocmd BufWritePost *.go call RunGlaze()
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
