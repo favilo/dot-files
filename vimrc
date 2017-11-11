@@ -129,16 +129,8 @@ Plug 'chiphogg/vim-airline'
 Plug 'fatih/vim-go'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'godoctor/godoctor.vim'
-
-if !has('nvim')
-    Plug 'maralla/completor.vim'
-endif
-if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'zchee/deoplete-go'
-    Plug 'jodosha/vim-godebug'
-endif
-
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+'
 "Plugin 'Townk/vim-autoclose'
 "Plugin 'nanotech/jellybeans.vim'
 
@@ -211,7 +203,6 @@ let g:vimwiki_list = [{'syntax': 'markdown', 'ext': '.md'}]
 
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_toc_autofit = 1
-let g:deoplete#enable_at_startup = 1
 
 let g:deoplete#enable_at_startup = 1
 
