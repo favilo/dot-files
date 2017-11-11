@@ -3,6 +3,7 @@ import System.Taffybar
 import System.Taffybar.Battery
 import System.Taffybar.Systray
 import System.Taffybar.TaffyPager
+import System.Taffybar.Pager
 import System.Taffybar.SimpleClock
 import System.Taffybar.FreedesktopNotifications
 import System.Taffybar.MPRIS

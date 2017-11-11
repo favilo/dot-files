@@ -182,8 +182,7 @@ myStartupHook = do
         spawn "taffybar"
         spawn "nm-applet"
         spawn "syndaemon -i 0.75 -d -t -K"
-        spawn "gnome-sound-applet"
-        spawn "/usr/share/goobuntu-indicator/goobuntu_indicator.py"
+        spawn "pa-applet"
         spawn xautolock
         takeTopFocus
         return ()

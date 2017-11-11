@@ -93,8 +93,10 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+
 alias vim='nvim'
-alias tmux="tmux -2"
+alias tmux='TERM=xterm-256color tmux -2'
+alias ta='TERM=xterm-256color tmux -2 attach-session'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -119,57 +121,30 @@ fi
 PAGER=less
 
 
-alias iblaze=/google/data/ro/teams/iblaze/iblaze
-alias pcldiff=/google/data/ro/projects/docs-sre/pcldiff
-alias g3python=/google/data/ro/projects/g3python/g3python
-alias menu='/google/data/ro/projects/menu/menu.par siliconbeach'
 alias hex='printf "%x\n"'
-alias @dbg=/google/data/ro/teams/ads-test-debugger/@dbg
-alias borgtail=/google/data/ro/users/ds/dsal/bin/borgtail
-alias mdformat=/google/data/ro/teams/g3doc/mdformat
 
 
 
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 
-git() { 
-  if [[ $1 == 'merge' ]]; 
-  then echo 'Use git5 merge, not git merge. git merge does not understand how to merge the READONLY link and it can corrupt your branch, so stay away from it. type "unset -f git" to remove this warning'; 
-  else command git "$@"; 
-  fi; 
-}
-
-export PATH=$PATH:/usr/local/go/bin:~/go/bin
-export PATH=$PATH:/google/data/ro/projects/photos:/google/data/ro/teams/social-backend/
-export PATH=$PATH:/google/src/head/depot/google3/tools/java:/google/data/ro/projects/production/tools
-export PATH=$PATH:/google/data/ro/projects/tonic
-export PATH=$PATH:/google/data/ro/projects/goops
+export GOPATH=$HOME/go
 export PATH=$PATH:/usr/games
+export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:~/bin:~/.local/bin
 export PATH=$PATH:/opt/android-studio/bin
 export PATH=$JAVA_HOME/jre/bin:$PATH
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/computecpp/lib"
-export CUDA_HOME=/usr/local/cuda
-
+export PATH=$PATH:/usr/lib/go-1.8/bin
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 export NVIM_LISTEN_ADDRESS=/tmp/nvimsocket
 
-git5-ps() {
-  command git5 start "$@" java{,tests}/com/google/photos/be java{,tests}/com/google/photos/common java{,tests}/com/google/photos/base photos/service photos/spanner production/{monitoring,borg}/photos production/config/cdd/photos production/borgcron/prod/photos-mr
-}
-
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 if [ -n "$DISPLAY" ] ; then export G4MULTIDIFF=1 ; fi
 export P4MERGE='bash -c "chmod u+w \$1 ; meld \$2 \$1 \$3 ; cp \$1 \$4" padding-to-occupy-argv0'
-profile=${ECLIPSE_PROFILE:-stable}
-eclipse_version=eclipse45
-ECLIPSE_HOME="/usr/local/google/users/${USER}/${eclipse_version}/${profile}"
-ECLIPSE_MEM_MAX='4096m'
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -220,4 +195,13 @@ gaiafromdevemail() {
 
 emailfromgaia() {
  command /home/build/static/projects/gaia/gaiaclient/GaiaClient.par --gaia_instance=prod LookupUserByID $1 | grep "^Email\:"
+}
+
+PSH_VLC=vlc
+vlc2mp3 () 
+{ 
+   ( set -x;
+   local stream=$1;
+   local output=$2;
+   ${PSH_VLC} -vvv "${stream}" --sout="#transcode{acodec=mp3,ab=128,vcodec=dummy}:std{access=file,mux=raw,dst=${output}" vlc://quit )
 }
