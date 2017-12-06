@@ -61,7 +61,7 @@ let html_number_lines = 0
 let html_no_pre = 1
 
 " If buffer modified, update any 'Last modified: ' in the first 20 lines.
-" 'Last modified: Tue Feb 14, 2017  10:42AM
+" 'Last modified: Wed Dec 06, 2017  12:43PM
 " Restores cursor and window position using save_cursor variable.
 function! LastModified()
     if &modified
@@ -133,6 +133,9 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 "Plugin 'Townk/vim-autoclose'
 "Plugin 'nanotech/jellybeans.vim'
 
+Plug 'nsf/gocode', {'rtp': 'vim/'}
+
+Plug 'derekwyatt/vim-scala'
 Plug 'vimwiki/vimwiki'
 Plug 'mattn/calendar-vim'
 
@@ -159,10 +162,10 @@ Plug 'Julian/vim-textobj-variable-segment'
 Plug 'bkad/CamelCaseMotion'
 
 Plug 'reedes/vim-pencil'
-Plug 'fatih/vim-go'
+Plug 'google/vim-codefmt'
 "Plug 'artur-shaik/vim-javacomplete2'
 
-"Plug 'wakatime/vim-wakatime'
+Plug 'wakatime/vim-wakatime'
 
 se t_Co=256
 set background=dark
