@@ -1,18 +1,22 @@
-import System.Taffybar
+import           Data.Maybe                               (fromMaybe)
+import           System.Environment                       (getArgs)
+import           System.Taffybar
 
-import System.Taffybar.Battery
-import System.Taffybar.Systray
-import System.Taffybar.TaffyPager
-import System.Taffybar.Pager
-import System.Taffybar.SimpleClock
-import System.Taffybar.FreedesktopNotifications
-import System.Taffybar.MPRIS
+import           System.Taffybar.Battery
+import           System.Taffybar.FreedesktopNotifications
+import           System.Taffybar.MPRIS
+import           System.Taffybar.Pager
+import           System.Taffybar.SimpleClock
+import           System.Taffybar.Systray
+import           System.Taffybar.TaffyPager
 
-import System.Taffybar.Widgets.PollingBar
-import System.Taffybar.Widgets.PollingGraph
+import           System.Taffybar.Widgets.PollingBar
+import           System.Taffybar.Widgets.PollingGraph
 
-import System.Information.Memory
-import System.Information.CPU
+import           System.Information.CPU
+import           System.Information.Memory
+
+import           Text.Read                                (readMaybe)
 
 memCallback = do
   mi <- parseMeminfo
@@ -23,6 +27,7 @@ cpuCallback = do
   return [totalLoad, systemLoad]
 
 main = do
+  args <- getArgs
   let memCfg = defaultGraphConfig { graphDataColors = [(1, 0, 0, 1)]
                                   , graphLabel = Just "mem"
                                   }
@@ -31,6 +36,7 @@ main = do
                                                       ]
                                   , graphLabel = Just "cpu"
                                   }
+      chosenMonitorNumber = fromMaybe 0 $ readMaybe $ head args
   let clock = textClockNew Nothing "%a %b %_d %H:%M" 1
       pager = taffyPagerNew defaultPagerConfig
       note = notifyAreaNew defaultNotificationConfig
@@ -39,9 +45,10 @@ main = do
       tray = systrayNew
       mpris = mprisNew defaultMPRISConfig
       battery = batteryBarNew defaultBatteryConfig 60
-  defaultTaffybar defaultTaffybarConfig {
-      barHeight = 24
-    , startWidgets = [ pager, note ]
-    , endWidgets = [ clock, tray, battery, mem, cpu, mpris ]
-  }
-
+      myTaffybarConfig = defaultTaffybarConfig {
+          barHeight = 24
+        , startWidgets = [ pager, note ]
+        , endWidgets = [ clock, tray, battery, mem, cpu, mpris ]
+        , monitorNumber = chosenMonitorNumber
+      }
+  defaultTaffybar myTaffybarConfig

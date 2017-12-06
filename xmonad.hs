@@ -1,63 +1,53 @@
+import           XMonad
+import           XMonad.Config.Desktop
 
-import XMonad
-import XMonad.Config.Desktop
+import           XMonad.Layout
+import           XMonad.Layout.Gaps
+import           XMonad.Layout.Grid
+import           XMonad.Layout.Named
+import           XMonad.Layout.NoBorders
 
-import XMonad.Layout.Gaps
-import XMonad.Layout.Grid
-import XMonad.Layout.Named
-import XMonad.Layout.NoBorders
-import XMonad.Layout
+import           XMonad.Hooks.DynamicHooks
+import           XMonad.Hooks.DynamicLog
+import           XMonad.Hooks.EwmhDesktops        (ewmh)
+import           XMonad.Hooks.ManageDocks
+import           XMonad.Hooks.ManageHelpers
 
-import XMonad.Hooks.DynamicHooks
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.EwmhDesktops (ewmh)
-import XMonad.Hooks.ICCCMFocus
-import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers
+import           XMonad.Prompt
+import           XMonad.Prompt.Shell
+import           XMonad.Prompt.XMonad
 
-import XMonad.Prompt
-import XMonad.Prompt.Shell
-import XMonad.Prompt.XMonad
+import           XMonad.Util.EZConfig
+import           XMonad.Util.Run                  (spawnPipe)
 
-import XMonad.Util.EZConfig
-import XMonad.Util.Run(spawnPipe)
+import           Graphics.X11.ExtraTypes.XF86
 
-import Graphics.X11.ExtraTypes.XF86
+import           DBus.Client                      as D
 
-import DBus.Client as D
+import           System.Exit
+import           System.IO
 
-import System.Exit
-import System.IO
+import           System.Taffybar.Hooks.PagerHints (pagerHints)
 
-import System.Taffybar.XMonadLog
+import           Control.Applicative
+import           Control.Concurrent
+import           Control.Exception                as E
 
-import Control.Applicative
-import Control.Concurrent
-import Control.Exception as E
-
-import qualified Data.Map        as M
-import Data.List
-import qualified XMonad.StackSet as W
-
-myTaffybarPP = taffybarPP {
-    ppTitle = taffybarColor "green" "" . shorten 300
-}
+import           Data.List
+import qualified Data.Map                         as M
+import qualified XMonad.StackSet                  as W
 
 main = do
-    dbus <- D.connectSession
-    xmonad $ ewmh $ myConfig { 
-        logHook = dbusLogWithPP dbus myTaffybarPP >> logHook myConfig
-    }
+    xmonad $ ewmh $ pagerHints $ myConfig
 
-
-myConfig = defaultConfig 
+myConfig = docks $ def
     { modMask = mod4Mask
     , terminal = "gnome-terminal"
     , focusFollowsMouse = True
 
     , manageHook = myManageHook
     , layoutHook = myLayout
-    , logHook = myLogHook 
+    , logHook = myLogHook
     , keys = myKeys
     , startupHook = myStartupHook
     } `additionalKeysP` (easyKeyList myConfig)
@@ -70,15 +60,15 @@ easyKeyList conf =
     -- launch a terminal
     [ ("M-<Return>", spawn $ XMonad.terminal conf)
     -- launch dmenu
-    , ("M-<F2>"      , shellPrompt defaultXPConfig)
-    , ("M-r"         , shellPrompt defaultXPConfig)
+    , ("M-<F2>"      , shellPrompt def)
+    , ("M-r"         , shellPrompt def)
     -- close focused window
     , ("M-S-c"       , kill)
     -- Rotate through the available layout algorithms
     , ("M-<Space>"   , sendMessage NextLayout)
     -- This doesn't work just yet
     -- , ("M-S-<Space>" , setLayout $ XMonad.layoutHook conf)
-    
+
     -- Resize viewed windows to the correct size
     , ("M-n"         , refresh)
     -- Move focus to the next window
@@ -103,7 +93,7 @@ easyKeyList conf =
     -- Push window back into tiling
     , ("M-t"         , withFocused $ windows . W.sink)
     -- Lock screen
-    , ("M-S-z"       , spawn 
+    , ("M-S-z"       , spawn
                     "gnome-screensaver-command --activate")
     , ("M-C-w"       , spawn "google-chrome")
     , ("M-C-e"       , spawn "eclipse45")
@@ -115,25 +105,25 @@ easyKeyList conf =
     , ("M-q"         , killAndRestart)
     ]
         where
-            killAndExit = 
+            killAndExit =
                 io (exitWith ExitSuccess)
-            killAndRestart = 
+            killAndRestart =
                 --(spawn "/usr/bin/killall dzen2") <+>
                 (liftIO $ threadDelay 1000000) <+>
                 (restart "xmonad" True)
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
-    [ 
+    [
     --  Reset the layouts on the current workspace to default
-      ((modm .|. shiftMask, xK_space ), 
+      ((modm .|. shiftMask, xK_space ),
                             setLayout $ XMonad.layoutHook conf)
- 
+
     -- Increment the number of windows in the master area
     , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
- 
+
     -- Deincrement the number of windows in the master area
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
- 
+
     ------------------------------------------------------------
     -- Special Keys
     ------------------------------------------------------------
@@ -150,11 +140,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- mod-shift-[1..9], Move client to workspace N
     --
     [((m .|. modm, k), windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) 
+        | (i, k) <- zip (XMonad.workspaces conf)
                         ([xK_1 .. xK_9] ++ [xK_0])
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     ++
- 
+
     --
     -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
     -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
@@ -162,43 +152,41 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_w, xK_e] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
- 
+
 myLayout = avoidStruts $ desktopLayoutModifiers $ tall ||| wide ||| full ||| grid
     where
     nmaster = 1
     ratio = 5/7
     delta = 5/100
     tall = avoidStruts $ Tall nmaster delta ratio
-    wide = named "wide" $ avoidStruts $ Mirror $ Tall nmaster delta ratio
+    wide = named "Wide" $ avoidStruts $ Mirror $ Tall nmaster delta ratio
     full = avoidStruts $ noBorders Full
     grid = Grid
-    
+
 
 myLogHook = do
-    takeTopFocus
     return ()
 
 myStartupHook = do
-        spawn "taffybar"
+        spawn "taffybar 0"
+        spawn "taffybar 1"
         spawn "nm-applet"
         spawn "syndaemon -i 0.75 -d -t -K"
         spawn "pa-applet"
         spawn xautolock
-        takeTopFocus
         return ()
-        checkKeymap myConfig 
+        checkKeymap myConfig
             (easyKeyList myConfig)
     where
         xautolock =  "xautolock -secure -time 10 " ++ locker ++ notifier
         locker = "-locker \"i3lock -duc 003355\" "
         notifier = "-notify 15 --notifier \"notify-send -t 5000 " ++
-            "-i dialog-password -u low 'Security advisory' " ++ 
+            "-i dialog-password -u low 'Security advisory' " ++
             "'\nLocking session in 15 seconds'\""
 
 
 myManageHook :: ManageHook
-myManageHook = 
-    manageDocks <+>
+myManageHook =
     dynamicMasterHook <+>
     manageWindows
 
@@ -211,7 +199,7 @@ manageWindows = composeAll . concat $
     , [ name       =? n --> doSideFloat NW         | n <- myFloatSN ]
     , [ windowRole =? n --> doSideFloat SW         | n <- myFloatSR ]
     , [ className  =? c --> doF W.focusDown        | c <- myFocusDC ]
-    , [ isFullscreen    --> doFullFloat 
+    , [ isFullscreen    --> doFullFloat
       , isDialog        --> doCenterFloat
       ]
     ] where
@@ -235,16 +223,16 @@ manageWindows = composeAll . concat $
                      , "File Properties", "Replace", "Quit GIMP"
                      , "Change Foreground Color"
                      , "Change Background Color"
-                     , "Expired/Expiring LOAS Certificate" 
+                     , "Expired/Expiring LOAS Certificate"
                      , "action_goobuntu_check.py"
                      , "Application Finder", "xmessage", ""]
         myFloatSN  = ["Event Tester"]
         myFloatSR  = ["pop-up"]
         myFocusDC  = ["Event Tester", "Notify-osd"]
         -- Chrome Secure Shell
-        myUnfloatCC = ["Secure Shell"] 
+        myUnfloatCC = ["Secure Shell"]
         keepMaster c = assertSlave <+> assertMaster where
             assertSlave = fmap (/= c) className --> doF W.swapDown
             assertMaster = className =? c --> doF W.swapMaster
         unfloat    = ask >>= doF . W.sink
- 
+

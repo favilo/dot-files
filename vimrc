@@ -163,6 +163,7 @@ Plug 'bkad/CamelCaseMotion'
 
 Plug 'reedes/vim-pencil'
 Plug 'google/vim-codefmt'
+Plug 'lpenz/vim-codefmt-haskell'
 "Plug 'artur-shaik/vim-javacomplete2'
 
 Plug 'wakatime/vim-wakatime'
