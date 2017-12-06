@@ -92,8 +92,10 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+
 alias vim='nvim'
-alias tmux="tmux -2"
+alias tmux='TERM=xterm-256color tmux -2'
+alias ta='TERM=xterm-256color tmux -2 attach-session'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -184,4 +186,13 @@ gaiafromdevemail() {
 
 emailfromgaia() {
  command /home/build/static/projects/gaia/gaiaclient/GaiaClient.par --gaia_instance=prod LookupUserByID $1 | grep "^Email\:"
+}
+
+PSH_VLC=vlc
+vlc2mp3 () 
+{ 
+   ( set -x;
+   local stream=$1;
+   local output=$2;
+   ${PSH_VLC} -vvv "${stream}" --sout="#transcode{acodec=mp3,ab=128,vcodec=dummy}:std{access=file,mux=raw,dst=${output}" vlc://quit )
 }

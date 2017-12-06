@@ -189,6 +189,7 @@ augroup autoformat_settings
   autocmd FileType bzl AutoFormatBuffer buildifier
 augroup END
 
+set t_Co=256
 colorscheme grb256
 
 let g:ycm_filetype_specific_completion_to_disable = {'cpp': 1, 'py': 1}
@@ -287,7 +288,7 @@ endfunction
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+"let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
 filetype plugin indent on
