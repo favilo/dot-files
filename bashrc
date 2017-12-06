@@ -124,8 +124,12 @@ alias hex='printf "%x\n"'
 
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
+bind '"\eOC":forward-word'
+bind '"\eOD":backward-word'
+
 
 export GOPATH=$HOME/go
+export LGOPATH=$HOME/lgo
 export PATH=$PATH:/usr/games
 export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:~/bin:~/.local/bin

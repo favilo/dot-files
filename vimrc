@@ -136,6 +136,9 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 Plug 'nsf/gocode', {'rtp': 'vim/'}
 
+Plug 'derekwyatt/vim-scala'
+
+
 Plug 'vimwiki/vimwiki'
 Plug 'mattn/calendar-vim'
 
@@ -162,9 +165,10 @@ Plug 'Julian/vim-textobj-variable-segment'
 Plug 'bkad/CamelCaseMotion'
 
 Plug 'reedes/vim-pencil'
+Plug 'google/vim-codefmt'
 "Plug 'artur-shaik/vim-javacomplete2'
 
-"Plug 'wakatime/vim-wakatime'
+Plug 'wakatime/vim-wakatime'
 
 se t_Co=256
 set background=dark
