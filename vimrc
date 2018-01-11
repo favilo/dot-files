@@ -168,6 +168,8 @@ Plug 'lpenz/vim-codefmt-haskell'
 
 Plug 'wakatime/vim-wakatime'
 
+Plug 'martinda/Jenkinsfile-vim-syntax'
+
 se t_Co=256
 set background=dark
 
@@ -190,7 +192,7 @@ augroup END
 set t_Co=256
 colorscheme grb256
 
-let g:ycm_filetype_specific_completion_to_disable = {'cpp': 1, 'py': 1}
+let g:ycm_filetype_specific_completion_to_disable = {'cpp': 1}
 
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1

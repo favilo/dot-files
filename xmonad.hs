@@ -10,7 +10,7 @@ import           XMonad.Layout.NoBorders
 import           XMonad.Hooks.DynamicHooks
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops        (ewmh)
-import           XMonad.Hooks.ManageDocks
+import           XMonad.Hooks.ManageDocks         
 import           XMonad.Hooks.ManageHelpers
 
 import           XMonad.Prompt
@@ -37,8 +37,7 @@ import           Data.List
 import qualified Data.Map                         as M
 import qualified XMonad.StackSet                  as W
 
-main = do
-    xmonad $ ewmh $ pagerHints $ myConfig
+main = xmonad $ ewmh $ pagerHints $ myConfig
 
 myConfig = docks $ def
     { modMask = mod4Mask
@@ -235,4 +234,3 @@ manageWindows = composeAll . concat $
             assertSlave = fmap (/= c) className --> doF W.swapDown
             assertMaster = className =? c --> doF W.swapMaster
         unfloat    = ask >>= doF . W.sink
-
