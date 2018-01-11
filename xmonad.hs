@@ -93,7 +93,7 @@ easyKeyList conf =
     , ("M-t"         , withFocused $ windows . W.sink)
     -- Lock screen
     , ("M-S-z"       , spawn
-                    "gnome-screensaver-command --activate")
+                    "gnome-screensaver-command --lock")
     , ("M-C-w"       , spawn "google-chrome")
     , ("M-C-e"       , spawn "eclipse45")
     -- Cycle Keyboard layouts
