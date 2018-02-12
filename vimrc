@@ -84,8 +84,16 @@ let g:miniBufExplMapWindowNavVim=1
 let g:miniBufExplMapWindowNavArrows = 1 
 let g:miniBufExplMapCTabSwitchBufs = 1 
 let g:miniBufExplModSelTarget = 1 
+let g:miniBufExplMaxSize = 1
+let g:miniBufExplMaxHeight = 1
 
+noremap <C-J>   <C-W>j
+noremap <C-K>   <C-W>k
+noremap <C-H>   <C-W>h
+noremap <C-L>   <C-W>l
 
+noremap <C-TAB> :MBEbn<CR>
+noremap <C-S-TAB> :MBEbp<CR>
 
 map gn :bn<cr>
 map gp :bp<cr>
@@ -105,6 +113,12 @@ else
     execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
   endif
 endif 
+
+function! BuildYCM(info)
+    if a:info.status == 'installed || a.info.force
+        !./install.sh
+    endif
+endfunction
 
 call plug#begin()
 
@@ -143,7 +157,9 @@ Plug 'mattn/calendar-vim'
 
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'vim-scripts/minibufexpl.vim'
+"Plug 'vim-scripts/minibufexpl.vim'
+Plug 'fholgado/minibufexpl.vim'
+"Plug 'weynhamz/vim-plugin-minibufexpl'
 
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -178,7 +194,7 @@ if filereadable(expand('~/.at_google'))
   source ~/.vimrc.google
 else
   " Non-google only
-  Plug 'Valloric/YouCompleteMe'
+  Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
   Plug 'google/vim-glaive'
 endif
 
@@ -293,6 +309,8 @@ endfunction
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd FileType go nmap <leader>b <Plug>(go-build)
 autocmd Filetype go nmap <leader>r <Plug>(go-run)
+autocmd VimResized * wincmd =
+
 
 "let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
