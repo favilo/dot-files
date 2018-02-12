@@ -134,7 +134,7 @@ bind '"\eOD":backward-word'
 export GOPATH=$HOME/go
 export LGOPATH=$HOME/lgo
 export PATH=$PATH:/usr/games
-export PATH=$PATH:$HOME/go/bin
+export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:~/bin:~/.local/bin
 export PATH=$PATH:/opt/android-studio/bin
 export PATH=$JAVA_HOME/jre/bin:$PATH
