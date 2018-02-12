@@ -98,7 +98,7 @@ noremap <C-S-TAB> :MBEbp<CR>
 map gn :bn<cr>
 map gp :bp<cr>
 
-map <C-n> :NERDTreeToggle<CR>
+noremap <C-t> :NERDTreeToggle<CR>
 
 filetype off
 
@@ -128,8 +128,10 @@ Plug 'git://git.wincent.com/command-t.git'
 " Plug 'airblade/vim-gitgutter'
 
 "Plugin 'scrooloose/syntastic.git'
-Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
+Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
 "Plugin 'tpope/vim-fugitive'
@@ -143,7 +145,13 @@ Plug 'chiphogg/vim-airline'
 Plug 'fatih/vim-go'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'godoctor/godoctor.vim'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+if has('nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'roxma/nvim-yarp'
+    Plug 'roxma/vim-hug-neovim-rpc'
+endif
 "Plugin 'Townk/vim-autoclose'
 "Plugin 'nanotech/jellybeans.vim'
 
@@ -282,17 +290,12 @@ endfunction
 
 autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 
-
 let g:go_list_type = "quickfix"
 let g:go_auto_type_info = 0
 let g:go_auto_sameids = 1
 "let g:go_fmt_command = "goimports"
 
 " END vim-go mappings
-
-map <C-n> :cnext<CR>
-map <C-m> :cprevious<CR>
-nnoremap <leader>a :cclose<CR>
 
 set rtp+=$GOROOT/misc/vim
 
