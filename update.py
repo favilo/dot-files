@@ -17,6 +17,8 @@ def main():
      local.env.home / ".bashrc"] & FG
   ln["-sf", local.cwd / "tmux.conf", 
      local.env.home / ".tmux.conf"] & FG
+  ln["-sf", local.cwd / "gitconfig", 
+     local.env.home / ".gitconfig"] & FG
 
 
 if __name__ == '__main__':
