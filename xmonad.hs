@@ -172,6 +172,7 @@ myStartupHook = do
         spawn "nm-applet"
         spawn "syndaemon -i 0.75 -d -t -K"
         spawn "pa-applet"
+        spawn "xsetroot -cursor_name left_ptr"
         spawn xautolock
         return ()
         checkKeymap myConfig

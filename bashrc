@@ -35,6 +35,7 @@ fi
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
     xterm-color) color_prompt=yes;;
+    xterm-256color) color_prompt=yes;;
     xterm) color_prompt=yes;;
     screen) color_prompt=yes;;
 esac
@@ -55,9 +56,12 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-if [ "$color_prompt" = yes ] && [[ -e ~/.short.pwd.py ]]; then
-    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-    PROMPT_COMMAND='PS1="$(python ~/.short.pwd.py)"'
+if [ "$color_prompt" = yes ]; then
+    if [[ -e ~/.short.pwd.py ]]; then
+        PROMPT_COMMAND='PS1="$(python ~/.short.pwd.py)"'
+    else
+	PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    fi
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
@@ -210,3 +214,12 @@ vlc2mp3 ()
    ${PSH_VLC} -vvv "${stream}" --sout="#transcode{acodec=mp3,ab=128,vcodec=dummy}:std{access=file,mux=raw,dst=${output}" vlc://quit )
 }
 source <(kubectl completion bash)
+
+##
+# Load any extra Bash profile scripts
+##
+if [[ -d ~/.profile.d ]]; then
+	for f in ~/.profile.d/*.bash; do
+		. "$f"
+	done
+fi

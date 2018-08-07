@@ -98,15 +98,13 @@ noremap <C-S-TAB> :MBEbp<CR>
 map gn :bn<cr>
 map gp :bp<cr>
 
-noremap <C-t> :NERDTreeToggle<CR>
-
 filetype off
 
 let mapleader=","
 
 if has('nvim')
-  if empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
-    execute '!curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  if empty(glob("~/.config/nvim/autoload/plug.vim"))
+    execute '!curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   endif 
 else
   if empty(glob("~/.vim/autoload/plug.vim"))
@@ -130,13 +128,15 @@ Plug 'git://git.wincent.com/command-t.git'
 "Plugin 'scrooloose/syntastic.git'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'majutsushi/tagbar'
 
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
 "Plugin 'tpope/vim-fugitive'
 
-"Plugin 'klen/python-mode'
+Plug 'Vimjas/vim-python-pep8-indent'
+Plug 'python-mode/python-mode', { 'branch': 'develop' }
 
 Plug 'vim-pandoc/vim-pandoc'
 
@@ -169,7 +169,7 @@ Plug 'honza/vim-snippets'
 Plug 'fholgado/minibufexpl.vim'
 "Plug 'weynhamz/vim-plugin-minibufexpl'
 
-Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
 Plug 'junegunn/fzf.vim'
 
 Plug 'google/vim-maktaba'
@@ -217,6 +217,7 @@ set t_Co=256
 colorscheme grb256
 
 let g:ycm_filetype_specific_completion_to_disable = {'cpp': 1}
+let g:ycm_python_binary_path = '/usr/bin/python3'
 
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
@@ -233,6 +234,10 @@ let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_toc_autofit = 1
 
 let g:deoplete#enable_at_startup = 1
+let g:pymode_python = 'python3'
+let g:pymode_indent = 0
+let g:pymode_lint_on_fly = 1
+let g:python_pep8_indent_multiline_string = -2
 
 set conceallevel=2
 
@@ -248,6 +253,8 @@ nnoremap tn :tabnew<CR>
 nnoremap tt :tabedit<Space>
 
 " noremap <leader>e :CtrlP<CR>
+noremap <C-b> :TagbarToggle<CR>
+noremap <C-t> :NERDTreeToggle<CR>
 
 inoremap <F1> <nop>
 nnoremap <F1> <nop>
@@ -319,3 +326,4 @@ autocmd VimResized * wincmd =
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
 filetype plugin indent on
+
