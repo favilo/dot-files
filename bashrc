@@ -143,6 +143,8 @@ export PATH=$PATH:~/bin:~/.local/bin
 export PATH=$PATH:/opt/android-studio/bin
 export PATH=$JAVA_HOME/jre/bin:$PATH
 export PATH=$PATH:/usr/lib/go-1.8/bin
+export PATH="$PATH:$HOME/istio-0.6.0/bin"
+export PATH="$PATH:/usr/local/cuda-9.1/bin"
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -223,3 +225,8 @@ if [[ -d ~/.profile.d ]]; then
 		. "$f"
 	done
 fi
+
+source /home/klah/git/games/emsdk/emsdk_env.sh
+export ANDROID_NDK_ROOT=/home/klah/Android/Sdk/ndk-bundle/
+export ANDROID_HOME=/home/klah/Android/Sdk/
+. /home/klah/miniconda3/etc/profile.d/conda.sh
