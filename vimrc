@@ -15,7 +15,7 @@ set viminfo='20,\"500,%    " ' Maximum number of previously edited files for whi
             "   without a file name and buffers for help files are not written
             "   to the viminfo file.
 set history=1000     " keep {number} lines of command line history
-set tabstop=4        " ts, number of spaces that a tab read from a file is equivalent to
+set tabstop=2        " ts, number of spaces that a tab read from a file is equivalent to
 set softtabstop=2    " number of spaces that a tab read from the keyboard, keymap or
                         "   abbreviation is equivalent to
 set shiftwidth=2    " sw, number of spaces shifted left and right when issuing << and >>
@@ -200,6 +200,8 @@ Plug 'wakatime/vim-wakatime'
 
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'nathanaelkane/vim-indent-guides'
+
+Plug 'quabug/vim-gdscript'
 
 se t_Co=256
 set background=dark
