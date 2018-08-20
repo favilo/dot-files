@@ -16,9 +16,9 @@ set viminfo='20,\"500,%    " ' Maximum number of previously edited files for whi
             "   to the viminfo file.
 set history=1000     " keep {number} lines of command line history
 set tabstop=4        " ts, number of spaces that a tab read from a file is equivalent to
-set softtabstop=4    " number of spaces that a tab read from the keyboard, keymap or
+set softtabstop=2    " number of spaces that a tab read from the keyboard, keymap or
                         "   abbreviation is equivalent to
-set shiftwidth=4    " sw, number of spaces shifted left and right when issuing << and >>
+set shiftwidth=2    " sw, number of spaces shifted left and right when issuing << and >>
             "   commands
 set expandtab           " don't output tabs; replace with spaces.
 set autoindent          " follow current indentation
@@ -119,6 +119,7 @@ function! BuildYCM(info)
 endfunction
 
 call plug#begin()
+Plug 'ervandew/supertab'
 
 Plug 'Lokaltog/vim-easymotion'
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
@@ -133,10 +134,13 @@ Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
-"Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'python-mode/python-mode', { 'branch': 'develop' }
+Plug 'davidhalter/jedi-vim'
+Plug 'zchee/deoplete-jedi'
+Plug 'ervandew/supertab'
 
 Plug 'vim-pandoc/vim-pandoc'
 
@@ -168,9 +172,11 @@ Plug 'honza/vim-snippets'
 "Plug 'vim-scripts/minibufexpl.vim'
 Plug 'fholgado/minibufexpl.vim'
 "Plug 'weynhamz/vim-plugin-minibufexpl'
+Plug 'Glench/Vim-Jinja2-Syntax'
 
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'mileszs/ack.vim'
 
 Plug 'google/vim-maktaba'
 
@@ -193,6 +199,7 @@ Plug 'lpenz/vim-codefmt-haskell'
 Plug 'wakatime/vim-wakatime'
 
 Plug 'martinda/Jenkinsfile-vim-syntax'
+Plug 'nathanaelkane/vim-indent-guides'
 
 se t_Co=256
 set background=dark
@@ -234,10 +241,29 @@ let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_toc_autofit = 1
 
 let g:deoplete#enable_at_startup = 1
+let g:indent_guides_enable_on_vim_startup = 1
+
 let g:pymode_python = 'python3'
 let g:pymode_indent = 0
 let g:pymode_lint_on_fly = 1
 let g:python_pep8_indent_multiline_string = -2
+let g:jedi#completions_enabled = 0
+
+" [Buffers] Jump to the existing window if possible
+let g:fzf_buffers_jump = 1
+" [[B]Commits] Customize the options used by 'git log':
+let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+" [Tags] Command to generate tags file
+let g:fzf_tags_command = 'ctags -R'
+" [Commands] --expect expression for directly executing the command
+let g:fzf_commands_expect = 'alt-enter,ctrl-x'
+
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
+cnoreabbrev Ack Ack!
+nnoremap <leader>a :Ack!<Space>
 
 set conceallevel=2
 
@@ -267,17 +293,22 @@ inoremap <expr> <PageUp>   pumvisible() ? "\<C-e>\<PageUp>"   : "\<PageUp>"
 
 nnoremap <leader>ff :FZF<CR>
 nnoremap <leader>mc :call ToggleConceal()<CR>
-nnoremap <leader>mt :Toch<CR>
-"
+
 " Mapping selecting mappings
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
 
+" Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
 " vim-go mappings
 map <C-n> :cnext<CR>
 map <C-m> :cprevious<CR>
-nnoremap <leader>a :cclose<CR>
+"nnoremap <leader>a :cclose<CR>
 
 autocmd FileType go nmap <leader>r <Plug>(go-run)
 autocmd FileType go nmap <leader>t <Plug>(go-test)

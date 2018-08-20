@@ -168,7 +168,6 @@ myLogHook = do
 
 myStartupHook = do
         spawn "taffybar 0"
-        spawn "taffybar 1"
         spawn "nm-applet"
         spawn "syndaemon -i 0.75 -d -t -K"
         spawn "pa-applet"
