@@ -12,6 +12,7 @@ import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops        (ewmh)
 import           XMonad.Hooks.ManageDocks         
 import           XMonad.Hooks.ManageHelpers
+import           XMonad.Hooks.SetWMName
 
 import           XMonad.Prompt
 import           XMonad.Prompt.Shell
@@ -175,6 +176,7 @@ myStartupHook = do
         spawn "xsetroot -cursor_name left_ptr"
         spawn xautolock
         return ()
+        setWMName "LG3D"
         checkKeymap myConfig
             (easyKeyList myConfig)
     where
