@@ -135,6 +135,7 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-obsession'
 
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'python-mode/python-mode', { 'branch': 'develop' }
@@ -184,6 +185,7 @@ Plug 'flazz/vim-colorschemes'
 
 Plug 'godlygeek/tabular'
 Plug 'gabrielelana/vim-markdown', { 'for': 'markdown' }
+Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'metakirby5/codi.vim'
 
 Plug 'kana/vim-textobj-user'
@@ -202,6 +204,9 @@ Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'nathanaelkane/vim-indent-guides'
 
 Plug 'quabug/vim-gdscript'
+
+Plug 'Shougo/vimproc.vim', {'do': 'make'}
+Plug 'idanarye/vim-vebugger'
 
 se t_Co=256
 set background=dark
@@ -259,6 +264,9 @@ let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %
 let g:fzf_tags_command = 'ctags -R'
 " [Commands] --expect expression for directly executing the command
 let g:fzf_commands_expect = 'alt-enter,ctrl-x'
+
+let vim_markdown_preview_toggle=1
+let vim_markdown_preview_github=1
 
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
