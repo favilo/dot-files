@@ -67,6 +67,8 @@ else
 fi
 unset color_prompt force_color_prompt
 
+PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
+
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
