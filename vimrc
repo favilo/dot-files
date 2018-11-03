@@ -137,7 +137,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-obsession'
 
-Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'python-mode/python-mode', { 'branch': 'develop' }
 Plug 'davidhalter/jedi-vim'
 Plug 'zchee/deoplete-jedi'
@@ -196,6 +195,8 @@ Plug 'bkad/CamelCaseMotion'
 Plug 'reedes/vim-pencil'
 Plug 'google/vim-codefmt'
 Plug 'lpenz/vim-codefmt-haskell'
+Plug 'syml/rust-codefmt'
+Plug 'rust-lang/rust.vim'
 "Plug 'artur-shaik/vim-javacomplete2'
 
 Plug 'wakatime/vim-wakatime'
@@ -225,6 +226,7 @@ call glaive#Install()
 
 augroup autoformat_settings
   autocmd FileType bzl AutoFormatBuffer buildifier
+  autocmd FileType python AutoFormatBuffer yapf
 augroup END
 
 set t_Co=256
@@ -253,8 +255,9 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:pymode_python = 'python3'
 let g:pymode_indent = 0
 let g:pymode_lint_on_fly = 1
-let g:python_pep8_indent_multiline_string = -2
 let g:jedi#completions_enabled = 0
+
+let g:rustfmt_autosave = 1
 
 " [Buffers] Jump to the existing window if possible
 let g:fzf_buffers_jump = 1
@@ -280,6 +283,7 @@ set conceallevel=2
 noremap <leader>ve :edit $HOME/.vimrc<CR>
 noremap <leader>vs :source $HOME/.vimrc<CR>
 noremap <leader>fl :FormatLines<CR>
+noremap <leader>fc :FormatCode<CR>
 
 noremap <leader>y "+y
 
