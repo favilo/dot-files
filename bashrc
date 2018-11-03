@@ -60,10 +60,10 @@ if [ "$color_prompt" = yes ]; then
     if [[ -e ~/.short.pwd.py ]]; then
         PROMPT_COMMAND='PS1="$(python ~/.short.pwd.py)"'
     else
-	PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+	PS1='${debian_chroot:+($debian_chroot)}\D{%F %R} \[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\n\$ '
     fi
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\D{%F %R} \u@\h:\w\n\$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -100,7 +100,6 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-alias vim='nvim'
 alias tmux='TERM=xterm-256color tmux -2'
 alias ta='TERM=xterm-256color tmux -2 attach-session'
 
