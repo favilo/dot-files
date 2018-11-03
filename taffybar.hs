@@ -13,7 +13,7 @@ import           System.Taffybar.TaffyPager
 import           System.Taffybar.Widgets.PollingBar
 import           System.Taffybar.Widgets.PollingGraph
 
-import           System.Information.CPU
+import           System.Information.CPU2
 import           System.Information.Memory
 
 import           Text.Read                                (readMaybe)
@@ -22,9 +22,17 @@ memCallback = do
   mi <- parseMeminfo
   return [memoryUsedRatio mi]
 
-cpuCallback = do
-  (userLoad, systemLoad, totalLoad) <- cpuLoad
-  return [totalLoad, systemLoad]
+tempCallback :: Fractional b => [String] -> IO [b]
+tempCallback cpu = do
+  [a] <- getCPUTemp cpu
+  return $ [(fromIntegral a) / 100.0]
+
+colorFuncTemp :: (Fractional a, Num t, Ord a) => a -> (a, a, t)
+colorFuncTemp pct
+    | pct <= 0.55 = (0, 1 - pct, 0)
+    | pct < 0.70 = (pct, 1 - pct, 0)
+    | pct < 1 = (pct, 0, 0)
+    | otherwise = (1, 1, 1)
 
 main = do
   args <- getArgs
@@ -36,19 +44,24 @@ main = do
                                                       ]
                                   , graphLabel = Just "cpu"
                                   }
+      tempCfg = defaultGraphConfig { 
+                                     graphDataColors = [(1, 0, 0, 1)]
+                                   , graphLabel = Just "temp"
+                                   }
       chosenMonitorNumber = fromMaybe 0 $ readMaybe $ head args
   let clock = textClockNew Nothing "%a %b %_d %H:%M" 1
       pager = taffyPagerNew defaultPagerConfig
       note = notifyAreaNew defaultNotificationConfig
       mem = pollingGraphNew memCfg 1 memCallback
-      cpu = pollingGraphNew cpuCfg 0.5 cpuCallback
+      cpu = pollingGraphNew cpuCfg 0.5 $ getCPULoad "cpu"
+      temp = pollingGraphNew tempCfg 2 $ tempCallback ["cpu0"]
       tray = systrayNew
       mpris = mprisNew defaultMPRISConfig
       battery = batteryBarNew defaultBatteryConfig 60
       myTaffybarConfig = defaultTaffybarConfig {
           barHeight = 24
         , startWidgets = [ pager, note ]
-        , endWidgets = [ clock, tray, battery, mem, cpu, mpris ]
+        , endWidgets = [ clock, tray, battery, mem, cpu, temp, mpris ]
         , monitorNumber = chosenMonitorNumber
       }
   defaultTaffybar myTaffybarConfig

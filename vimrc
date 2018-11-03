@@ -86,6 +86,7 @@ let g:miniBufExplMapCTabSwitchBufs = 1
 let g:miniBufExplModSelTarget = 1 
 let g:miniBufExplMaxSize = 1
 let g:miniBufExplMaxHeight = 1
+let g:go_version_warning = 0
 
 noremap <C-J>   <C-W>j
 noremap <C-K>   <C-W>k
