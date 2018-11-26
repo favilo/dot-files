@@ -173,6 +173,7 @@ myStartupHook = do
         spawn "syndaemon -i 0.75 -d -t -K"
         spawn "pa-applet"
         spawn "xsetroot -cursor_name left_ptr"
+        spawn "rescuetime"
         spawn xautolock
         return ()
         setWMName "LG3D"

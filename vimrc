@@ -198,7 +198,9 @@ Plug 'google/vim-codefmt'
 Plug 'lpenz/vim-codefmt-haskell'
 Plug 'syml/rust-codefmt'
 Plug 'rust-lang/rust.vim'
+Plug 'racer-rust/vim-racer'
 "Plug 'artur-shaik/vim-javacomplete2'
+Plug 'vim-scripts/Conque-GDB'
 
 Plug 'wakatime/vim-wakatime'
 
@@ -325,11 +327,17 @@ map <C-n> :cnext<CR>
 map <C-m> :cprevious<CR>
 "nnoremap <leader>a :cclose<CR>
 
-autocmd FileType go nmap <leader>r <Plug>(go-run)
-autocmd FileType go nmap <leader>t <Plug>(go-test)
-autocmd FileType go nmap <leader>c <Plug>(go-coverage-toggle)
-autocmd FileType go nmap <Leader>i <Plug>(go-info)
+" autocmd FileType go nmap <leader>r <Plug>(go-run)
+" autocmd FileType go nmap <leader>t <Plug>(go-test)
+" autocmd FileType go nmap <leader>c <Plug>(go-coverage-toggle)
+" autocmd FileType go nmap <Leader>i <Plug>(go-info)
 
+autocmd FileType rust nmap <leader>gd <Plug>(rust-def)
+autocmd FileType rust nmap <leader>gs <Plug>(rust-def-split)
+autocmd FileType rust nmap <leader>gx <Plug>(rust-def-vertical)
+autocmd FileType rust nmap <leader>gg <Plug>(rust-doc)
+
+tnoremap <Esc> <C-\><C-n>
 
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
