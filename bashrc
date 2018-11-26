@@ -231,3 +231,4 @@ source /home/klah/git/games/emsdk/emsdk_env.sh
 export ANDROID_NDK_ROOT=/home/klah/Android/Sdk/ndk-bundle/
 export ANDROID_HOME=/home/klah/Android/Sdk/
 . /home/klah/miniconda3/etc/profile.d/conda.sh
+export PATH="$HOME/.cargo/bin:$PATH"
