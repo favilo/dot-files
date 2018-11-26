@@ -135,6 +135,7 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-obsession'
 
 Plug 'python-mode/python-mode', { 'branch': 'develop' }
@@ -144,7 +145,8 @@ Plug 'ervandew/supertab'
 
 Plug 'vim-pandoc/vim-pandoc'
 
-Plug 'chiphogg/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 Plug 'fatih/vim-go'
 Plug 'AndrewRadev/splitjoin.vim'
@@ -226,7 +228,7 @@ call glaive#Install()
 
 augroup autoformat_settings
   autocmd FileType bzl AutoFormatBuffer buildifier
-  autocmd FileType python AutoFormatBuffer yapf
+  " autocmd FileType python AutoFormatBuffer yapf
 augroup END
 
 set t_Co=256
@@ -236,7 +238,29 @@ let g:ycm_filetype_specific_completion_to_disable = {'cpp': 1}
 let g:ycm_python_binary_path = '/usr/bin/python3'
 
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#default#section_truncate_width = {
+    \ 'b': 88,
+    \ 'x': 88,
+    \ 'y': 95,
+    \ 'z': 45,
+    \ 'warning': 80,
+    \ 'error': 80,
+    \ }
+
+" let g:airline_section_b = '%{FugitiveStatusline()}'
+let g:airline_section_z = '%p%% %l:%c'
+let g:airline_section_x = ''
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+" let g:airline#extensions#tabline#enabled = 1
 
 let g:EclimCompletionMethod = 'omnifunc'
 
