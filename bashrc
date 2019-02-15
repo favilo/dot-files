@@ -144,7 +144,7 @@ export PATH=$PATH:~/bin:~/.local/bin
 export PATH=$PATH:/opt/android-studio/bin
 export PATH=$JAVA_HOME/jre/bin:$PATH
 export PATH=$PATH:/usr/lib/go-1.8/bin
-export PATH="$PATH:$HOME/istio-0.6.0/bin"
+export PATH="$PATH:$HOME/istio-1.0.4/bin"
 export PATH="$PATH:/usr/local/cuda-9.1/bin"
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
