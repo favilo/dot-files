@@ -134,12 +134,16 @@ Plug 'majutsushi/tagbar'
 
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-vinegar'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-speeddating'  " allow <C-A> to work with dates
+Plug 'tpope/vim-surround'  " cs\"'
+Plug 'tpope/vim-repeat'  " add . completion to tpope vim commands
+Plug 'tpope/vim-fugitive'  " git bindings
+Plug 'tpope/vim-rhubarb'  " git-hub command :Gbrowse
+Plug 'tpope/vim-obsession'  " mksession automatically
+Plug 'tpope/vim-dadbod'  " for databases, may remove
 
 Plug 'python-mode/python-mode', { 'branch': 'develop' }
+Plug 'jaredly/vim-debug'
 Plug 'davidhalter/jedi-vim'
 Plug 'zchee/deoplete-jedi'
 Plug 'ervandew/supertab'
@@ -198,10 +202,9 @@ Plug 'bkad/CamelCaseMotion'
 Plug 'reedes/vim-pencil'
 Plug 'google/vim-codefmt'
 Plug 'lpenz/vim-codefmt-haskell'
-Plug 'syml/rust-codefmt'
 Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
-"Plug 'artur-shaik/vim-javacomplete2'
+" Plug 'artur-shaik/vim-javacomplete2'
 Plug 'vim-scripts/Conque-GDB'
 
 Plug 'wakatime/vim-wakatime'
@@ -229,6 +232,7 @@ endif
 call plug#end()
 call glaive#Install()
 
+
 augroup autoformat_settings
   autocmd FileType bzl AutoFormatBuffer buildifier
   " autocmd FileType python AutoFormatBuffer yapf
@@ -238,7 +242,7 @@ set t_Co=256
 colorscheme grb256
 
 let g:ycm_filetype_specific_completion_to_disable = {'cpp': 1}
-let g:ycm_python_binary_path = '/usr/bin/python3'
+" let g:ycm_python_binary_path = '/usr/bin/python3'
 
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#default#section_truncate_width = {
@@ -279,10 +283,18 @@ let g:vim_markdown_toc_autofit = 1
 let g:deoplete#enable_at_startup = 1
 let g:indent_guides_enable_on_vim_startup = 1
 
-let g:pymode_python = 'python3'
+let g:pymode_run = 1
+let g:pymode_run_bind = '<leader>r'
+let g:pymode_breakpoint = 1
+let g:pymode_breakpoint_bind = '<leader>b'
+let g:pymode_python = 'python'
 let g:pymode_indent = 0
 let g:pymode_lint_on_fly = 1
 let g:jedi#completions_enabled = 0
+let g:pymode_rope_autoimport=1
+" let g:pymode_rope_rename_bind = '<leader>r'
+
+let g:python_host_prog = 'python'
 
 let g:rustfmt_autosave = 1
 
@@ -309,6 +321,11 @@ set conceallevel=2
 
 noremap <leader>ve :edit $HOME/.vimrc<CR>
 noremap <leader>vs :source $HOME/.vimrc<CR>
+augroup rustfmt
+  autocmd Filetype rust noremap <leader>fl :RustFmtRange<CR>
+  autocmd Filetype rust noremap <leader>fc :RustFmt<CR>
+augroup END
+
 noremap <leader>fl :FormatLines<CR>
 noremap <leader>fc :FormatCode<CR>
 
@@ -320,8 +337,8 @@ nnoremap tn :tabnew<CR>
 nnoremap tt :tabedit<Space>
 
 " noremap <leader>e :CtrlP<CR>
-noremap <C-b> :TagbarToggle<CR>
-noremap <C-t> :NERDTreeToggle<CR>
+noremap <C-t> :TagbarToggle<CR>
+noremap <C-b> :NERDTreeToggle<CR>
 
 inoremap <F1> <nop>
 nnoremap <F1> <nop>

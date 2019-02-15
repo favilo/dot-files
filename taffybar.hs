@@ -51,7 +51,7 @@ main = do
       chosenMonitorNumber = fromMaybe 0 $ readMaybe $ head args
   let clock = textClockNew Nothing "%a %b %_d %H:%M" 1
       pager = taffyPagerNew defaultPagerConfig
-      note = notifyAreaNew defaultNotificationConfig
+      note = notifyAreaNew defaultNotificationConfig { notificationMaxLength = 50 }
       mem = pollingGraphNew memCfg 1 memCallback
       cpu = pollingGraphNew cpuCfg 0.5 $ getCPULoad "cpu"
       temp = pollingGraphNew tempCfg 2 $ tempCallback ["cpu0"]
