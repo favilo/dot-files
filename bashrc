@@ -221,3 +221,4 @@ fi
 export ANDROID_NDK_ROOT=$HOME/Android/Sdk/ndk-bundle/
 export ANDROID_HOME=$HOME/Android/Sdk/
 export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.cabal/bin:$PATH"
