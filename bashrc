@@ -56,14 +56,16 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+source /etc/bash_completion.d/git-prompt
+
 if [ "$color_prompt" = yes ]; then
     if [[ -e ~/.short.pwd.py ]]; then
         PROMPT_COMMAND='PS1="$(python ~/.short.pwd.py)"'
     else
-	PS1='${debian_chroot:+($debian_chroot)}\D{%F %R} \[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\n\$ '
+	PS1='${debian_chroot:+($debian_chroot)}\D{%F %R} \[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\n\[\033[32m\]$(__git_ps1 "(%s)")\[\033[00m\] \$ '
     fi
 else
-    PS1='${debian_chroot:+($debian_chroot)}\D{%F %R} \u@\h:\w\n\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\D{%F %R} \u@\h:\w\n$(__git_ps1 "(%s)") \$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -135,6 +137,7 @@ bind '"\e[B": history-search-forward'
 bind '"\eOC":forward-word'
 bind '"\eOD":backward-word'
 
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 export GOPATH=$HOME/go
 export LGOPATH=$HOME/lgo
@@ -146,6 +149,7 @@ export PATH=$JAVA_HOME/jre/bin:$PATH
 export PATH=$PATH:/usr/lib/go-1.8/bin
 export PATH="$PATH:$HOME/istio-1.0.4/bin"
 export PATH="$PATH:/usr/local/cuda-9.1/bin"
+export PATH="$PATH:$HOME/.cabal/bin/"
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -186,27 +190,9 @@ codi() {
 }
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f /home/klah/google-cloud-sdk/path.bash.inc ]; then
-  source '/home/klah/google-cloud-sdk/path.bash.inc'
+if [ -f $HOME/google-cloud-sdk/path.bash.inc ]; then
+  source '$HOME/google-cloud-sdk/path.bash.inc'
 fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f /home/klah/google-cloud-sdk/completion.bash.inc ]; then
-  source '/home/klah/google-cloud-sdk/completion.bash.inc'
-fi
-
-gaiafromemail() {
- command /home/build/static/projects/gaia/gaiaclient/GaiaClient.par --gaia_instance=prod LookupUser $1 | grep UserID
-}
-
-gaiafromdevemail() {
- command /home/build/static/projects/gaia/gaiaclient/GaiaClient.par --gaia_instance=test LookupUser $1 | grep UserID
-}
-
-
-emailfromgaia() {
- command /home/build/static/projects/gaia/gaiaclient/GaiaClient.par --gaia_instance=prod LookupUserByID $1 | grep "^Email\:"
-}
 
 PSH_VLC=vlc
 vlc2mp3 () 
@@ -226,9 +212,12 @@ if [[ -d ~/.profile.d ]]; then
 		. "$f"
 	done
 fi
+if [[ -d ~/.bash_completion.d ]]; then
+	for f in ~/.bash_completion.d/*.bash; do
+		. "$f"
+	done
+fi
 
-source /home/klah/git/games/emsdk/emsdk_env.sh
-export ANDROID_NDK_ROOT=/home/klah/Android/Sdk/ndk-bundle/
-export ANDROID_HOME=/home/klah/Android/Sdk/
-. /home/klah/miniconda3/etc/profile.d/conda.sh
+export ANDROID_NDK_ROOT=$HOME/Android/Sdk/ndk-bundle/
+export ANDROID_HOME=$HOME/Android/Sdk/
 export PATH="$HOME/.cargo/bin:$PATH"

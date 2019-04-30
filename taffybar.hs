@@ -51,17 +51,17 @@ main = do
       chosenMonitorNumber = fromMaybe 0 $ readMaybe $ head args
   let clock = textClockNew Nothing "%a %b %_d %H:%M" 1
       pager = taffyPagerNew defaultPagerConfig
-      note = notifyAreaNew defaultNotificationConfig { notificationMaxLength = 50 }
+      note = notifyAreaNew defaultNotificationConfig { notificationMaxLength = 250 }
       mem = pollingGraphNew memCfg 1 memCallback
       cpu = pollingGraphNew cpuCfg 0.5 $ getCPULoad "cpu"
-      temp = pollingGraphNew tempCfg 2 $ tempCallback ["cpu0"]
+      -- temp = pollingGraphNew tempCfg 2 $ tempCallback ["cpu0"]
       tray = systrayNew
       mpris = mprisNew defaultMPRISConfig
       battery = batteryBarNew defaultBatteryConfig 60
       myTaffybarConfig = defaultTaffybarConfig {
           barHeight = 24
         , startWidgets = [ pager, note ]
-        , endWidgets = [ clock, tray, battery, mem, cpu, temp, mpris ]
+        , endWidgets = [ clock, tray, battery, mem, cpu, mpris ]
         , monitorNumber = chosenMonitorNumber
       }
   defaultTaffybar myTaffybarConfig

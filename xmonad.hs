@@ -42,7 +42,7 @@ main = xmonad $ ewmh $ pagerHints $ myConfig
 
 myConfig = docks $ def
     { modMask = mod4Mask
-    , terminal = "gnome-terminal"
+    , terminal = "alacritty"
     , focusFollowsMouse = True
 
     , manageHook = myManageHook
