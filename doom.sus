@@ -1,0 +1,6 @@
+card doom-emacs {
+     into ~
+     outof doom-emacs
+
+     .doom.d
+}
