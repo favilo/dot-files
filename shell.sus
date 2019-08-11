@@ -1,0 +1,13 @@
+card shell {
+  alternatives $(HOST) shared
+  alternatives $(USER) shared
+
+  into ~
+  outof shell
+
+  {
+    outof bash
+    .bashrc
+    .bash_profile
+  }
+}

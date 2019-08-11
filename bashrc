@@ -96,6 +96,11 @@ if [ -f ~/.config/exercism/exercism_completion.bash ]; then
   . ~/.config/exercism/exercism_completion.bash
 fi
 
+# Undiscract me!
+if ! [ -z "$BASH_VERSION" -o -z "$PS1" -o -n "$last_command_started_cache" ]; then
+  . /usr/share/undistract-me/long-running.bash
+  notify_when_long_running_commands_finish_install
+fi
 
 # some more ls aliases
 alias ll='ls -alF'

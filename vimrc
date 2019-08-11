@@ -3,6 +3,9 @@
 set nocompatible
 filetype off
 
+if &shell =~# 'fish$'
+    set shell=bash
+endif
 
 behave xterm
 set viminfo='20,\"500,%    " ' Maximum number of previously edited files for which the marks
@@ -146,7 +149,9 @@ Plug 'python-mode/python-mode', { 'branch': 'develop' }
 Plug 'jaredly/vim-debug'
 Plug 'davidhalter/jedi-vim'
 Plug 'zchee/deoplete-jedi'
+Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 Plug 'ervandew/supertab'
+Plug 'python/black'
 
 Plug 'vim-pandoc/vim-pandoc'
 
@@ -216,6 +221,8 @@ Plug 'quabug/vim-gdscript'
 
 Plug 'Shougo/vimproc.vim', {'do': 'make'}
 Plug 'idanarye/vim-vebugger'
+
+Plug 'dag/vim-fish'
 
 se t_Co=256
 set background=dark
@@ -290,9 +297,12 @@ let g:pymode_breakpoint_bind = '<leader>b'
 let g:pymode_python = 'python'
 let g:pymode_indent = 0
 let g:pymode_lint_on_fly = 1
+let g:pymode_lint_ignore = ["E501",]
 let g:jedi#completions_enabled = 0
 let g:pymode_rope_autoimport=1
 " let g:pymode_rope_rename_bind = '<leader>r'
+"
+let g:black_linelength = 79
 
 let g:python_host_prog = 'python'
 
@@ -324,6 +334,11 @@ noremap <leader>vs :source $HOME/.vimrc<CR>
 augroup rustfmt
   autocmd Filetype rust noremap <leader>fl :RustFmtRange<CR>
   autocmd Filetype rust noremap <leader>fc :RustFmt<CR>
+augroup END
+
+augroup pythonfmt
+  autocmd Filetype python noremap <leader>fl :FormatLines<CR>
+  autocmd Filetype python noremap <leader>fc :FormatCode<CR>
 augroup END
 
 noremap <leader>fl :FormatLines<CR>
