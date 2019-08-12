@@ -1,6 +1,5 @@
 card shell {
   alternatives $(HOST) shared
-  alternatives $(USER) shared
 
   into ~
   outof shell
@@ -9,5 +8,10 @@ card shell {
     outof bash
     .bashrc
     .bash_profile
+    .profile.d
+  }
+  {
+    outof fish
+    .config/fish
   }
 }

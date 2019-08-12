@@ -1,0 +1,1 @@
+/home/favilo/.fzf/shell/key-bindings.fish
