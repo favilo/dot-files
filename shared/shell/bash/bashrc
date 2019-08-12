@@ -134,6 +134,7 @@ PAGER=less
 
 
 alias hex='printf "%x\n"'
+alias enw='emacs -nw'
 
 
 
@@ -168,7 +169,7 @@ export P4MERGE='bash -c "chmod u+w \$1 ; meld \$2 \$1 \$3 ; cp \$1 \$4" padding-
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export EDITOR=vim
+export EDITOR=emacs -nw
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 

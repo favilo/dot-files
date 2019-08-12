@@ -25,6 +25,8 @@ alias djstaging "_djsetmod staging"
 alias djprod "_djsetmod prod"
 alias djtest "_djsetmod test"
 alias djlocal "_djsetmod local"
+alias enw "emacs -nw"
+alias vim "emacs -nw"
 
 if status --is-interactive
   abbr -a ta tmux attach
