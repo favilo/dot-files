@@ -1,10 +1,14 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR EDITOR:vim
-SETUVAR SIMONHOME:/home/favilo/git/simon
+SETUVAR --export FZF_CTRL_T_COMMAND:ag\x20\x2dg\x20\x22\x22
+SETUVAR --export FZF_DEFAULT_COMMAND:ag\x20\x2dg\x20\x22\x22
+SETUVAR --export SIMONHOME:/home/favilo/git/simon
+SETUVAR --export SIMONWEBHOME:/home/favilo/git/simon/web
 SETUVAR __fish_classic_git_prompt_initialized:\x1d
 SETUVAR __fish_init_2_39_8:\x1d
 SETUVAR __fish_init_2_3_0:\x1d
+SETUVAR __fish_init_3_x:\x1d
 SETUVAR _fish_abbr_gco:git\x20checkout
 SETUVAR _fish_abbr_gpr:git\x20pull\x20\x2d\x2drebase
 SETUVAR _fish_abbr_ta:tmux\x20attach

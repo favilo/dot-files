@@ -14,4 +14,8 @@
 
 (require 'godot-gdscript)
 (add-to-list 'auto-mode-alist '("\\.tscn\\'" . toml-mode))
+(add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
 (setq gdscript-tabs-mode t)
+
+(def-package! realgud
+  :commands realgud:pdb)

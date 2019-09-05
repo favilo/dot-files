@@ -1,5 +1,7 @@
-set -U SIMONHOME "$HOME/git/simon"
-set -u SIMONWEBHOME "$SIMONHOME/web"
+set -Ux SIMONHOME "$HOME/git/simon"
+set -Ux SIMONWEBHOME "$SIMONHOME/web"
+set -x FZF_DEFAULT_COMMAND 'ag -g ""'
+set -x FZF_CTRL_T_COMMAND "$FZF_DEFAULT_COMMAND"
 alias cdw "cd $SIMONWEBHOME"
 alias cds "cd $SIMONHOME"
 
@@ -17,7 +19,35 @@ function _djsetmod
   end
   echo "Running in $argv[1]: $argv[2..-1]"
   set -lx DJANGO_SETTINGS_MODULE "settings.$argv[1]"
-  eval "$argv[2..-1]"
+  echo (string escape -- $argv[2..-1])
+  eval (string escape -- $argv[2..-1])
+end
+
+function pyunit
+  if test -z "$argv[1]"
+  then
+    echo >&2 "You must pass a file path. E.g. simon/tests/pipes/jobs/..."
+    return 1
+  end
+
+  # Prevent leftovers from causing false positives, etc.
+  # Ignore all compiled 3rd party package files
+  find . -name '*.pyc'  -not -path "./.tox/*" -delete
+
+  set -lx DJANGO_SETTINGS_MODULE settings.test
+  py.test -rw -p no:django "$argv"
+end
+
+# Integration tests
+function pyintegration
+  if test -z "$argv[1]"
+  then
+    echo >&2 "You must pass a file path. E.g. simon/tests/integration/pipes/jobs/..."
+    return 1
+  end
+
+  set -lx DJANGO_SETTINGS_MODULE settings.prod
+  python -m unittest "$argv"
 end
 
 alias djdev "_djsetmod dev"
@@ -33,4 +63,3 @@ if status --is-interactive
   abbr -a gco git checkout
   abbr -a gpr git pull --rebase
 end
-
