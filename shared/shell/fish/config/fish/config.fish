@@ -63,3 +63,12 @@ if status --is-interactive
   abbr -a gco git checkout
   abbr -a gpr git pull --rebase
 end
+
+
+if test -d "$HOME/google-cloud-sdk"
+    # The next line updates PATH for the Google Cloud SDK.
+    source "$HOME/google-cloud-sdk/path.fish.inc"
+
+    # The next line enables shell command completion for gcloud.
+    # source "$HOME/google-cloud-sdk/completion.fish.inc"
+end
