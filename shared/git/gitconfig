@@ -10,7 +10,7 @@
 [mergetool "vimdiff"]
 	cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [core]
-	editor = nvim
+	editor = emacs -nw
 [color]
     ui = auto
 [color "branch"]
