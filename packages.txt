@@ -1,0 +1,9 @@
+haskell-platform
+haskell-stack
+aptitude
+git
+xmonad
+taffybar
+tmux
+curl
+emacs25

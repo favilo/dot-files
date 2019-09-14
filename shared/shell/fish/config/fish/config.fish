@@ -63,3 +63,5 @@ if status --is-interactive
   abbr -a gco git checkout
   abbr -a gpr git pull --rebase
 end
+
+set -gx PATH $PATH ~/.cabal/bin
