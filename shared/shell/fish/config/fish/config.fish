@@ -73,3 +73,4 @@ if test -d "$HOME/google-cloud-sdk"
     # source "$HOME/google-cloud-sdk/completion.fish.inc"
 
 set -gx PATH $PATH ~/.cabal/bin
+set -gx PATH ~/.local/bin $PATH
