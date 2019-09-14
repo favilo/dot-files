@@ -69,4 +69,7 @@ card xmonad {
 
   .xmonad/xmonad.hs
   .config/taffybar/taffybar.hs
+  .config/taffybar/my-taffybar.cabal
+  .config/taffybar/stack.yaml
+  .local/bin/taffybar.sh
 }

@@ -71,4 +71,5 @@ if test -d "$HOME/google-cloud-sdk"
 
     # The next line enables shell command completion for gcloud.
     # source "$HOME/google-cloud-sdk/completion.fish.inc"
-end
+
+set -gx PATH $PATH ~/.cabal/bin
