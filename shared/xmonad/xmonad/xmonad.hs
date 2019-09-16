@@ -1,40 +1,29 @@
 import           XMonad
 import           XMonad.Config.Desktop
 
-import           XMonad.Layout
-import           XMonad.Layout.Gaps
 import           XMonad.Layout.Grid
 import           XMonad.Layout.Named
 import           XMonad.Layout.NoBorders
 
 import           XMonad.Hooks.DynamicHooks
-import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops      ( ewmh )
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.SetWMName
 
-import           XMonad.Prompt
 import           XMonad.Prompt.Shell
-import           XMonad.Prompt.XMonad
 
 import           XMonad.Util.Brightness
 import           XMonad.Util.EZConfig
-import           XMonad.Util.Run                ( spawnPipe )
 
 import           Graphics.X11.ExtraTypes.XF86
 
-import           DBus.Client                   as D
-
 import           System.Exit
-import           System.IO
 
 import           System.Taffybar.Support.PagerHints
                                                 ( pagerHints )
 
-import           Control.Applicative
 import           Control.Concurrent
-import           Control.Exception             as E
 
 import           Data.List
 import qualified Data.Map                      as M
@@ -55,9 +44,9 @@ myConfig =
                           }
     `additionalKeysP` (easyKeyList myConfig)
 
-toggleStrutsKey XConfig { modMask = modm } = (modm, xK_b)
+-- toggleStrutsKey XConfig { modMask = modm } = (modm, xK_b)
 
-easyKeys conf = mkKeymap conf $ easyKeyList conf
+-- easyKeys conf = mkKeymap conf $ easyKeyList conf
 
 easyKeyList conf =
     -- launch a terminal
@@ -209,11 +198,12 @@ myLogHook = do
   return ()
 
 myStartupHook = do
-  spawn "taffybar"
+  spawn "taffybar.sh"
   spawn "nm-applet"
   spawn "syndaemon -i 0.75 -d -t -K"
   spawn "pa-applet"
-  spawn "xsetroot -cursor_name left_ptr"
+  spawn "blueman-applet"
+  spawn "xsetroot -cursor_name left_ptr -solid black"
   spawn "rescuetime"
   spawn xautolock
   return ()
@@ -247,7 +237,7 @@ manageWindows =
   name       = stringProperty "WM_NAME"
   windowRole = stringProperty "WM_WINDOW_ROLE"
   myIgnores  = ["desktop", "desktop_window", "xfce4-panel"]
-  myAlt3S    = ["Amule", "Transmission-gtk"]
+  -- myAlt3S    = ["Amule", "Transmission-gtk"]
   myFloatCC =
     [ "MPlayer"
     , "mplayer2"
@@ -297,7 +287,7 @@ manageWindows =
   myFocusDC   = ["Event Tester", "Notify-osd"]
   -- Chrome Secure Shell
   myUnfloatCC = ["Secure Shell"]
-  keepMaster c = assertSlave <+> assertMaster   where
-    assertSlave  = fmap (/= c) className --> doF W.swapDown
-    assertMaster = className =? c --> doF W.swapMaster
-  unfloat = ask >>= doF . W.sink
+  -- keepMaster c = assertSlave <+> assertMaster   where
+  --   assertSlave  = fmap (/= c) className --> doF W.swapDown
+  --   assertMaster = className =? c --> doF W.swapMaster
+  unfloat     = ask >>= doF . W.sink

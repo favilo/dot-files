@@ -50,8 +50,8 @@ main = do
   let
     clock = textClockNew Nothing "%a %b %_d %H:%M" 1
     -- pager = taffyPagerNew defaultPagerConfig
-    note =
-      notifyAreaNew defaultNotificationConfig { notificationMaxLength = 250 }
+    -- note =
+    --   notifyAreaNew defaultNotificationConfig { notificationMaxLength = 250 }
     mem         = pollingGraphNew memCfg 1 memCallback
     cpu         = pollingGraphNew cpuCfg 0.5 $ getCPULoad "cpu"
     tray        = getHost True >>= sniTrayNewFromHost
@@ -78,6 +78,6 @@ main = do
     myTaffybarConfig = defaultSimpleTaffyConfig
       { barHeight    = 48
       , startWidgets = workspaces : map (>>= buildContentsBox) [layout, windows]
-      , endWidgets   = [clock, tray, battery, batteryIcon, mem, cpu, note]
+      , endWidgets   = [clock, tray, battery, batteryIcon, mem, cpu]
       }
   startTaffybar $ withLogServer $ toTaffyConfig myTaffybarConfig

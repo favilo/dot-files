@@ -68,6 +68,10 @@ card xmonad {
   outof xmonad
 
   .xmonad/xmonad.hs
+  .xmonad/build
+  .xmonad/lib
+  .xmonad/stack.yaml
+  .xmonad/my-xmonad.cabal
   .config/taffybar/taffybar.hs
   .config/taffybar/my-taffybar.cabal
   .config/taffybar/stack.yaml
