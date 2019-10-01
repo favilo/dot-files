@@ -75,3 +75,6 @@ end
 
 set -gx PATH $PATH ~/.cabal/bin
 set -gx PATH ~/.local/bin $PATH
+
+set -gx ANDROID_NDK_ROOT ~/Android/Sdk/ndk/20.0.5594570
+set -gx ANDROID_HOME ~/Android/Sdk
