@@ -50,10 +50,8 @@ main = do
   let
     clock = textClockNew Nothing "%a %b %_d %H:%M" 1
     -- pager = taffyPagerNew defaultPagerConfig
-    -- note =
-    --   notifyAreaNew defaultNotificationConfig { notificationMaxLength = 250 }
-    mem         = pollingGraphNew memCfg 1 memCallback
-    cpu         = pollingGraphNew cpuCfg 0.5 $ getCPULoad "cpu"
+    mem         = pollingGraphNew memCfg 2 memCallback
+    cpu         = pollingGraphNew cpuCfg 2 $ getCPULoad "cpu"
     tray        = getHost True >>= sniTrayNewFromHost
     battery     = textBatteryNew "$percentage$%"
     batteryIcon = batteryIconNew
