@@ -2,13 +2,13 @@
 	email = favilo@gmail.com
 	name = Kevin Oberlies
 [merge]
-	tool = vimdiff
+	tool = ediff
 [mergetool]
     prompt = true
 	conflictstyle = diff3
-	path = nvim
+	path = emacs -nw
 [mergetool "vimdiff"]
-	cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+	cmd = vim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [core]
 	editor = emacs -nw
 [color]

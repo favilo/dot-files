@@ -1,14 +1,17 @@
 import           XMonad
 import           XMonad.Config.Desktop
 
+import           XMonad.Layout.Fullscreen
 import           XMonad.Layout.Grid
 import           XMonad.Layout.Named
 import           XMonad.Layout.NoBorders
 
 import           XMonad.Hooks.DynamicHooks
+import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops      ( ewmh )
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
+import           XMonad.Hooks.Minimize
 import           XMonad.Hooks.SetWMName
 
 import           XMonad.Prompt.Shell
@@ -18,35 +21,45 @@ import           XMonad.Util.EZConfig
 
 import           Graphics.X11.ExtraTypes.XF86
 
+import qualified DBus                          as D
+import qualified DBus.Client                   as D
+
 import           System.Exit
 
 import           System.Taffybar.Support.PagerHints
                                                 ( pagerHints )
 
+import qualified Codec.Binary.UTF8.String      as UTF8
 import           Control.Concurrent
-
 import           Data.List
 import qualified Data.Map                      as M
 import qualified XMonad.StackSet               as W
 
-main = xmonad $ ewmh $ pagerHints $ myConfig
+main = do
+  dbus <- D.connectSession
+  _    <- D.requestName
+    dbus
+    (D.busName_ "org.xmonad.Log")
+    [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
+  xmonad $ ewmh $ pagerHints $ myConfig
+    { logHook = dynamicLogWithPP (myLogHook dbus)
+    }
 
 myConfig =
   docks
-    $                 def { modMask           = mod4Mask
-                          , terminal          = "alacritty"
-                          , focusFollowsMouse = True
-                          , manageHook        = myManageHook
-                          , layoutHook        = myLayout
-                          , logHook           = myLogHook
-                          , keys              = myKeys
-                          , startupHook       = myStartupHook
-                          }
+    $                 def
+                        { modMask           = mod4Mask
+                        , terminal          = "alacritty"
+                        , focusFollowsMouse = True
+                        , manageHook        = myManageHook
+                        , handleEventHook   = docksEventHook
+                                              <+> minimizeEventHook
+                                              <+> fullscreenEventHook
+                        , layoutHook        = myLayout
+                        , keys              = myKeys
+                        , startupHook       = myStartupHook
+                        }
     `additionalKeysP` (easyKeyList myConfig)
-
--- toggleStrutsKey XConfig { modMask = modm } = (modm, xK_b)
-
--- easyKeys conf = mkKeymap conf $ easyKeyList conf
 
 easyKeyList conf =
     -- launch a terminal
@@ -193,12 +206,35 @@ myLayout =
   full    = avoidStruts $ noBorders Full
   grid    = Grid
 
+red = "#fb4934"
+blue = "#83a598"
+blue2 = "#2266d0"
 
-myLogHook = do
-  return ()
+myLogHook :: D.Client -> PP
+myLogHook dbus = def { ppOutput  = dbusOutput dbus
+                     , ppCurrent = wrap ("%{F" ++ blue2 ++ "} ") " %{F-}"
+                     , ppVisible = wrap ("%{F" ++ blue ++ "} ") " %{F-}"
+                     , ppUrgent  = wrap ("%{F" ++ red ++ "} ") " %{F-}"
+                     , ppHidden  = wrap " " " "
+                     , ppWsSep   = ""
+                     , ppSep     = " | "
+                     -- , ppTitle   = myAddSpaces 25
+                     }
+
+dbusOutput :: D.Client -> String -> IO ()
+dbusOutput dbus str = do
+  let signal = (D.signal objectPath interfaceName memberName)
+        { D.signalBody = [D.toVariant $ UTF8.decodeString str]
+        }
+  D.emit dbus signal
+ where
+  objectPath    = D.objectPath_ "/org/xmonad/Log"
+  interfaceName = D.interfaceName_ "org.xmonad.Log"
+  memberName    = D.memberName_ "Update"
 
 myStartupHook = do
-  spawn "taffybar.sh"
+  -- spawn "taffybar.sh"
+  spawn "$HOME/.config/polybar/launch.sh"
   spawn "nm-applet"
   spawn "syndaemon -i 0.75 -d -t -K"
   spawn "pa-applet"
@@ -211,7 +247,7 @@ myStartupHook = do
   checkKeymap myConfig (easyKeyList myConfig)
  where
   xautolock = "xautolock -secure -time 10 " ++ locker ++ notifier
-  locker    = "-locker \"i3lock -duc 003355\" "
+  locker    = "-locker \"gnome-screensaver-command --lock\" "
   notifier =
     "-notify 15 --notifier \"notify-send -t 5000 "
       ++ "-i dialog-password -u low 'Security advisory' "
@@ -219,7 +255,7 @@ myStartupHook = do
 
 
 myManageHook :: ManageHook
-myManageHook = dynamicMasterHook <+> manageWindows
+myManageHook = manageDocks <+> dynamicMasterHook <+> manageWindows <+> manageHook def
 
 manageWindows :: ManageHook
 manageWindows =
@@ -274,6 +310,7 @@ manageWindows =
     , "File Properties"
     , "Replace"
     , "Quit GIMP"
+    , "Gimp"
     , "Change Foreground Color"
     , "Change Background Color"
     , "Expired/Expiring LOAS Certificate"

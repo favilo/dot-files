@@ -76,4 +76,6 @@ card xmonad {
   .config/taffybar/my-taffybar.cabal
   .config/taffybar/stack.yaml
   .local/bin/taffybar.sh
+  .config/polybar/config
+  .config/polybar/launch.sh
 }
