@@ -14,6 +14,7 @@ executable my-xmonad
                      , network
                      , network-bsd
                      , taffybar
+                     , utf8-string
                      , xmonad >= 0.15
                      , xmonad-contrib >= 0.15
                      , xmonad-extras >= 0.15
