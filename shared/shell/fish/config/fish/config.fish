@@ -85,6 +85,4 @@ set -gx PATH $PATH ~/go/bin
 
 set -gx ANDROID_NDK_ROOT ~/Android/Sdk/ndk/20.0.5594570
 set -gx ANDROID_HOME ~/Android/Sdk
-
-xset +fp /home/favilo/.local/share/fonts
-xset fp rehash
+set -gx HOST (hostname)
