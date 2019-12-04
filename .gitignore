@@ -1,3 +1,4 @@
+shared/shell/fish/config/fish/fish_variables
 .DS_Store
 .idea
 *.log
