@@ -147,9 +147,10 @@ time-format = %H:%M
 
 poll-interval = 15
 
-format-charging = <animation-charging>
+format-charging = <animation-charging> <label-charging>
 format-discharging = <ramp-capacity> <label-discharging>
-label-discharging = %time%
+label-charging = "%percentage%%"
+label-discharging = "%percentage%% %time%"
 format-full-prefix = "f "
 format-full-prefix-foreground = ${colors.foreground}
 
