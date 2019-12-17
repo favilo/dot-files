@@ -174,6 +174,7 @@ myKeys conf@(XConfig { XMonad.modMask = modm }) =
        , ((0, xF86XK_AudioLowerVolume), spawn "amixer -D pulse set Master 2%-")
        , ((0, xF86XK_AudioRaiseVolume), spawn "amixer -D pulse set Master 2%+")
        , ((0, xF86XK_AudioMute), spawn "amixer -D pulse set Master toggle")
+       , ((0, xK_Print), spawn "flameshot gui")
        ]
     ++
     --
