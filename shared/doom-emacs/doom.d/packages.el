@@ -9,13 +9,23 @@
 (package! move-text)
 (package! fzf-spacemacs-layer
   :recipe
-  (:fetcher github :repo "AshyIsMe/fzf-spacemacs-layer")
+  (:host github :repo "AshyIsMe/fzf-spacemacs-layer")
   )
 (package! godot-gdscript
   :recipe
-  (:fetcher github
-            :repo "francogarcia/godot-gdscript.el"
-            )
+  (:host github :repo "francogarcia/godot-gdscript.el")
   )
+(package! websocket)
+(package! circe)
+(package! circe-notifications)
+(package! request)
+;; (package! emacs-slack
+;;   :recipe
+;;   (:host github :repo "yuya373/emacs-slack")
+;;   )
+;; (package! helm-slack
+;;   :recipe
+;;   (:host github :repo "yuya373/helm-slack")
+;;   )
 (package! toml-mode)
 (package! realgud)
