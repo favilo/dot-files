@@ -13,7 +13,7 @@ executable my-xmonad
                      , gtk3
                      , network
                      , network-bsd
-                     , taffybar
+                     , taffybar == 3.2.1
                      , utf8-string
                      , xmonad >= 0.15
                      , xmonad-contrib >= 0.15

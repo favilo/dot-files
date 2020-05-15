@@ -51,3 +51,5 @@
 ;; (set-formatter! 'black \"black -S -q -\")
 (setq lsp-python-ms-executable
       "~/git/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer")
+
+(setq x-select-enable-clipboard nil)
