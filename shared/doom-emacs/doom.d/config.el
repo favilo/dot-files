@@ -18,10 +18,10 @@
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
 (setq gdscript-tabs-mode t)
 
-(def-package! realgud
+(use-package! realgud
   :commands realgud:pdb)
 
-;; (def-package! emacs-slack
+;; (use-package! emacs-slack
 ;;   :commands (slack-start)
 ;;   :init
 ;;   (setq slack-buffer-emojify t) ;; if you want to enable emoji, default nil
@@ -41,13 +41,12 @@
 ;; (def-package! helm-slack
 ;;   :after (slack)
 ;;   )
-(def-package! alert
+(use-package! alert
   :commands (alert)
   :init
   (setq alert-default-style 'notifier)
   )
 
-(require 'floobits)
 ;; (set-formatter! 'black \"black -S -q -\")
 (setq lsp-python-ms-executable
       "~/git/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer")
