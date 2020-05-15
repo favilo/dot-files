@@ -1,6 +1,8 @@
 [user]
 	email = favilo@gmail.com
 	name = Kevin Oberlies
+[includeIf "gitdir:~/git/simon/"]
+	path = ~/git/simon/.gitconfig
 [merge]
 	tool = ediff
 [mergetool]

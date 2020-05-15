@@ -14,6 +14,7 @@
 
 (require 'godot-gdscript)
 (add-to-list 'auto-mode-alist '("\\.tscn\\'" . toml-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
 (setq gdscript-tabs-mode t)
 
@@ -45,3 +46,8 @@
   :init
   (setq alert-default-style 'notifier)
   )
+
+(require 'floobits)
+;; (set-formatter! 'black \"black -S -q -\")
+(setq lsp-python-ms-executable
+      "~/git/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer")

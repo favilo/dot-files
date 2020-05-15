@@ -3,7 +3,7 @@
 
 ;;; Examples:
 ;; (package! some-package)
-;; (package! another-package :recipe (:fetcher github :repo "username/repo"))
+;; (package! another-package :recipe (:host github :repo "username/repo"))
 ;; (package! builtin-package :disable t)
 
 (package! move-text)
@@ -13,7 +13,9 @@
   )
 (package! godot-gdscript
   :recipe
-  (:host github :repo "francogarcia/godot-gdscript.el")
+  (:host github
+         :repo "francogarcia/godot-gdscript.el"
+         )
   )
 (package! websocket)
 (package! circe)
@@ -29,3 +31,4 @@
 ;;   )
 (package! toml-mode)
 (package! realgud)
+(package! lsp-python-ms)

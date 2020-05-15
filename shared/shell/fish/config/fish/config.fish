@@ -114,7 +114,7 @@ function simon-ssh
 
   set -l res (aws ec2 describe-instances --filters "Name=tag:Role,Values=$role")
   set -l ip (echo $res | jq .'["Reservations"][0]["Instances"][0]["PrivateIpAddress"]' | sed s/\"//g)
-  if test -z $ip || $ip == 'null'
+  if test \( -z $ip \) -o \( $ip = "null" \)
       echo 1>&2 "No instances found for role $role"
       return 1
   end
@@ -130,3 +130,9 @@ function snowflake_connect
 
   echo "sshuttle -r ec2-user@ci.simondata.net --ssh-cmd \"ssh -i $SIMONHOME/keys/radico.pem\" $ip_list"
 end
+
+set -x PATH "/home/favilo/.pyenv/bin" $PATH
+set -x PATH "/home/favilo/.poetry/bin" $PATH
+set -x I_AM_RUNNING_INTEGRATION_TESTS "false"
+status --is-interactive; and . (pyenv init -|psub)
+status --is-interactive; and . (pyenv virtualenv-init -|psub)

@@ -242,6 +242,7 @@ myStartupHook = do
   spawn "blueman-applet"
   spawn "xsetroot -cursor_name left_ptr -solid black"
   spawn "rescuetime"
+  spawn "flameshot"
   spawn xautolock
   return ()
   setWMName "LG3D"
