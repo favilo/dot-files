@@ -76,9 +76,8 @@ inherit = bar/base
 monitor = ${env:MONITOR:HDMI-A-1}
 
 modules-left = xmonad
-# modules-center = mpd
-modules-center = volume
-modules-right = updates cpu memory battery backlight date powermenu
+modules-center = date
+modules-right = volume updates battery backlight powermenu
 
 [bar/laptop]
 inherit = bar/base
@@ -86,9 +85,8 @@ monitor = ${env:MONITOR:eDP1}
 monitor-fallback = ${env:MONITOR:HDMI1}
 
 modules-left = xmonad
-# modules-center = mpd volume
-modules-center = volume
-modules-right = updates battery backlight date powermenu
+modules-center = date
+modules-right = volume updates battery backlight powermenu
 
 [module/xmonad]
 type = custom/script
@@ -226,7 +224,7 @@ label-connected = %local_ip%
 type = internal/date
 interval = 5
 
-date =
+date = " %a, %d %B %Y"
 date-alt = " %Y-%m-%d"
 
 time = %H:%M

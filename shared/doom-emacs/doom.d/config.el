@@ -8,8 +8,8 @@
 (global-set-key (kbd "C-l") 'windmove-right)
 (map! :leader
       (:prefix "f"
-        :n "f" #'counsel-fzf
-        )
+       :n "f" #'counsel-fzf
+       )
       )
 
 (require 'godot-gdscript)
@@ -21,24 +21,28 @@
 (use-package! realgud
   :commands realgud:pdb)
 
-;; (use-package! emacs-slack
-;;   :commands (slack-start)
-;;   :init
-;;   (setq slack-buffer-emojify t) ;; if you want to enable emoji, default nil
-;;   (setq slack-prefer-current-team t)
-;;   :config
-;;   (slack-register-team
-;;      :name "oberliesslack"
-;;      :default t
-;;      :token (auth-source-pick-first-password
-;;          :host "oberliesslack.slack.com"
-;;          :user "favilo@gmail.com")
-;;      :subscribed-channels '(general programming family)
-;;      :full-and-display-names t
-;;      )
-;;   )
+(setq auth-source-debug t)
+(use-package! slack
+  :commands (slack-start)
+  :init
+  (setq slack-buffer-emojify t) ;; if you want to enable emoji, default nil
+  (setq slack-prefer-current-team t)
+  :config
+  (slack-register-team
+   :name "oberliesslack"
+   :default t
+   :token (auth-source-pick-first-password
+           :host '("oberliesslack")
+           :user "token" :type 'netrc :max 1)
+   :subscribed-channels '(general programming family)
+   :full-and-display-names t
+   )
+  )
 
-;; (def-package! helm-slack
+(use-package! helm-slack
+  :after emacs-slack)
+
+;; (use-package! helm-slack
 ;;   :after (slack)
 ;;   )
 (use-package! alert
