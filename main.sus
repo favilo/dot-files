@@ -79,3 +79,12 @@ card xmonad {
   .config/polybar/config
   .config/polybar/launch.sh
 }
+
+card alacritty {
+  alternatives $(HOST) shared
+
+  into ~
+  outof alacritty
+
+  .config/alacritty
+}
