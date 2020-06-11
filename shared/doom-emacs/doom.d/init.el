@@ -13,7 +13,7 @@
        ;;japanese
 
        :completion
-       company           ; the ultimate code completion backend
+       (company +auto)           ; the ultimate code completion backend
        helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        ivy               ; a search engine for love and life
@@ -71,7 +71,7 @@
 
        :tools
        ansible
-       debugger          ; FIXME stepping through code, to help you add bugs
+       (debugger +lsp)          ; FIXME stepping through code, to help you add bugs
        ;;direnv
        docker
        ;;editorconfig      ; let someone else argue about tabs vs spaces
@@ -127,8 +127,10 @@
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org                ; organize your plain life in plain text
+        +brain
         +dragndrop         ; file drag & drop support
         +ipython           ; ipython support for babel
+        +jupyter
         +pandoc            ; pandoc integration into org's exporter
         +present)          ; using Emacs for presentations
        ;;perl              ; write code no one else can comprehend
@@ -143,7 +145,7 @@
        (rust +lsp)           ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
        ;;scheme            ; a fully conniving family of lisps
-       (sh +lsp)             ; she sells {ba,z,fi}sh shells on the C xor
+       (sh +lsp +fish)             ; she sells {ba,z,fi}sh shells on the C xor
        ;;solidity          ; do you need a blockchain? No.
        ;;swift             ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
