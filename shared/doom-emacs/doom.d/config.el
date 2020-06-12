@@ -56,3 +56,4 @@
       "~/git/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer")
 
 (setq x-select-enable-clipboard nil)
+(setq display-line-numbers-type 'relative)

@@ -70,6 +70,17 @@ if status --is-interactive
   abbr -a gpr git pull --rebase
 end
 
+if [ -e ~/.cargo/bin/exa ]
+  abbr -a l exa
+  abbr -a ls exa
+  abbr -a ll exa -l
+  abbr -a lll exa -la
+else 
+  abbr -a l ls
+  abbr -a ll ls -l
+  abbr -a lll ls -la
+end
+
 
 if test -d "$HOME/google-cloud-sdk"
     # The next line updates PATH for the Google Cloud SDK.
