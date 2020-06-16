@@ -57,3 +57,7 @@
 
 (setq x-select-enable-clipboard nil)
 (setq display-line-numbers-type 'relative)
+
+(after! lsp-haskell
+ (setq lsp-haskell-process-path-hie "ghcide")
+ (setq lsp-haskell-process-args-hie '()))
