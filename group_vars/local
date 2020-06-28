@@ -1,0 +1,15 @@
+# vi: set ft=yaml :
+
+dotfiles_user_home: "{{ '~' | expanduser }}"
+dotfiles_home: "{{dotfiles_user_home}}/git/dot-files"
+
+full_name: Kevin Oberlies
+
+# Git
+git_user: favilo
+git_email: favilo@gmail.com
+
+git_signing_key: "{{ lookup('env', 'GIT_SIGNING_KEY_ID') }}"
+
+pyenv_global_versions:
+  - 3.8.1

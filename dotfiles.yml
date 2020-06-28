@@ -1,0 +1,17 @@
+- name: Local Bookkeeping tasks
+  hosts: local
+  tasks: []
+
+- name: Set up local development environment
+  hosts: local
+  roles:
+  - {role: git, tags: ['git']}
+  - {role: fish, tags: ['fish']}
+  # - {role: emacs, tags: ['emacs', 'doom-emacs']}
+  - {role: tmux, tags: ['tmux']}
+  # - {role: rust, tags: ['rustup', 'cargo']}
+  # - {role: hub, tags: ['hub']}
+  # - {role: exa, tags: ['exa']}
+  - {role: fzf, tags: ['fzf']}
+  # - {role: bat, tags: ['bat']}
+  # - {role: rg, tags: ['rg']}

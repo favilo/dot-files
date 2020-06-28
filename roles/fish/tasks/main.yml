@@ -1,0 +1,17 @@
+- import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: Find location of fish
+  shell: "which fish"
+  register: fish_register
+
+- name: Change to default fish
+  user:
+    name: "{{ansible_user_id}}"
+    shell: "{{ fish_register.stdout_lines[0] }}"
+
+# This will eventually want to be a template and use the correct home-dir
+- name: Link fish settings
+  template:
+    src: "config_fish.j2"
+    dest: "{{ dotfiles_user_home }}/.config/fish/config.fish"

@@ -1,0 +1,13 @@
+- name: Update fzf
+  git:
+    repo: 'https://github.com/junegunn/fzf.git'
+    dest: '{{dotfiles_user_home}}/.fzf'
+
+- name: Check if fzf installed
+  shell: "which fzf"
+  register: fzf_result
+  ignore_errors: true
+
+- name: Install fzf
+  shell: "{{dotfiles_user_home}}/.fzf/install"
+  when: fzf_result.rc != 0
