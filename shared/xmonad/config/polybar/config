@@ -77,7 +77,7 @@ monitor = ${env:MONITOR:HDMI-A-1}
 
 modules-left = xmonad
 modules-center = date
-modules-right = volume updates battery backlight powermenu
+modules-right = volume cpu memory battery backlight powermenu
 
 [bar/laptop]
 inherit = bar/base
@@ -86,7 +86,7 @@ monitor-fallback = ${env:MONITOR:HDMI1}
 
 modules-left = xmonad
 modules-center = date
-modules-right = volume updates battery backlight powermenu
+modules-right = volume battery backlight powermenu
 
 [module/xmonad]
 type = custom/script
@@ -119,22 +119,10 @@ type = internal/fs
 interval = 25
 
 mount-0 = /
-mount-1 = /home/idzard/harddrive
 
 label-mounted = %{F#5b51c9}%mountpoint%%{F-}: %percentage_used%%
 label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.foreground}
-
-[module/updates]
-type = custom/script
-# exec = $HOME/dotfiles/scripts/updates.sh
-exec = true
-
-format-prefix = "%{T2}%{T-} "
-format-prefix-foreground = ${colors.blue_arch}
-format-underline = ${colors.grey}
-
-interval = 120
 
 [module/battery]
 type = internal/battery

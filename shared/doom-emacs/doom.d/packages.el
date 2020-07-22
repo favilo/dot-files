@@ -40,3 +40,5 @@
   (:host github
    :repo "jwiegley/alert")
   )
+(package! protobuf-mode)
+(package! ranger)

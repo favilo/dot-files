@@ -147,5 +147,5 @@ end
 set -x PATH "/home/favilo/.pyenv/bin" $PATH
 set -x PATH "/home/favilo/.poetry/bin" $PATH
 set -x I_AM_RUNNING_INTEGRATION_TESTS "false"
-status --is-interactive; and . (pyenv init -|psub)
-status --is-interactive; and . (pyenv virtualenv-init -|psub)
+status --is-interactive; and pyenv init - | source
+status --is-interactive; and pyenv virtualenv-init - | source

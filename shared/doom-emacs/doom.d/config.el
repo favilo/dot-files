@@ -6,6 +6,7 @@
 (global-set-key (kbd "C-j") 'windmove-down)
 (global-set-key (kbd "C-k") 'windmove-up)
 (global-set-key (kbd "C-l") 'windmove-right)
+
 (map! :leader
       (:prefix "f"
        :n "f" #'counsel-fzf
