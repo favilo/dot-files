@@ -127,10 +127,7 @@ easyKeyList conf =
     )
     -- Lock screen
   , ("M-S-z", spawn "gnome-screensaver-command --lock")
-  , ("M-C-w", spawn "google-chrome")
-  , ( "M-C-e"
-    , spawn "eclipse45"
-    )
+  , ("M-C-w", spawn "firefox")
     -- Cycle Keyboard layouts
   , ( "M-<Escape>"
     , spawn "~/bin/layout_switch.sh"
@@ -234,7 +231,6 @@ dbusOutput dbus str = do
   memberName    = D.memberName_ "Update"
 
 myStartupHook = do
-  -- spawn "taffybar.sh"
   spawn "$HOME/.config/polybar/launch.sh"
   spawn "nm-applet"
   spawn "syndaemon -i 0.75 -d -t -K"
@@ -243,6 +239,7 @@ myStartupHook = do
   spawn "xsetroot -cursor_name left_ptr -solid black"
   spawn "rescuetime"
   spawn "flameshot"
+  spawn "gnome-screensaver"
   spawn xautolock
   return ()
   setWMName "LG3D"

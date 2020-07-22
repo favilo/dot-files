@@ -144,8 +144,8 @@ function snowflake_connect
   echo "sshuttle -r ec2-user@ci.simondata.net --ssh-cmd \"ssh -i $SIMONHOME/keys/radico.pem\" $ip_list"
 end
 
-set -x PATH "/home/favilo/.pyenv/bin" $PATH
-set -x PATH "/home/favilo/.poetry/bin" $PATH
+set -x PATH "$HOME/.pyenv/bin" $PATH
+set -x PATH "$HOME/.poetry/bin" $PATH
 set -x I_AM_RUNNING_INTEGRATION_TESTS "false"
 status --is-interactive; and pyenv init - | source
 status --is-interactive; and pyenv virtualenv-init - | source

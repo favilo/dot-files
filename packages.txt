@@ -1,9 +1,11 @@
-haskell-platform
-haskell-stack
-aptitude
-git
-xmonad
-taffybar
-tmux
-curl
-emacs25
+packages:
+- aptitude
+- git
+- xmonad
+- tmux
+- curl
+- emacs
+- build-essential
+- jq
+- htop
+- docker.io
