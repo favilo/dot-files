@@ -8,10 +8,12 @@
 (global-set-key (kbd "C-l") 'windmove-right)
 
 (map! :leader
-      (:prefix "f"
-       :n "f" #'counsel-fzf
-       )
+      "ff" #'counsel-fzf
       )
+
+;; (map! :leader
+;;       "c l e" #'lsp-extend-selection
+;;       )
 
 (require 'godot-gdscript)
 (add-to-list 'auto-mode-alist '("\\.tscn\\'" . toml-mode))
@@ -60,7 +62,9 @@
 (setq display-line-numbers-type 'relative)
 
 (after! lsp-haskell
- (setq lsp-haskell-process-path-hie "ghcide")
- (setq lsp-haskell-process-args-hie '()))
+  (setq lsp-haskell-process-path-hie "ghcide")
+  (setq lsp-haskell-process-args-hie '()))
 
 (setq doom-theme 'doom-molokai)
+(setq lsp-rust-server 'rust-analyzer)
+(setq rustic-lsp-server 'rust-analyzer)

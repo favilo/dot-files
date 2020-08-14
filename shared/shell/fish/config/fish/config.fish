@@ -4,8 +4,8 @@ if not functions -q fisher
     fish -c fisher
 end
 
-set -x FZF_DEFAULT_COMMAND 'rg --files --hidden --follow --no-ignore-vcs'
-set -x FZF_CTRL_T_COMMAND "$FZF_DEFAULT_COMMAND"
+set -x FZF_DEFAULT_COMMAND 'rg --files --hidden --follow'
+set -x FZF_CTRL_T_COMMAND "$FZF_DEFAULT_COMMAND --no-ignore-vcs"
 set -x FZF_DEFAULT_OPTS '--height 96% --reverse --preview "cat {}"'
 
 fish_vi_key_bindings
@@ -49,6 +49,7 @@ set -gx PATH $PATH ~/.cargo/bin
 set -gx PATH ~/.local/bin $PATH
 set -gx PATH $PATH ~/go/bin
 set -gx PATH $PATH /snap/bin
+set -gx PATH $PATH ~/.emacs.d/bin
 
 set -gx ANDROID_NDK_ROOT ~/Android/Sdk/ndk/20.0.5594570
 set -gx ANDROID_HOME ~/Android/Sdk

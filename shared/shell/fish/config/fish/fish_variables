@@ -2,7 +2,7 @@
 # VERSION: 3.0
 SETUVAR EDITOR:vim
 SETUVAR --export FZF_CTRL_T_COMMAND:rg\x20\x2d\x2dfiles\x20\x2d\x2dhidden\x20\x2d\x2dfollow\x20\x2d\x2dno\x2dignore\x2dvcs
-SETUVAR --export FZF_DEFAULT_COMMAND:rg\x20\x2d\x2dfiles\x20\x2d\x2dhidden\x20\x2d\x2dfollow\x20\x2d\x2dno\x2dignore\x2dvcs
+SETUVAR --export FZF_DEFAULT_COMMAND:rg\x20\x2d\x2dfiles\x20\x2d\x2dhidden\x20\x2d\x2dfollow
 SETUVAR --export FZF_DEFAULT_OPTS:\x2d\x2dheight\x2096\x25\x20\x2d\x2dreverse\x20\x2d\x2dpreview\x20\x22cat\x20\x7b\x7d\x22
 SETUVAR FZF_DISABLE_KEYBINDINGS:0
 SETUVAR FZF_LEGACY_KEYBINDINGS:1
