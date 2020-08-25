@@ -1,5 +1,5 @@
 function fish_prompt --description 'Write out the prompt'
-	#Save the return status of the previous command
+    #Save the return status of the previous command
     set stat $status
 
     if not set -q __fish_prompt_normal
@@ -12,7 +12,7 @@ function fish_prompt --description 'Write out the prompt'
     if not set -q __git_cb
         set __git_cb "["(set_color brown)(git branch ^/dev/null | grep \* | sed 's/* //')(set_color normal)"]"
     end
- 
+
     if not set -q __fish_prompt_time
         set __fish_prompt_time "["(set_color red)(date +'%H:%M:%S')(set_color normal)"]"
     end
@@ -46,4 +46,13 @@ function fish_prompt --description 'Write out the prompt'
             printf '%s %s%s@%s:%s%s\n%s(%s)%s %s \f\r$ ' "$__fish_prompt_time" "$__fish_color_blue" $USER (prompt_hostname) "$__fish_prompt_cwd" (prompt_pwd) "$__fish_color_status" "$stat" "$__fish_prompt_normal" "$__git_cb"
 
     end
+    set -l project
+
+    if echo (pwd) | grep -qEi "^/home/$USER/git/"
+        set project (echo (pwd) | sed "s#^/git/$USER/git/\\([^/]*\\).*#\\1#")
+    else
+        set project "Terminal"
+    end
+
+    wakatime --write --plugin "fish-wakatime/0.0.1" --entity-type app --project "$project" --entity (echo $history[1] | cut -d ' ' -f1) 2>&1 >/dev/null &
 end
