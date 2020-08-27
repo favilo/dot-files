@@ -67,12 +67,13 @@
 (package! request)
 (package! toml-mode)
 (package! realgud)
-(package! lsp-python-ms)
+(package! lsp-python-ms :disable t)
 (package! emacs-slack
   :recipe
   (:host github
    :repo "yuya373/emacs-slack")
   )
+(package! wakatime-mode)
 (package! helm-slack
   :recipe
   (:host github
@@ -85,4 +86,3 @@
   )
 (package! protobuf-mode)
 (package! ranger)
-(package! lsp-java)

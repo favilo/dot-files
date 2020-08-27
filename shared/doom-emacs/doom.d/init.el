@@ -30,8 +30,8 @@
        ;;deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
        doom-dashboard    ; a nifty splash screen for Emacs
-       ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
-       fill-column       ; a `fill-column' indicator
+       ;; doom-quit         ; DOOM quit-message prompts when you quit Emacs
+       ;;fill-column       ; a `fill-column' indicator
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;hydra
        indent-guides     ; highlighted indent columns
@@ -55,7 +55,9 @@
        (evil +everywhere); come to the dark side, we have cookies
        file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
-       (format +onsave)  ; automated prettiness
+       (format
+        ;; +onsave         ; autoformat on save -> no bueno
+        )  ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
        multiple-cursors  ; editing in many places at once
@@ -105,7 +107,6 @@
        ;;terraform         ; infrastructure as code
        tmux              ; an API for interacting with tmux
        ;;upload            ; map local to remote projects via ssh/ftp
-       wakatime
 
        :os
        tty               ; improve the terminal Emacs experience
@@ -135,7 +136,7 @@
        ;;idris             ;
        json              ; At least it ain't XML
        (java +meghanada +lsp) ; the poster child for carpal tunnel syndrome
-       (javascript +lsp) ; all(hope(abandon(ye(who(enter(here))))))
+       (javascript +lsp)        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        (kotlin +lsp)     ; a better, slicker Java(Script)
        latex             ; writing papers in Emacs has never been so fun
@@ -157,7 +158,7 @@
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       (python +lsp +ipdb +poetry)         ; beautiful is better than ugly
+       (python +lsp +poetry +black)         ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
@@ -190,13 +191,6 @@
        ;;literate
        (default +bindings +smartparens))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(wakatime-api-key " 6ff0188b-0cbe-4cbd-8f6c-c6b5ac03c8e8 ")
-)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

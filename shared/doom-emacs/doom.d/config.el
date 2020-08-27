@@ -55,13 +55,15 @@
 
 (setq select-enable-clipboard nil)
 (setq lsp-rust-server 'rust-analyzer)
-(setq lsp-python-ms-executable
-      "~/git/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer")
 
 (global-set-key (kbd "C-h") 'windmove-left)
 (global-set-key (kbd "C-j") 'windmove-down)
 (global-set-key (kbd "C-k") 'windmove-up)
 (global-set-key (kbd "C-l") 'windmove-right)
+
+(map! :leader
+      "ff" #'counsel-fzf
+      )
 
 ;; (map! :leader
 ;;       "c l e" #'lsp-extend-selection
@@ -105,3 +107,10 @@
   :init
   (setq alert-default-style 'notifier)
   )
+
+(use-package! wakatime-mode
+  :ensure t)
+
+(global-wakatime-mode)
+
+;; (set-formatter! 'black \"black -S -q -\")
