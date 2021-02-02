@@ -37,13 +37,14 @@
   - role: haskell
     tags: 
     - 'stack'
+  - role: programming
+    tags:
+    - 'rustup'
+    - 'cargo'
+    - 'go'
   - role: xmonad
     tags:
     - 'xmonad'
-  - role: rust
-    tags: 
-    - 'rustup'
-    - 'cargo'
   # - {role: hub, tags: ['hub']}
   - role: fzf
     tags: 

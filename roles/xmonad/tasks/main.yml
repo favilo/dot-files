@@ -31,3 +31,32 @@
 
 - name: Build my-xmonad
   command: "{{ dotfiles_user_home }}/.local/bin/xmonad --recompile"
+
+- name: Install Xmonad.desktop file
+  file:
+    src: "{{ dotfiles_home }}/roles/xmonad/files/Xmonad.desktop"
+    dest: "/usr/share/xsessions/xmonad.desktop"
+    state: hard
+    force: true
+  become: true
+  become_method: sudo
+
+- name: Create polybar directory
+  file:
+    path: "{{ dotfiles_user_home }}/.config/polybar"
+    state: directory
+
+- name: polybar config
+  file:
+    src: "{{ dotfiles_home }}/roles/xmonad/files/config/polybar/{{ item.src }}"
+    dest: "{{ dotfiles_user_home }}/.config/polybar/{{ item.src }}"
+    state: link
+    force: true
+  with_items:
+  - src: launch.sh
+  - src: config
+
+- name: xmonad-log
+  command: "go get github.com/xintron/xmonad-log"
+  args:
+    creates: "{{ dotfiles_user_home }}/go/bin/xmonad-log"

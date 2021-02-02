@@ -5,6 +5,7 @@
     - qemu-system
     - nodejs
     - npm
+    - sddm
     state: present
   become_method: sudo
   become: true

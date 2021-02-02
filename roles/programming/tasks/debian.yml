@@ -21,3 +21,11 @@
   become: true
   become_method: sudo
 
+- name: Install go
+  snap:
+    name:
+      - go
+    state: present
+    classic: true
+  become: true
+  become_method: sudo

@@ -16,6 +16,9 @@
     - libtinfo-dev
     - libdbusmenu-glib-dev
     - libdbusmenu-gtk3-dev
+    - xmonad
+    - suckless-tools
+    - polybar
     state: present
   become: true
   become_method: sudo
