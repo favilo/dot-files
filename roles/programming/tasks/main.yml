@@ -6,24 +6,21 @@
   args:
     creates: "{{ dotfiles_user_home }}/.cargo/bin/rustup"
 
-- name: Add rustup components
-  command: "rustup component add rls rust-analysis rust-src"
-  args:
-    creates: "{{ dotfiles_user_home }}/.cargo/bin/rls"
-
 - name: Install fun crates
   command: "cargo install {{ item.name }}"
   args:
     creates: "{{ dotfiles_user_home }}/.cargo/bin/{{ item.exe }}"
   with_items:
-    - name: exa
-      exe: exa
-    - name: bat
-      exe: bat
-    - name: ripgrep
-      exe: rg
-    - name: cargo-edit
-      exe: cargo-add
+  - name: exa
+    exe: exa
+  - name: bat
+    exe: bat
+  - name: ripgrep
+    exe: rg
+  - name: cargo-edit
+    exe: cargo-add
+  - name: rust-analyzer
+    exe: rust-analyzer
 
 - name: Alacritty config dir
   file:

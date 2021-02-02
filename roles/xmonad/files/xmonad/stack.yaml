@@ -29,4 +29,4 @@ extra-deps:
 - gi-harfbuzz-0.0.3
 
 
-resolver: lts-17.1
+resolver: nightly-2021-02-02
