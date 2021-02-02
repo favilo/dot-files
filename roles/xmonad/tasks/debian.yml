@@ -1,0 +1,21 @@
+- name: Install xmonad deps
+  apt: 
+    name: 
+    - xmonad
+    state: build-dep
+  become: true
+  become_method: sudo
+
+- name: More deps
+  apt:
+    name:
+    - libasound2-dev
+    - libgirepository1.0-dev 
+    - libwebkit2gtk-4.0-dev 
+    - libgtksourceview-3.0-dev 
+    - libtinfo-dev
+    - libdbusmenu-glib-dev
+    - libdbusmenu-gtk3-dev
+    state: present
+  become: true
+  become_method: sudo

@@ -1,0 +1,7 @@
+- import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: install bash-language-server
+  command: "npm i -g bash-language-server"
+  become: true
+  become_method: sudo

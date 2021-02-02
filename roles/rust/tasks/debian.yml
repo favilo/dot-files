@@ -1,0 +1,23 @@
+- name: add alacritty ppa
+  command: "add-apt-repository ppa:aslatter/ppa"
+  become: true
+  become_method: sudo
+  args:
+    creates: /etc/apt/sources.list.d/aslatter-ubuntu-ppa-groovy.list
+
+- name: Install alacritty dependencies
+  apt: 
+    name: 
+    - cmake 
+    - pkg-config 
+    - libfreetype6-dev 
+    - libfontconfig1-dev 
+    - libxcb-xfixes0-dev 
+    - python3
+    - libssl-dev
+    - alacritty
+    state: present
+    force_apt_get: yes
+  become: true
+  become_method: sudo
+

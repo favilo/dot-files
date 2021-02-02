@@ -5,13 +5,49 @@
 - name: Set up local development environment
   hosts: local
   roles:
-  - {role: git, tags: ['git']}
-  - {role: fish, tags: ['fish']}
-  # - {role: emacs, tags: ['emacs', 'doom-emacs']}
-  - {role: tmux, tags: ['tmux']}
-  # - {role: rust, tags: ['rustup', 'cargo']}
+  - role: git
+    tags:
+    - 'git'
+  # - {role: fish, tags: ['fish']}
+  - role: emacs
+    tags:
+    - 'emacs'
+    - 'doom-emacs'
+  - role: gantsign.antigen
+    users:
+    - username: klah
+      antigen_libraries:
+        - name: oh-my-zsh
+      antigen_theme:
+        name: robbyrussel
+      antigen_bundles:
+        - name: git
+        - name: heroku
+        - name: pip
+        - name: lein
+        - name: command-not-found
+        - name: zsh-syntax-highlighting
+          url: zsh-users/zsh-syntax-highlighting
+  - role: zsh
+    tags: 
+    - 'zsh'
+  - role: tmux
+    tags: 
+    - 'tmux'
+  - role: haskell
+    tags: 
+    - 'stack'
+  - role: xmonad
+    tags:
+    - 'xmonad'
+  - role: rust
+    tags: 
+    - 'rustup'
+    - 'cargo'
   # - {role: hub, tags: ['hub']}
-  # - {role: exa, tags: ['exa']}
-  - {role: fzf, tags: ['fzf']}
-  # - {role: bat, tags: ['bat']}
-  # - {role: rg, tags: ['rg']}
+  - role: fzf
+    tags: 
+    - 'fzf'
+  - role: packages
+    tags:
+    - 'packages'

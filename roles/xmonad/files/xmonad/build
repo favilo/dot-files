@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# As of 0.13, xmonad --recompile will look for a custom build script.
+
+set -e
+EXE_NAME=my-xmonad
+OUTPUT=$1
+
+stack build
+stack install :my-xmonad --local-bin-path bin/
+mv bin/my-xmonad "$1"

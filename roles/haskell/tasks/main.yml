@@ -1,0 +1,9 @@
+- import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: Update stack.yaml
+  file:
+    src: "{{ dotfiles_home }}/roles/haskell/files/stack/config.yaml"
+    dest: "{{ dotfiles_user_home }}/.stack/config.yaml"
+    state: link
+    force: true

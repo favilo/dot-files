@@ -1,0 +1,45 @@
+- import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: checkout doom-emacs
+  git:
+    repo: https://github.com/hlissner/doom-emacs
+    dest: "{{ dotfiles_user_home }}/.emacs.d"
+
+- name: Set doom-emacs config directory
+  file:
+    path: "{{ dotfiles_user_home }}/.doom.d"
+    state: directory
+
+- name: Link doom-emacs config files
+  file:
+    src: "{{ dotfiles_home }}/roles/emacs/files/doom.d/{{ item.src }}"
+    dest: "{{ dotfiles_user_home }}/.doom.d/{{ item.src }}"
+    state: link
+    force: yes
+  with_items:
+  - src: config.el
+  - src: init.el
+  - src: packages.el
+
+- name: check if installed
+  stat:
+    path: "{{ dotfiles_user_home }}/.emacs.d/.installed"
+  register: doom_emacs_installed_result
+
+- name: install doom-emacs
+  command: "{{ dotfiles_user_home }}/.emacs.d/bin/doom install"
+  when: not doom_emacs_installed_result.stat.exists
+
+- name: mark installed
+  file:
+    path: "{{ dotfiles_user_home }}/.emacs.d/.installed"
+    state: touch
+  
+- name: doom sync
+  command: "{{ dotfiles_user_home }}/.emacs.d/bin/doom sync"
+
+- name: install wakatime
+  command: pip3 install wakatime
+  become: true
+  become_method: sudo

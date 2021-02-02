@@ -1,0 +1,9 @@
+- name: Install haskell-stack
+  apt: 
+    name: 
+    - haskell-stack
+    state: present
+    force_apt_get: yes
+  become: true
+  become_method: sudo
+

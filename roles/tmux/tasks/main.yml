@@ -8,5 +8,6 @@
 
 - name: Symlink .tmux.conf
   file:
+    state: link
     src: "{{ dotfiles_home }}/roles/tmux/files/tmux.conf"
     dest: "{{ dotfiles_user_home }}/.tmux.conf"

@@ -1,0 +1,10 @@
+- name: Install packages
+  apt:
+    name:
+    - qemu
+    - qemu-system
+    - nodejs
+    - npm
+    state: present
+  become_method: sudo
+  become: true

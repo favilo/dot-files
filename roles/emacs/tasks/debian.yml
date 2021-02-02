@@ -1,0 +1,11 @@
+- name: Install emacs
+  apt: 
+    name: 
+    - emacs
+    - fd-find
+    - python3-pip
+    state: present
+    force_apt_get: yes
+  become: true
+  become_method: sudo
+

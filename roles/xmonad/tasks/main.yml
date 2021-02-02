@@ -1,0 +1,33 @@
+- import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: "create .xmonad folder"
+  file:
+    path: "{{ dotfiles_user_home }}/.xmonad"
+    state: directory
+
+- name: "create .xmonad folder"
+  file:
+    path: "{{ dotfiles_user_home }}/.xmonad/lib"
+    state: directory
+
+- name: Symlink .xmonad files
+  file:
+    src: "{{ dotfiles_home }}/roles/xmonad/files/xmonad/{{ item.src }}"
+    dest: "{{ dotfiles_user_home }}/.xmonad/{{ item.src }}"
+    state: link
+    force: yes
+  with_items:
+    - src: "xmonad.hs"
+    - src: "stack.yaml"
+    - src: "my-xmonad.cabal"
+    - src: "build"
+
+- name: Install xmonad
+  command: "stack install xmonad"
+  args:
+    chdir: "{{ dotfiles_user_home }}/.xmonad"
+    creates: "{{ dotfiles_user_home }}/.local/bin/xmonad"
+
+- name: Build my-xmonad
+  command: "{{ dotfiles_user_home }}/.local/bin/xmonad --recompile"

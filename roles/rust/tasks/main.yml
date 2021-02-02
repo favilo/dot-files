@@ -1,0 +1,26 @@
+- import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: Install rustup
+  command: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
+  args:
+    creates: "{{ dotfiles_user_home }}/.cargo/bin/rustup"
+
+- name: Add rustup components
+  command: "rustup component add rls rust-analysis rust-src"
+  args:
+    creates: "{{ dotfiles_user_home }}/.cargo/bin/rls"
+
+- name: Install fun crates
+  command: "cargo install {{ item.name }}"
+  args:
+    creates: "{{ dotfiles_user_home }}/.cargo/bin/{{ item.exe }}"
+  with_items:
+    - name: exa
+      exe: exa
+    - name: bat
+      exe: bat
+    - name: ripgrep
+      exe: rg
+    - name: cargo-edit
+      exe: cargo-add
