@@ -86,3 +86,8 @@
   )
 (package! protobuf-mode)
 (package! ranger)
+(package! gist)
+;; (package! ejira)
+
+;;;;
+;;;;

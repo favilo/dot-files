@@ -60,5 +60,7 @@ set -x PATH "$HOME/.pyenv/bin" $PATH
 set -x PATH "$HOME/.poetry/bin" $PATH
 set -x I_AM_RUNNING_INTEGRATION_TESTS "false"
 
+set -x GNUPGHOME "$HOME/.gnupg/trezor"
+
 status --is-interactive; and pyenv init - | source
 status --is-interactive; and pyenv virtualenv-init - | source

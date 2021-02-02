@@ -55,7 +55,11 @@
 ;; they are implemented.
 
 (setq select-enable-clipboard nil)
-(setq lsp-rust-server 'rust-analyzer)
+
+(after! rustic
+  (setq lsp-rust-server 'rust-analyzer))
+(after! rustic
+  (setq rustic-lsp-server 'rust-analyzer))
 
 (global-set-key (kbd "C-h") 'windmove-left)
 (global-set-key (kbd "C-j") 'windmove-down)
@@ -65,10 +69,38 @@
 (map! :leader
       "ff" #'counsel-fzf
       )
-
+(setq counsel-fzf-cmd "fdfind --type f | fzf -f \"%s\"")
 ;; (map! :leader
 ;;       "c l e" #'lsp-extend-selection
 ;;       )
+
+;; Enable terminal copy to cliboard
+(defun copy-to-clipboard ()
+  "Copies selection to x-clipboard."
+  (interactive)
+  (if (display-graphic-p)
+      (progn
+        (message "Yanked region to x-clipboard!")
+        (call-interactively 'clipboard-kill-ring-save)
+        )
+    (if (region-active-p)
+        (progn
+          (shell-command-on-region (region-beginning) (region-end) "xsel -i -b")
+          (message "Yanked region to clipboard!")
+          (deactivate-mark))
+      (message "No region active; can't yank to clipboard!"))))
+
+(defun paste-from-clipboard ()
+  "Pastes from x-clipboard."
+  (interactive)
+  (if (display-graphic-p)
+      (progn
+        (clipboard-yank)
+        (message "graphics active")
+        )
+    (insert (shell-command-to-string "xsel -o -b"))))
+(map! :leader "oy" 'copy-to-clipboard)
+(map! :leader "op" 'paste-from-clipboard)
 
 (require 'godot-gdscript)
 (add-to-list 'auto-mode-alist '("\\.tscn\\'" . toml-mode))
