@@ -5,3 +5,5 @@
   command: "npm i -g bash-language-server"
   become: true
   become_method: sudo
+  args:
+    creates: "/usr/local/bin/bash-language-server"

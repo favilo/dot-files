@@ -24,3 +24,15 @@
       exe: rg
     - name: cargo-edit
       exe: cargo-add
+
+- name: Alacritty config dir
+  file:
+    path: "{{ dotfiles_user_home }}/.config/alacritty"
+    state: directory
+
+- name: Alacritty config
+  file:
+    src: "{{ dotfiles_home }}/roles/programming/files/alacritty.yml"
+    dest: "{{ dotfiles_user_home }}/.config/alacritty/alacritty.yml"
+    state: link
+    force: true

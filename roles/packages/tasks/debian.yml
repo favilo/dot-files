@@ -1,4 +1,4 @@
-- name: Install packages
+- name: Install apt packages
   apt:
     name:
     - qemu
@@ -6,6 +6,16 @@
     - nodejs
     - npm
     - sddm
+    - flameshot
     state: present
   become_method: sudo
   become: true
+
+- name: Install snap packages (classic confinement)
+  snap:
+    name:
+    - slack
+    state: present
+    classic: true
+  become: true
+  become_method: sudo
