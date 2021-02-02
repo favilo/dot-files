@@ -5,6 +5,8 @@ if ! [ -x "$(command -v ansible)" ]; then
     sudo apt install ansible
 fi
 
+ansible-galaxy install gantsign.antigen
+
 echo "Setting up local dev environment"
 ansible-playbook -i ~/git/dot-files/hosts ~/git/dot-files/dotfiles.yml --ask-become-pass -v
 
