@@ -13,21 +13,21 @@
     tags:
     - 'emacs'
     - 'doom-emacs'
-  - role: gantsign.antigen
-    users:
-    - username: klah
-      antigen_libraries:
-        - name: oh-my-zsh
-      antigen_theme:
-        name: robbyrussel
-      antigen_bundles:
-        - name: git
-        - name: heroku
-        - name: pip
-        - name: lein
-        - name: command-not-found
-        - name: zsh-syntax-highlighting
-          url: zsh-users/zsh-syntax-highlighting
+  # - role: gantsign.antigen
+  #   users:
+  #   - username: "{{ dotfiles_user }}"
+  #     antigen_libraries:
+  #       - name: oh-my-zsh
+  #     antigen_theme:
+  #       name: robbyrussel
+  #     antigen_bundles:
+  #       - name: git
+  #       - name: heroku
+  #       - name: pip
+  #       - name: lein
+  #       - name: command-not-found
+  #       - name: zsh-syntax-highlighting
+  #         url: zsh-users/zsh-syntax-highlighting
   - role: zsh
     tags: 
     - 'zsh'
