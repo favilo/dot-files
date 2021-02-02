@@ -1,7 +1,7 @@
 - name: Install xmonad deps
-  apt: 
-    name: 
-    - xmonad
+  apt:
+    name:
+      - xmonad
     state: build-dep
   become: true
   become_method: sudo
@@ -9,16 +9,24 @@
 - name: More deps
   apt:
     name:
-    - libasound2-dev
-    - libgirepository1.0-dev 
-    - libwebkit2gtk-4.0-dev 
-    - libgtksourceview-3.0-dev 
-    - libtinfo-dev
-    - libdbusmenu-glib-dev
-    - libdbusmenu-gtk3-dev
-    - xmonad
-    - suckless-tools
-    - polybar
-    state: present
+      - libasound2-dev
+      - libgirepository1.0-dev
+      - libwebkit2gtk-4.0-dev
+      - libgtksourceview-3.0-dev
+      - libtinfo-dev
+      - libdbusmenu-glib-dev
+      - libdbusmenu-gtk3-dev
+      - xmonad
+      - suckless-tools
+    state: latest
   become: true
   become_method: sudo
+
+- name: Install gorilla deps
+  apt:
+    name: polybar
+    state: latest
+  become: true
+  become_method: sudo
+  when: ((ansible_distribution_version == "20.10")
+    or (ansible_distribution_major_version | int > 20))

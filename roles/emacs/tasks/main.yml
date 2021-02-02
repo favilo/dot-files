@@ -1,6 +1,13 @@
 - import_tasks: debian.yml
   when: ansible_os_family == "Debian"
 
+- name: python dependencies
+  pip:
+    executable: pip3
+    name: pexpect
+  become: true
+  become_method: sudo
+
 - name: checkout doom-emacs
   git:
     repo: https://github.com/hlissner/doom-emacs
@@ -28,7 +35,11 @@
   register: doom_emacs_installed_result
 
 - name: install doom-emacs
-  command: "{{ dotfiles_user_home }}/.emacs.d/bin/doom install"
+  expect:
+    command: "{{ dotfiles_user_home }}/.emacs.d/bin/doom install"
+    responses:
+      ".*Generate an envvar file?.*": y
+      ".*Download and install all-the-icon's fonts?.*": y
   when: not doom_emacs_installed_result.stat.exists
 
 - name: mark installed
