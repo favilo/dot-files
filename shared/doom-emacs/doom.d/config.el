@@ -141,8 +141,7 @@
   (setq alert-default-style 'notifier)
   )
 
-(use-package! wakatime-mode
-  :ensure t)
+(use-package! wakatime-mode)
 
 (global-wakatime-mode)
 

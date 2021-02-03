@@ -1,0 +1,9 @@
+- import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: Link .vimrc
+  file:
+    src: "{{ dotfiles_home }}/roles/vim/files/vimrc"
+    dest: "{{ dotfiles_user_home }}/.vimrc"
+    state: link
+    force: true

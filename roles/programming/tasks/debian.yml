@@ -3,7 +3,7 @@
   become: true
   become_method: sudo
   args:
-    creates: /etc/apt/sources.list.d/aslatter-ubuntu-ppa-groovy.list
+    creates: "/etc/apt/sources.list.d/aslatter-ubuntu-ppa-groovy.list"
 
 - name: Install alacritty dependencies
   apt: 
