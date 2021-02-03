@@ -16,6 +16,7 @@
   snap:
     name:
     - slack
+    - helm
     state: present
     classic: true
   become: true
