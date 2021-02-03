@@ -74,6 +74,10 @@
 ;;       "c l e" #'lsp-extend-selection
 ;;       )
 
+(map! :leader
+      "c l e" #'lsp-extend-selection
+      )
+
 ;; Enable terminal copy to cliboard
 (defun copy-to-clipboard ()
   "Copies selection to x-clipboard."
@@ -145,4 +149,9 @@
 
 (global-wakatime-mode)
 
-;; (set-formatter! 'black \"black -S -q -\")
+(setq doom-theme 'doom-molokai)
+(setq lsp-rust-server 'rust-analyzer)
+(setq rustic-lsp-server 'rust-analyzer)
+(when (not window-system)
+  (xterm-mouse-mode 1)
+  )

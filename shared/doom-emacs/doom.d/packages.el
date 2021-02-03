@@ -86,6 +86,7 @@
   )
 (package! protobuf-mode)
 (package! ranger)
+(package! string-inflection)
 (package! gist)
 ;; (package! ejira)
 
