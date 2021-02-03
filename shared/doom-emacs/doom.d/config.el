@@ -70,9 +70,9 @@
       "ff" #'counsel-fzf
       )
 (setq counsel-fzf-cmd "fdfind --type f | fzf -f \"%s\"")
-;; (map! :leader
-;;       "c l e" #'lsp-extend-selection
-;;       )
+(map! :leader
+      "c l e" #'lsp-extend-selection
+      )
 
 (map! :leader
       "c l e" #'lsp-extend-selection
