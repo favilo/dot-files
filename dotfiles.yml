@@ -36,6 +36,8 @@
           url: zsh-users/zsh-syntax-highlighting
         - name: wakatime
           url: sobolevn/wakatime-zsh-plugin
+        - name: zsh-poetry
+          url: darvid/zsh-poetry
   - role: tmux
     tags: 
     - 'tmux'

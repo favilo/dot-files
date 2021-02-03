@@ -6,6 +6,9 @@ export PATH=$PATH:~/.cargo/bin
 export PATH=~/.local/bin:$PATH
 export PATH=$PATH:~/go/bin
 export PATH=$PATH:/snap/bin
+export PATH="$PATH:$HOME/.pyenv/bin"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -111,3 +114,13 @@ alias vim="emacs -nw"
 alias ls=exa
 alias ta="tmux attach"
 alias cat=bat
+alias docker=podman
+
+##
+# Load any extra Zshell profile scripts
+##
+if [[ -d ~/.profile.d  ]]; then
+   for f in ~/.profile.d/*.zsh; do
+       source "$f"
+    done
+fi
