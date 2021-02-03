@@ -16,6 +16,8 @@
   - role: vim
     tags:
     - 'vim'
+  # - role: markosamuli.pyenv
+  #   pyenv_init_shell: true
   - role: zsh
     tags:
     - 'zsh'
@@ -32,6 +34,8 @@
         - name: pip
         - name: lein
         - name: command-not-found
+        - name: zsh-vi-mode
+          url: jeffreytse/zsh-vi-mode
         - name: zsh-syntax-highlighting
           url: zsh-users/zsh-syntax-highlighting
         - name: wakatime

@@ -3,6 +3,11 @@
 #   args:
 #     creates: "{{ dotfiles_user_home }}/.oh-my-zsh"
 
+- name: install pyenv
+  command: "curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash"
+  args:
+    creates: "{{ dotfiles_user_home }}/.pyenv/bin/pyenv"
+
 - name: link .zshrc
   file:
     src: "{{ dotfiles_home }}/roles/zsh/files/zshrc"
