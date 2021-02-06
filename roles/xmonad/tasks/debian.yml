@@ -1,8 +1,14 @@
+- name: Enable deb-src repos
+  command: "sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list"
+  become: true
+  become_method: sudo
+
 - name: Install xmonad deps
   apt:
     name:
       - xmonad
     state: build-dep
+    update_cache: true
   become: true
   become_method: sudo
 
