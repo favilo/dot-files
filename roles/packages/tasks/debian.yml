@@ -8,6 +8,8 @@
     - sddm
     - flameshot
     - podman
+    - autorandr
+    - steam-installer
     state: present
   become_method: sudo
   become: true

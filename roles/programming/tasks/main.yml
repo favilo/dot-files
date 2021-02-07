@@ -6,6 +6,12 @@
   args:
     creates: "{{ dotfiles_user_home }}/.cargo/bin/rustup"
 
+- name: Install rust-analyzer server
+  get_url:
+    url: "https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-linux"
+    dest: "{{ dotfiles_user_home }}/.local/bin/rust-analyzer"
+    mode: 0755
+
 - name: Install fun crates
   command: "cargo install {{ item.name }}"
   args:
@@ -19,8 +25,6 @@
     exe: rg
   - name: cargo-edit
     exe: cargo-add
-  - name: rust-analyzer
-    exe: rust-analyzer
 
 - name: Alacritty config dir
   file:

@@ -52,7 +52,9 @@
     tags:
     - 'rustup'
     - 'cargo'
+    - 'rust'
     - 'go'
+    - 'programming'
   - role: xmonad
     tags:
     - 'xmonad'

@@ -9,7 +9,7 @@ ansible-galaxy install gantsign.antigen
 # ansible-galaxy install markosamuli.pyenv
 
 echo "Setting up local dev environment"
-ansible-playbook -i ~/git/dot-files/hosts ~/git/dot-files/dotfiles.yml --ask-become-pass -v
+ansible-playbook -i ~/git/dot-files/hosts ~/git/dot-files/dotfiles.yml --ask-become-pass -v "$@"
 
 if command -v terminal-notifier 1>/dev/null 2>&1; then
     terminal-notifier -title "dotfiles: Bootstrap complete" -message "Successfully set up dev environment."
