@@ -8,6 +8,11 @@
   args:
     creates: "{{ dotfiles_user_home }}/.pyenv/bin/pyenv"
 
+- name: Create .zsh folder
+  file:
+    path: "{{ dotfiles_user_home }}/.zsh/completion"
+    state: directory
+
 - name: link .zshrc
   file:
     src: "{{ dotfiles_home }}/roles/zsh/files/zshrc"
