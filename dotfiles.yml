@@ -45,6 +45,9 @@
   - role: tmux
     tags: 
     - 'tmux'
+  - role: fzf
+    tags:
+    - 'fzf'
   - role: haskell
     tags: 
     - 'stack'
@@ -59,9 +62,6 @@
     tags:
     - 'xmonad'
   # - {role: hub, tags: ['hub']}
-  - role: fzf
-    tags: 
-    - 'fzf'
   - role: packages
     tags:
     - 'packages'

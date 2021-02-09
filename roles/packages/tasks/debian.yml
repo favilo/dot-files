@@ -9,6 +9,7 @@
     - flameshot
     - podman
     - autorandr
+    - arandr
     - steam-installer
     state: present
   become_method: sudo

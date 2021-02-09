@@ -1,19 +1,24 @@
 - import_tasks: debian.yml
   when: ansible_os_family == "Debian"
 
-- name: Install rustup
-  command: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
+- name: download rustup
+  get_url:
+    url: "https://sh.rustup.rs"
+    dest: "/tmp/rustup.sh"
+
+- name: install rustup
+  command: "sh /tmp/rustup.sh -y"
   args:
     creates: "{{ dotfiles_user_home }}/.cargo/bin/rustup"
 
 - name: Install rust-analyzer server
   get_url:
     url: "https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-linux"
-    dest: "{{ dotfiles_user_home }}/.local/bin/rust-analyzer"
+    dest: "{{ dotfiles_user_home }}/.cargo/bin/rust-analyzer"
     mode: 0755
 
 - name: Install fun crates
-  command: "cargo install {{ item.name }}"
+  command: "{{ dotfiles_user_home }}/.cargo/bin/cargo install {{ item.name }}"
   args:
     creates: "{{ dotfiles_user_home }}/.cargo/bin/{{ item.exe }}"
   with_items:
@@ -25,6 +30,8 @@
     exe: rg
   - name: cargo-edit
     exe: cargo-add
+  - name: alacritty
+    exe: alacritty
 
 - name: Alacritty config dir
   file:
