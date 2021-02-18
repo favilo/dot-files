@@ -1,0 +1,3 @@
+- name: Print default profile
+  debug:
+    msg: "Default firefox profile {{ lookup('ini', 'Default file={{ dotfiles_user_home }}/.mozilla/firefox/profiles.ini') }}"
