@@ -1,0 +1,6 @@
+- name: Install fzf from apt
+  apt:
+    name: fzf
+    state: present
+  become: true
+  become_method: sudo
