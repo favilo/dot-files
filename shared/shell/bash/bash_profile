@@ -1,7 +1,0 @@
-export HISTTIMEFORMAT="%d/%m/%y %T "
-. ~/.bashrc
-if [ -e /home/klah/.nix-profile/etc/profile.d/nix.sh ]; then . /home/klah/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
-
-export PATH="$HOME/.cargo/bin:$PATH"
-
-export HOST=$HOSTNAME
