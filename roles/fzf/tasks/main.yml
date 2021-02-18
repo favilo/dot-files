@@ -1,3 +1,6 @@
+- import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
 - name: Update fzf
   git:
     repo: 'https://github.com/junegunn/fzf.git'

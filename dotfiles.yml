@@ -5,63 +5,65 @@
 - name: Set up local development environment
   hosts: local
   roles:
-  - role: git
-    tags:
-    - 'git'
-  # - {role: fish, tags: ['fish']}
-  - role: emacs
-    tags:
-    - 'emacs'
-    - 'doom-emacs'
-  - role: vim
-    tags:
-    - 'vim'
-  # - role: markosamuli.pyenv
-  #   pyenv_init_shell: true
-  - role: zsh
-    tags:
-    - 'zsh'
-  - role: gantsign.antigen
-    users:
-    - username: "{{ dotfiles_user }}"
-      antigen_libraries:
-        - name: oh-my-zsh
-      antigen_theme:
-        name: afowler
-      antigen_bundles:
-        - name: git
-        - name: heroku
-        - name: pip
-        - name: lein
-        - name: command-not-found
-        - name: zsh-vi-mode
-          url: jeffreytse/zsh-vi-mode
-        - name: zsh-syntax-highlighting
-          url: zsh-users/zsh-syntax-highlighting
-        - name: wakatime
-          url: sobolevn/wakatime-zsh-plugin
-        - name: zsh-poetry
-          url: darvid/zsh-poetry
-  - role: tmux
-    tags: 
-    - 'tmux'
-  - role: fzf
-    tags:
-    - 'fzf'
-  - role: haskell
-    tags: 
-    - 'stack'
-  - role: programming
-    tags:
-    - 'rustup'
-    - 'cargo'
-    - 'rust'
-    - 'go'
-    - 'programming'
-  - role: xmonad
-    tags:
-    - 'xmonad'
-  # - {role: hub, tags: ['hub']}
-  - role: packages
-    tags:
-    - 'packages'
+    - role: git
+      tags:
+        - "git"
+    # - {role: fish, tags: ['fish']}
+    - role: emacs
+      tags:
+        - "emacs"
+        - "doom-emacs"
+    - role: vim
+      tags:
+        - "vim"
+    # - role: markosamuli.pyenv
+    #   pyenv_init_shell: true
+    - role: zsh
+      tags:
+        - "zsh"
+    - role: gantsign.antigen
+      users:
+        - username: "{{ dotfiles_user }}"
+          antigen_libraries:
+            - name: oh-my-zsh
+          antigen_theme:
+            name: afowler
+          antigen_bundles:
+            - name: git
+            - name: heroku
+            - name: pip
+            - name: lein
+            - name: command-not-found
+            - name: zsh-vi-mode
+              url: jeffreytse/zsh-vi-mode
+            - name: zsh-syntax-highlighting
+              url: zsh-users/zsh-syntax-highlighting
+            - name: wakatime
+              url: sobolevn/wakatime-zsh-plugin
+            - name: zsh-poetry
+              url: darvid/zsh-poetry
+    - role: tmux
+      tags:
+        - "tmux"
+    - role: fzf
+      tags:
+        - "fzf"
+    - role: haskell
+      tags:
+        - "stack"
+    - role: programming
+      tags:
+        - "rustup"
+        - "cargo"
+        - "rust"
+        - "go"
+        - "programming"
+    - role: xmonad
+      tags:
+        - "xmonad"
+    - role: firefox
+    #   tags:
+    #     - firefox
+    - role: packages
+      tags:
+        - "packages"

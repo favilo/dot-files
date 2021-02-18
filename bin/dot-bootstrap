@@ -6,6 +6,7 @@ if ! [ -x "$(command -v ansible)" ]; then
 fi
 
 ansible-galaxy install gantsign.antigen
+ansible-galaxy collection install community.general
 # ansible-galaxy install markosamuli.pyenv
 
 echo "Setting up local dev environment"

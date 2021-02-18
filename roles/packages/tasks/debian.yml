@@ -21,16 +21,24 @@
 - name: Install apt packages
   apt:
     name:
+    - aptitude
     - qemu
     - qemu-system
     - nodejs
     - npm
     - sddm
     - flameshot
+    - runc
     - podman
     - autorandr
     - arandr
     - steam-installer
+    - pavucontrol
+    - gnome-screensaver
+    - silversearcher-ag
+    - openjdk-8-jdk
+    - net-tools
+    - nemo
     state: present
     update_cache: true
   become_method: sudo
@@ -41,6 +49,7 @@
     name:
     - slack
     - helm
+    - kubectl
     state: present
     classic: true
   become: true
@@ -63,5 +72,24 @@
     - libvulkan1:i386
     update_cache: true
     state: present
+  become: true
+  become_method: sudo
+
+- name: check if multimc is installed
+  command: dpkg-query -W multimc
+  register: multimc_check_deb
+  failed_when: multimc_check_deb.rc > 1
+  changed_when: multimc_check_deb.rc == 1
+
+- name: download multimc
+  get_url:
+    url: "https://files.multimc.org/downloads/multimc_1.4-1.deb"
+    dest: "{{ dotfiles_user_home }}/Downloads/multimc_1.4-1.deb"
+  when: multimc_check_deb.rc == 1
+
+- name: Install multimc
+  apt:
+    deb: "{{ dotfiles_user_home }}/Downloads/multimc_1.4-1.deb"
+  when: multimc_check_deb.rc == 1
   become: true
   become_method: sudo

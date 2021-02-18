@@ -2,8 +2,15 @@
   when: ansible_os_family == "Debian"
 
 - name: install bash-language-server
-  command: "npm i -g bash-language-server"
+  community.general.npm:
+    name: "bash-language-server"
+    global: true
   become: true
   become_method: sudo
-  args:
-    creates: "/usr/local/bin/bash-language-server"
+
+- name: install prettier
+  community.general.npm:
+    name: "prettier"
+    global: true
+  become: true
+  become_method: sudo
