@@ -1,8 +1,8 @@
 export PATH="$HOME/bin:/usr/local/bin:$PATH"
-export PATH="$PATH:~/.cabal/bin"
-export PATH="$PATH:~/.cargo/bin"
-export PATH="~/.local/bin:$PATH"
-export PATH="$PATH:~/go/bin"
+export PATH="$PATH:$HOME/.cabal/bin"
+export PATH="$PATH:$HOME/.cargo/bin"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$PATH:$HOME/go/bin"
 export PATH="$PATH:/snap/bin"
 export PATH="$PATH:$HOME/.pyenv/bin"
 eval "$(pyenv init -)"
@@ -16,7 +16,7 @@ export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
 HYPHEN_INSENSITIVE="true"
 COMPLETION_WAITING_DOTS="true"
 
-source ~/.antigenrc
+source $HOME/.antigenrc
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 
 alias vim="emacs -nw"
@@ -28,8 +28,8 @@ alias cat=bat
 ##
 # Load any extra Zshell profile scripts
 ##
-if [[ -d ~/.profile.d  ]]; then
-   for f in ~/.profile.d/*.zsh; do
+if [[ -d $HOME/.profile.d  ]]; then
+   for f in $HOME/.profile.d/*.zsh; do
        source "$f"
     done
 fi
@@ -43,6 +43,6 @@ bindkey "^[[B" down-line-or-beginning-search # Down
 
 source <(kubectl completion zsh)
 [[ /snap/bin/kubectl ]] && source <(kubectl completion zsh)
-fpath=($fpath ~/.zsh/completion)
+fpath=($fpath $HOME/.zsh/completion)
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
