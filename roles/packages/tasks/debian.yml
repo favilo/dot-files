@@ -55,25 +55,7 @@
   become: true
   become_method: sudo
 
-- name: add graphics-drivers ppa
-  command: "add-apt-repository ppa:graphics-drivers/ppa"
-  become: true
-  become_method: sudo
-  args:
-    creates: "/etc/apt/sources.list.d/graphics-drivers-ubuntu-ppa-groovy.list"
 
-- name: Install graphics drivers
-  apt:
-    name:
-    - nvidia-driver-460
-    - libnvidia-gl-460
-    - libnvidia-gl-460:i386
-    - libvulkan1
-    - libvulkan1:i386
-    update_cache: true
-    state: present
-  become: true
-  become_method: sudo
 
 - name: check if multimc is installed
   command: dpkg-query -W multimc
