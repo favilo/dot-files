@@ -53,8 +53,9 @@
 (package! fzf-spacemacs-layer
   :recipe
   (:host github
-   :repo "AshyIsMe/fzf-spacemacs-layer")
-  )
+   :repo "AshyIsMe/fzf-spacemacs-layer"
+   :build (:not compile)))
+
 (package! godot-gdscript
   :recipe
   (:host github
