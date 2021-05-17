@@ -26,7 +26,7 @@
 - name: link .zshrc
   file:
     src: "{{ dotfiles_home }}/roles/zsh/files/zshrc"
-    dest: "{{ dotfiles_user_home }}/.zshrc"
+    dest: "{{ dotfiles_user_home }}/.zshrc.local"
     state: link
     force: true
 

@@ -5,8 +5,13 @@ if ! [ -x "$(command -v ansible)" ]; then
     sudo apt install ansible
 fi
 
-ansible-galaxy install gantsign.antigen
-ansible-galaxy collection install community.general
+# ansible-galaxy install gantsign.antigen --ignore-certs
+if ! [ -x "$(ansible-galaxy collection list community.general)" ]; then
+    ansible-galaxy collection install community.general --ignore-certs
+fi
+if ! [ -x "$(ansible-galaxy list viasite-ansible.zsh)" ]; then
+    ansible-galaxy install viasite-ansible.zsh --force --ignore-certs
+fi
 # ansible-galaxy install markosamuli.pyenv
 
 echo "Setting up local dev environment"

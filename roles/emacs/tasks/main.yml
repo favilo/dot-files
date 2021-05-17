@@ -1,9 +1,12 @@
 - import_tasks: debian.yml
   when: ansible_os_family == "Debian"
 
+- import_tasks: mac.yml
+  when: ansible_os_family == "Darwin"
+
 - name: python dependencies
   pip:
-    executable: pip3
+    executable: pip
     name: pexpect
   become: true
   become_method: sudo
