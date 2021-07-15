@@ -50,11 +50,10 @@
 ;(unpin! t)
 
 (package! move-text)
-(package! fzf-spacemacs-layer
-  :recipe
-  (:host github
-   :repo "AshyIsMe/fzf-spacemacs-layer")
-  )
+(package! fzf
+  :recipe (:host github :repo "AshyIsMe/fzf.el"))
+;; false
+
 (package! godot-gdscript
   :recipe
   (:host github
@@ -73,7 +72,6 @@
   (:host github
    :repo "yuya373/emacs-slack")
   )
-(package! wakatime-mode)
 (package! helm-slack
   :recipe
   (:host github

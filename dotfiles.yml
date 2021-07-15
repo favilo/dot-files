@@ -64,7 +64,7 @@
     - role: xmonad
       tags:
         - "xmonad"
-    - role: firefox
+    # - role: firefox
     #   tags:
     #     - firefox
     - role: packages

@@ -56,6 +56,12 @@ fpath=($fpath $HOME/.zsh/completion)
 
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
 
+PATH="/home/klah/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/klah/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/klah/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/klah/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/klah/perl5"; export PERL_MM_OPT;
+
 if (( $+commands[tag] )); then
   export TAG_SEARCH_PROG=rg  # replace with rg for ripgrep
   tag() { command tag "$@"; source ${TAG_ALIAS_FILE:-/tmp/tag_aliases} 2>/dev/null }

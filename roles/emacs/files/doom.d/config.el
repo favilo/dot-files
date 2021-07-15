@@ -73,6 +73,9 @@
 ;; (map! :leader
 ;;       "c l e" #'lsp-extend-selection
 ;;       )
+(map! :leader
+      "c d" #'lsp-find-definition
+      )
 
 ;; Enable terminal copy to cliboard
 (defun copy-to-clipboard ()
@@ -111,6 +114,19 @@
 (use-package! realgud
   :commands realgud:pdb)
 
+(use-package! fzf
+  :commands (spacemacs/fzf-find-files
+             spacemacs/fzf-recentf
+             spacemacs/fzf-buffers)
+  :init
+  (map! :leader
+        ;; get rid of conflicting keybinds first
+        "of" nil
+        "ob" nil
+        "off" #'spacemacs/fzf-find-files
+        "ofr" #'spacemacs/fzf-recentf
+        "obb" #'spacemacs/fzf-buffers))
+
 (setq auth-source-debug t)
 (use-package! slack
   :commands (slack-start)
@@ -129,8 +145,8 @@
    )
   )
 
-(use-package! helm-slack
-  :after emacs-slack)
+;; (use-package! helm-slack
+;;   :after emacs-slack)
 
 ;; (use-package! helm-slack
 ;;   :after (slack)
@@ -176,3 +192,4 @@
   )
 
 (setq load-prefer-newer t)
+;; (set-formatter! 'black \"black -S -q -\")
