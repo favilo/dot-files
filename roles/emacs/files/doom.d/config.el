@@ -157,10 +157,10 @@
   (setq alert-default-style 'notifier)
   )
 
-(use-package! wakatime-mode
-  :ensure t)
+;; (use-package! wakatime-mode
+;;   :ensure t)
 
-(global-wakatime-mode)
+;; (global-wakatime-mode)
 
 ;; Doesn't work
 ;; (after! format

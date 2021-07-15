@@ -18,8 +18,8 @@
         - "vim"
     # - role: markosamuli.pyenv
     #   pyenv_init_shell: true
-    - role: viasite-ansible.zsh
-      tags: antigen
+    # - role: viasite-ansible.zsh
+    #   tags: antigen
     - role: zsh
       tags:
         - "zsh"
