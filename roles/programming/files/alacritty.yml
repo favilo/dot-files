@@ -368,7 +368,8 @@ live_config_reload: true
 #   - (Linux) user login shell
 #   - (Windows) powershell
 shell:
-  program: /usr/bin/zsh
+  # program: /usr/bin/zsh
+  program: /bin/zsh
 #  args:
 #    - --login
 

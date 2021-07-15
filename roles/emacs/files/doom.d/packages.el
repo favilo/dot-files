@@ -87,6 +87,8 @@
 (package! protobuf-mode)
 (package! ranger)
 (package! gist)
+(package! python-black)
+(package! explain-pause-mode)
 ;; (package! ejira)
 
 ;;;;

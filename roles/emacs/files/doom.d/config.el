@@ -146,4 +146,33 @@
 
 (global-wakatime-mode)
 
-;; (set-formatter! 'black \"black -S -q -\")
+;; Doesn't work
+;; (after! format
+;;   (set-formatter! 'black \"black -S -q -\" :modes `(python-mode))
+;;   )
+
+(unless window-system
+  (global-set-key (kbd "<mouse-4>") 'mwheel-scroll)
+  (global-set-key (kbd "<mouse-5>") 'mwheel-scroll)
+  (setq mouse-wheel-up-event 'mouse-5)
+  (setq mouse-wheel-down-event 'mouse-4))
+
+(if (featurep 'ns)
+    (progn
+      (global-set-key (kbd "<mouse-4>") (kbd "<wheel-up>"))
+      (global-set-key (kbd "<mouse-5>") (kbd "<wheel-down>"))))
+(global-set-key (kbd "M-[ h") 'beginning-of-line)
+(global-set-key (kbd "<select>") 'end-of-line)
+
+(use-package! python-black
+  :demand t
+  :after python
+  :config
+  ;; (add-hook! 'python-mode-hook #'python-black-on-save-mode)
+  ;; Feel free to throw your own personal keybindings here
+  (map! :leader :desc "Blacken Buffer" "m b b" #'python-black-buffer)
+  (map! :leader :desc "Blacken Region" "m b r" #'python-black-region)
+  (map! :leader :desc "Blacken Statement" "m b s" #'python-black-statement)
+  )
+
+(setq load-prefer-newer t)
