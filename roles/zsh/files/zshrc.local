@@ -1,0 +1,63 @@
+# export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git'"
+
+HYPHEN_INSENSITIVE="true"
+COMPLETION_WAITING_DOTS="true"
+
+[ -f /usr/share/doc/fzf ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
+
+
+# alias docker=podman
+
+##
+# Load any extra Zshell profile scripts
+##
+if [[ -d $HOME/.profile.d  ]]; then
+   for f in $HOME/.profile.d/*.zsh; do
+       source "$f"
+    done
+fi
+
+[[ /snap/bin/kubectl ]] && source <(kubectl completion zsh)
+
+fpath=($fpath $HOME/.zsh/completion)
+
+[ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
+
+export PATH="$HOME/bin:/usr/local/bin:$PATH"
+export PATH="$PATH:$HOME/.cabal/bin"
+export PATH="$PATH:$HOME/.cargo/bin"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$PATH:$HOME/go/bin"
+export PATH="$PATH:/snap/bin"
+export PATH="$PATH:$HOME/.pyenv/bin"
+export PATH="$PATH:$HOME/.emacs.d/bin"
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}"
+
+eval "$(pyenv init -)"
+# eval "$(pyenv virtualenv-init -)"
+
+alias ls=exa
+alias vim="emacs -nw"
+alias ta="tmux attach"
+alias cat=bat
+
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search # Up
+bindkey "^[[B" down-line-or-beginning-search # Down
+
+source <(kubectl completion zsh)
+[[ /snap/bin/kubectl ]] && source <(kubectl completion zsh)
+fpath=($fpath $HOME/.zsh/completion)
+
+[ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
+
+if (( $+commands[tag] )); then
+  export TAG_SEARCH_PROG=rg  # replace with rg for ripgrep
+  tag() { command tag "$@"; source ${TAG_ALIAS_FILE:-/tmp/tag_aliases} 2>/dev/null }
+  # alias rg=tag  # replace with rg for ripgrep
+fi
