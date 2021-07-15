@@ -18,6 +18,16 @@
     path: /tmp/pyenv-installer.sh
     state: absent
 
+- name: download oh-my-zsh installer
+  get_url:
+    url: "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+    dest: /tmp/omz-installer.sh
+
+- name: install oh-my-zsh
+  command: "sh /tmp/omz-installer.sh"
+  args:
+    creates: "{{ dotfiles_user_home }}/.oh-my-zsh/oh-my-zsh.sh"
+
 - name: Create .zsh folder
   file:
     path: "{{ dotfiles_user_home }}/.zsh/completion"
