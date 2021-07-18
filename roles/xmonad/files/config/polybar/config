@@ -67,9 +67,12 @@ line-color = #f00
 border-size = 0
 border-color = #00000000
 
-tray-position = ${env:TRAY_POS:none}
+; tray-position = ${env:TRAY_POS:none}
+tray-position = right
 tray-padding = 2
-tray-background = ${root.background}
+tray-background = ${colors.background}
+
+enable-ipc = true
 
 [bar/desktop]
 inherit = bar/base
@@ -81,8 +84,8 @@ modules-right = volume cpu memory battery backlight powermenu
 
 [bar/laptop]
 inherit = bar/base
-monitor = ${env:MONITOR:eDP1}
-monitor-fallback = ${env:MONITOR:HDMI1}
+monitor = ${env:MONITOR:DP-0}
+monitor-fallback = ${env:MONITOR:HDMI-0}
 
 modules-left = xmonad
 modules-center = date
