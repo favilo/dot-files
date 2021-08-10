@@ -154,6 +154,7 @@
        (org                ; organize your plain life in plain text
         +brain
         +dragndrop         ; file drag & drop support
+        +roam
         +ipython           ; ipython support for babel
         +jupyter
         +pandoc            ; pandoc integration into org's exporter
