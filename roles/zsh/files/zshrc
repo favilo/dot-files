@@ -170,3 +170,5 @@ setopt prompt_subst # enable command substition in prompt
 #     # redisplay
 #     zle && zle reset-prompt
 # }
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
