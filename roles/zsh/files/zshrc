@@ -94,7 +94,7 @@ plugins=(
     # httpie
     # kubectl
     # node
-    osx
+    macos
     # python
     ripgrep
     # rust
