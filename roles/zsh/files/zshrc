@@ -74,6 +74,7 @@ zmodload zsh/zprof
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     # aws
+    battery
     bundler
     cargo
     cp
