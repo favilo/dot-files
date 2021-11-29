@@ -74,35 +74,37 @@ zmodload zsh/zprof
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     # aws
-    battery
-    bundler
-    cargo
-    cp
     # docker
-    dotenv
     # emoji
-    git
     # git-auto-fetch
     # git-escape-magic
     # git-extras
     # git-lfs
     # git-prompt
-    gitfast
     # github
-    gitignore
-    history
-    history-substring-search
     # httpie
     # kubectl
     # node
-    macos
     # python
-    ripgrep
-    # rust
     # rustup
     # ssh-agent
-    sudo
+    battery
+    bundler
+    cargo
+    copyfile
+    cp
+    dotenv
+    git
+    gitfast
+    gitignore
+    history
+    history-substring-search
+    macos
+    ripgrep
+    rust
     vi-mode
+    web-search
+    zsh-autosuggestions
 )
 
 source $ZSH/oh-my-zsh.sh
