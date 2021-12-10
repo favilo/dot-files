@@ -1,7 +1,5 @@
-# - name: install oh-my-zsh
-#   command: 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
-#   args:
-#     creates: "{{ dotfiles_user_home }}/.oh-my-zsh"
+- import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
 
 - name: download pyenv installer
   get_url:

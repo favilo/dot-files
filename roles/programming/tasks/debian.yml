@@ -1,9 +1,9 @@
 - name: add alacritty ppa
-  command: "add-apt-repository ppa:aslatter/ppa"
+  command: "add-apt-repository ppa:aslatter/ppa -y"
   become: true
   become_method: sudo
   args:
-    creates: "/etc/apt/sources.list.d/aslatter-ubuntu-ppa-groovy.list"
+    creates: "/etc/apt/sources.list.d/aslatter-ubuntu-ppa-impish.list"
 
 - name: Install alacritty dependencies
   apt: 

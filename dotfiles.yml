@@ -9,6 +9,15 @@
       tags:
         - "git"
     # - {role: fish, tags: ['fish']}
+    - role: fzf
+      tags:
+        - "fzf"
+    - role: zsh
+      tags:
+        - "zsh"
+    - role: tmux
+      tags:
+        - "tmux"
     - role: emacs
       tags:
         - "emacs"
@@ -20,9 +29,6 @@
     #   pyenv_init_shell: true
     # - role: viasite-ansible.zsh
     #   tags: antigen
-    - role: zsh
-      tags:
-        - "zsh"
     # role: gantsign.antigen
     #   tags: antigen
     #   users:
@@ -45,12 +51,6 @@
     #           url: sobolevn/wakatime-zsh-plugin
     #         - name: zsh-poetry
               # url: darvid/zsh-poetry
-    - role: tmux
-      tags:
-        - "tmux"
-    - role: fzf
-      tags:
-        - "fzf"
     - role: haskell
       tags:
         - "stack"
