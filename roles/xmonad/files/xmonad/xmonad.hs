@@ -126,7 +126,7 @@ easyKeyList conf =
     , withFocused $ windows . W.sink
     )
     -- Lock screen
-  , ("M-S-z", spawn "gnome-screensaver-command --lock")
+  , ("M-S-z", spawn "xsecurelock")
   , ("M-C-w", spawn "firefox")
     -- Cycle Keyboard layouts
   , ( "M-<Escape>"
