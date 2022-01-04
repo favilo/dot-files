@@ -1,0 +1,60 @@
+- import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+# - name: Fetch penrose git repo
+#   git:
+#     repo: https://github.com/favilo/favilrose
+#     dest: "{{ dotfiles_user_home }}/git/utilities/favilrose"
+#
+# - name: Build penrose
+#   command: "cargo build --release"
+#   args:
+#     chdir: "{{ dotfiles_user_home }}/git/utilities/favilrose"
+#
+# - name: install penrose
+#   command: "cargo install --path ."
+#   args:
+#     chdir: "{{ dotfiles_user_home }}/git/utilities/favilrose"
+#
+# - name: Install Penrose.desktop file
+#   template:
+#     src: "{{ dotfiles_home }}/roles/penrose/files/Penrose.desktop"
+#     dest: "/usr/share/xsessions/penrose.desktop"
+#   become: true
+#   become_method: sudo
+
+- name: Create config directories
+  file:
+    path: "{{ dotfiles_user_home }}/.config/{{ item.dir }}"
+    state: directory
+  with_items:
+  - dir: bspwm
+  - dir: sxhkd
+  - dir: polybar
+
+- name: bspwm config
+  file:
+    src: "{{ dotfiles_home }}/roles/penrose/files/config/{{ item.dir }}/{{ item.src }}"
+    dest: "{{ dotfiles_user_home }}/.config/{{ item.dir }}/{{ item.src }}"
+    state: link
+    force: true
+  with_items:
+  - src: bspwmrc
+    dir: bspwm
+  - src: sxhkdrc
+    dir: sxhkd
+
+- name: polybar config
+  file:
+    src: "{{ dotfiles_home }}/roles/xmonad/files/config/polybar/{{ item.src }}"
+    dest: "{{ dotfiles_user_home }}/.config/polybar/{{ item.src }}"
+    state: link
+    force: true
+  with_items:
+  - src: launch.sh
+  - src: config
+
+- name: xmonad-log
+  command: "go get github.com/xintron/xmonad-log"
+  args:
+    creates: "{{ dotfiles_user_home }}/go/bin/xmonad-log"

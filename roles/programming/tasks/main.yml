@@ -11,16 +11,6 @@
   args:
     creates: "{{ dotfiles_user_home }}/.cargo/bin/rustup"
 
-- name: Download rust-analyzer server
-  get_url:
-    url: "https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz"
-    dest: "{{ dotfiles_user_home }}/.cargo/bin/rust-analyzer.gz"
-
-- name: Install rust-analyzer server
-  command: "gunzip {{ dotfiles_user_home }}/.cargo/bin/rust-analyzer.gz"
-  args:
-    creates: "{{ dotfiles_user_home }}/.cargo/bin/rust-analyzer"
-
 - name: Install fun crates
   command: "{{ dotfiles_user_home }}/.cargo/bin/cargo install {{ item.name }}"
   args:
@@ -36,6 +26,8 @@
     exe: cargo-add
   - name: alacritty
     exe: alacritty
+  - name: sccache
+    exe: sccache
 
 - name: Alacritty config dir
   file:
@@ -48,3 +40,19 @@
     dest: "{{ dotfiles_user_home }}/.config/alacritty/alacritty.yml"
     state: link
     force: true
+
+- name: Remove rls
+  file:
+    dest: "{{ dotfiles_user_home }}/.cargo/bin/rls"
+    state: absent
+
+- name: Checkout rust-analyzer
+  git:
+    repo: https://github.com/rust-analyzer/rust-analyzer.git
+    dest: "{{ dotfiles_user_home }}/git/utilities/rust-analyzer"
+    update: no
+
+- name: Install rust-analyzer
+  command: "cargo xtask install --server"
+  args:
+    chdir: "{{ dotfiles_user_home }}/git/utilities/rust-analyzer"

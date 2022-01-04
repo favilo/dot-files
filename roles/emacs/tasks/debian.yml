@@ -4,6 +4,7 @@
     - emacs
     - fd-find
     - python3-pip
+    - sqlite3
     state: present
     force_apt_get: yes
   become: true

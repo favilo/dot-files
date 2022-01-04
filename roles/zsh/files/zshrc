@@ -88,9 +88,9 @@ plugins=(
     # python
     # rustup
     # ssh-agent
+    # zsh-autosuggestions
     battery
     bundler
-    cargo
     copyfile
     cp
     dotenv
@@ -104,7 +104,6 @@ plugins=(
     rust
     vi-mode
     web-search
-    zsh-autosuggestions
 )
 
 source $ZSH/oh-my-zsh.sh

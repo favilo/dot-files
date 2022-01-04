@@ -1,6 +1,6 @@
 /* hides the native tabs */
 #TabsToolbar {
-    visibility: collapse;
+    visibility: collapse !important;
 }
 
 /* hides the title bar */

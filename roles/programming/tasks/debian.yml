@@ -16,6 +16,7 @@
     - python3
     - libssl-dev
     - alacritty
+    - lld
     state: present
     force_apt_get: yes
   become: true

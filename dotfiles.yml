@@ -25,32 +25,6 @@
     - role: vim
       tags:
         - "vim"
-    # - role: markosamuli.pyenv
-    #   pyenv_init_shell: true
-    # - role: viasite-ansible.zsh
-    #   tags: antigen
-    # role: gantsign.antigen
-    #   tags: antigen
-    #   users:
-    #     - username: "{{ dotfiles_user }}"
-    #       antigen_libraries:
-    #         - name: oh-my-zsh
-    #       antigen_theme:
-    #         name: afowler
-    #       antigen_bundles:
-    #         - name: git
-    #         - name: heroku
-    #         - name: pip
-    #         - name: lein
-    #         - name: command-not-found
-    #         - name: zsh-vi-mode
-    #           url: jeffreytse/zsh-vi-mode
-    #         - name: zsh-syntax-highlighting
-    #           url: zsh-users/zsh-syntax-highlighting
-    #         - name: wakatime
-    #           url: sobolevn/wakatime-zsh-plugin
-    #         - name: zsh-poetry
-              # url: darvid/zsh-poetry
     - role: haskell
       tags:
         - "stack"
@@ -61,9 +35,14 @@
         - "rust"
         - "go"
         - "programming"
-    - role: xmonad
+    - role: penrose
       tags:
-        - "xmonad"
+        - "wm"
+        - "penrose"
+        - "bspwm"
+    # - role: xmonad
+    #   tags:
+    #     - "xmonad"
     # - role: firefox
     #   tags:
     #     - firefox
