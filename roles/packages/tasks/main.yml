@@ -1,5 +1,7 @@
 - import_tasks: debian.yml
   when: ansible_os_family == "Debian"
+- import_tasks: arch.yml
+  when: ansible_os_family == "Archlinux"
 
 - name: install bash-language-server
   community.general.npm:
@@ -7,6 +9,7 @@
     global: true
   become: true
   become_method: sudo
+  when: ansible_os_family != "Archlinux"
 
 - name: install prettier
   community.general.npm:

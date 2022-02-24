@@ -16,18 +16,25 @@
   args:
     creates: "{{ dotfiles_user_home }}/.cargo/bin/{{ item.exe }}"
   with_items:
+  - name: cargo-binstall
+    exe: cargo-binstall
+  - name: cargo-edit
+    exe: cargo-add
+  - name: sccache
+    exe: sccache
+  - name: alacritty
+    exe: alacritty
+- name: Install fun crates
+  command: "{{ dotfiles_user_home }}/.cargo/bin/cargo binstall {{ item.name }}"
+  args:
+    creates: "{{ dotfiles_user_home }}/.cargo/bin/{{ item.exe }}"
+  with_items:
   - name: exa
     exe: exa
   - name: bat
     exe: bat
   - name: ripgrep
     exe: rg
-  - name: cargo-edit
-    exe: cargo-add
-  - name: alacritty
-    exe: alacritty
-  - name: sccache
-    exe: sccache
 
 - name: Alacritty config dir
   file:

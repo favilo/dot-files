@@ -2,6 +2,14 @@
   hosts: local
   tasks: []
 
+- name: Debug values
+  hosts: local
+  tasks:
+  - debug:
+      var:
+      - ansible_os_family
+      verbosity: 1
+
 - name: Set up local development environment
   hosts: local
   roles:
@@ -25,9 +33,9 @@
     - role: vim
       tags:
         - "vim"
-    - role: haskell
-      tags:
-        - "stack"
+    # - role: haskell
+    #   tags:
+    #     - "stack"
     - role: programming
       tags:
         - "rustup"
@@ -35,11 +43,15 @@
         - "rust"
         - "go"
         - "programming"
-    - role: penrose
+    - role: sway
       tags:
+        - "sway"
         - "wm"
-        - "penrose"
-        - "bspwm"
+    # - role: penrose
+    #   tags:
+    #     - "wm"
+    #     - "penrose"
+    #     - "bspwm"
     # - role: xmonad
     #   tags:
     #     - "xmonad"

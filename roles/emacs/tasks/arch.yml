@@ -1,0 +1,8 @@
+- name: Install emacs
+  community.general.pacman:
+    name:
+      - emacs
+      - fd
+      - sqlite3
+  become: true
+  become_method: sudo

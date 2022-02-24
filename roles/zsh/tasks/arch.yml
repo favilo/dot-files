@@ -1,0 +1,6 @@
+- name: Install pacman packages
+  community.general.pacman:
+    name:
+      - zsh
+  become: true
+  become_method: sudo

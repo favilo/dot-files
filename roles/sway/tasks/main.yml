@@ -1,0 +1,33 @@
+# - name: Debian specific sway tasks
+#   import_tasks: debian.yml
+#   when: ansible_os_family == "Debian"
+- name: Arch specific sway tasks
+  import_tasks: arch.yml
+  when: ansible_os_family == "Archlinux"
+
+- name: create sway config directory
+  file:
+    path: "{{ dotfiles_user_home }}/.config/sway"
+    state: directory
+
+- name: create waybar config directory
+  file:
+    path: "{{ dotfiles_user_home }}/.config/waybar"
+    state: directory
+
+- name: link sway config
+  file:
+    src: "{{ dotfiles_home }}/roles/sway/files/sway/config"
+    dest: "{{ dotfiles_user_home }}/.config/sway/config"
+    state: hard
+    force: true
+
+- name: link waybar config
+  file:
+    src: "{{ dotfiles_home }}/roles/sway/files/waybar/{{ item.name }}"
+    dest: "{{ dotfiles_user_home }}/.config/waybar/{{ item.name }}"
+    state: hard
+    force: true
+  with_items:
+  - name: config
+  - name: style.css
