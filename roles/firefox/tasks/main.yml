@@ -1,3 +1,26 @@
-- name: Print default profile
-  debug:
-    msg: "Default firefox profile {{ lookup('ini', 'Default file={{ dotfiles_user_home }}/.mozilla/firefox/profiles.ini') }}"
+- set_fact:
+    firefox_dir: "{{dotfiles_user_home}}/.mozilla/firefox"
+    profiles_dir: "{{dotfiles_user_home}}/.mozilla/firefox"
+  when: ansible_os_family != "Darwin"
+
+- set_fact:
+    firefox_dir: "{{dotfiles_user_home}}/Library/Application Support/Firefox/"
+    profiles_dir: "{{dotfiles_user_home}}/Library/Application Support/Firefox/Profiles"
+  when: ansible_os_family == "Darwin"
+
+- name: Profile
+  shell: "grep 'Path=' '{{ firefox_dir }}/profiles.ini' | sed s/^Path=//"
+  register: profiles
+
+- name: Create chrome directories
+  file:
+    path: "{{profiles_dir}}/{{ item }}/chrome"
+    state: directory
+  with_items: "{{ profiles.stdout_lines }}"
+
+- name: Create chrome directories
+  file:
+    src: "{{ dotfiles_home }}/roles/firefox/files/userChrome.css"
+    dest: "{{profiles_dir}}/{{ item }}/chrome/userChrome.css"
+    state: hard
+  with_items: "{{ profiles.stdout_lines }}"

@@ -5,10 +5,22 @@
 - name: Debug values
   hosts: local
   tasks:
-  - debug:
-      var:
-      - ansible_os_family
-      verbosity: 1
+    - debug:
+        var:
+          - ansible_os_family
+        verbosity: 1
+      tags:
+        - "git"
+        - "fzf"
+        - "zsh"
+        - "tmux"
+        - "emacs"
+        - "doom-emacs"
+        - "vim"
+        - "rust"
+        - "sway"
+        - "wm"
+        - "packages"
 
 - name: Set up local development environment
   hosts: local
@@ -55,9 +67,9 @@
     # - role: xmonad
     #   tags:
     #     - "xmonad"
-    # - role: firefox
-    #   tags:
-    #     - firefox
+    - role: firefox
+      tags:
+        - firefox
     - role: packages
       tags:
         - "packages"

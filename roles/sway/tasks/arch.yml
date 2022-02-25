@@ -1,12 +1,14 @@
 - name: Install sway packages
   community.general.pacman:
     name:
+      - cmake
+      - wayland-protocols
       - sway
       - waybar
       - rofi
       - i3status
       - swayidle
-      - swaylock
+      # - swaylock
       - alacritty
       - light
       - ranger
@@ -16,3 +18,16 @@
       - playerctl
   become: true
   become_method: sudo
+
+- name: Remove normal swaylock
+  community.general.pacman:
+    name:
+      - swaylock
+    state: absent
+  become: true
+  become_method: sudo
+
+- name: Install swaylock-effects
+  yay:
+    name: swaylock-effects-git
+    state: latest

@@ -13,7 +13,7 @@ set $highlight #3daee9
 set $prompt #18b218
 set $menu exec --no-startup-id rofi -show run  -m -1
 set $wallpaper ~/Pictures/DzNT32SVAAU2o1D.jpg
-set $lock swaylock -f -i $wallpaper -s fill
+set $lock swaylock -f --screenshots --effect-blur 15x10 --fade-in 0.5 --effect-greyscale
 set $gnome-schema org.gnome.desktop.interface
 
 set $bg-color            #333333
@@ -22,11 +22,13 @@ set $text-color          #f3f4f5
 set $inactive-text-color #676E7D
 set $urgent-bg-color     #E53935
 set $focus-text-color    #87CEEB
+
 ### Needed for xdg-desktop-portal-kde
 exec dbus-update-activation-environment --systemd --all
 exec /usr/lib/xdg-desktop-portal --replace
 exec kdeconnect-indicator
 exec mako
+exec nm-applet
 
 ### Output configuration
 #
@@ -46,10 +48,10 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 # Example configuration:
 #
 exec swayidle -w \
-         timeout 300 'swaylock -f -c 000000' \
+         timeout 300 $lock \
          timeout 600 'swaymsg "output * dpms off"' \
               resume 'swaymsg "output * dpms on"' \
-         before-sleep 'swaylock -f -c 000000'
+         before-sleep $lock
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
@@ -81,7 +83,7 @@ exec swayidle -w \
 
     # kill focused window
     bindsym $mod+Shift+c kill
-    bindsym Mod1+F4 kill
+    # bindsym Mod1+F4 kill
 
     # start your launcher
     bindsym $mod+r $menu
@@ -218,7 +220,7 @@ exec swayidle -w \
 #
 # Scratchpad:
 #
-    # Sway has a "scratchpad", which is a bag of holding for windows.
+    # Sway has a "scratchpad", which is a bag of holding for HHHHows.
     # You can send windows there and get them back later.
 
     # Move the currently focused window to the scratchpad
@@ -253,23 +255,6 @@ bindsym $mod+Shift+r mode "resize"
 bar {
     swaybar_command waybar
     workspace_buttons yes
-    # mode hide
-    # hidden_state hide
-    # modifier $mod
-    # font $uifont
-
-    # # When the status_command prints a new line to stdout, swaybar updates.
-    # # The default just shows the current date and time.
-    # status_command while date +'%-d.%-m.%Y. %H:%M:%S %p'; do sleep 1; done
-
-    # colors {
-    #     statusline #ffffff
-    #     background #121212
-    #     #background #00000000
-    #     focused_workspace #121212 #18b218 #232627
-    #     active_workspace #121212 $highlight #232627
-    #     inactive_workspace #121212 #7f8c8d #232627
-    # }
 }
 #
 # Titlebars
