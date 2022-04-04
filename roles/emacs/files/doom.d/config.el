@@ -159,6 +159,39 @@
   (setq alert-default-style 'notifier)
   )
 
+(use-package! copilot
+  :config
+  (add-hook 'post-command-hook (lambda ()
+                                 (copilot-clear-overlay)
+                                 (when (evil-insert-state-p)
+                                   (copilot-complete))))
+  )
+
+(defun my-tab ()
+  (interactive)
+  (or (copilot-accept-completion)
+      (company-indent-or-complete-common nil)))
+
+(with-eval-after-load 'company
+                                        ; disable inline previews
+  (delq 'company-preview-if-just-one-frontend company-frontends)
+
+                                        ; enable tab completion
+  (define-key company-mode-map (kbd "<tab>") 'my-tab)
+  (define-key company-mode-map (kbd "TAB") 'my-tab)
+  (define-key company-active-map (kbd "<tab>") 'my-tab)
+  (define-key company-active-map (kbd "TAB") 'my-tab)
+  (define-key company-mode-map (kbd "C-<tab>") 'copilot-next-completion)
+  (define-key company-mode-map (kbd "C-TAB") 'copilot-next-completion)
+  (define-key company-active-map (kbd "C-<tab>") 'copilot-next-completion)
+  (define-key company-active-map (kbd "C-TAB") 'copilot-next-completion)
+  (define-key company-mode-map (kbd "C-S-<tab>") 'copilot-previous-completion)
+  (define-key company-mode-map (kbd "C-S-TAB") 'copilot-previous-completion)
+  (define-key company-active-map (kbd "C-S-<tab>") 'copilot-previous-completion)
+  (define-key company-active-map (kbd "C-S-TAB") 'copilot-previous-completion)
+  )
+
+
 ;; (use-package! wakatime-mode
 ;;   :ensure t)
 

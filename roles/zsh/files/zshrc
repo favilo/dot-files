@@ -73,8 +73,6 @@ zmodload zsh/zprof
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-    # aws
-    # docker
     # emoji
     # git-auto-fetch
     # git-escape-magic
@@ -83,22 +81,23 @@ plugins=(
     # git-prompt
     # github
     # httpie
-    # kubectl
     # node
     # python
     # rustup
     # ssh-agent
-    # zsh-autosuggestions
+    aws
     battery
     bundler
     copyfile
     cp
+    docker
     dotenv
     git
     gitfast
     gitignore
     history
     history-substring-search
+    kubectl
     macos
     ripgrep
     rust

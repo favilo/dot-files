@@ -89,6 +89,10 @@
 (package! kubernetes)
 (package! kubernetes-evil)
 
+(package! copilot
+  :recipe (:host github :repo "zerolfx/copilot.el"
+             :files ("dist" "copilot.el"))
+)
 ;; (package! ejira)
 
 ;;;;
