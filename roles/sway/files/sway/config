@@ -24,11 +24,15 @@ set $urgent-bg-color     #E53935
 set $focus-text-color    #87CEEB
 
 ### Needed for xdg-desktop-portal-kde
-exec dbus-update-activation-environment --systemd --all
+# exec dbus-update-activation-environment --systemd --all
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+
 exec /usr/lib/xdg-desktop-portal --replace
-exec kdeconnect-indicator
 exec mako
-exec nm-applet
+exec nm-applet --indicator
+exec 1password
+exec dropbox
 
 ### Output configuration
 #
@@ -48,10 +52,11 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 # Example configuration:
 #
 exec swayidle -w \
-         timeout 300 $lock \
+         timeout 300 'swaylock -f --screenshots --effect-blur 15x10 --fade-in 0.5 --effect-greyscale' \
          timeout 600 'swaymsg "output * dpms off"' \
               resume 'swaymsg "output * dpms on"' \
-         before-sleep $lock
+         before-sleep 'swaylock -f --screenshots --effect-blur 15x10 --fade-in 0.5 --effect-greyscale'
+         # lock 'swaylock -f --screenshots --effect-blur 15x10 --fade-in 0.5 --effect-greyscale'
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
@@ -88,6 +93,8 @@ exec swayidle -w \
     # start your launcher
     bindsym $mod+r $menu
     #bindcode 133 exec $menu
+
+    bindsym $mod+d exec makoctl dismiss -a
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -155,15 +162,23 @@ exec swayidle -w \
 #
     # Move your focus around use $mod+[up|down|left|right]
     bindsym $mod+Left focus left
+    bindsym $mod+h focus left
     bindsym $mod+Down focus down
+    bindsym $mod+j focus down
     bindsym $mod+Up focus up
+    bindsym $mod+k focus up
     bindsym $mod+Right focus right
+    bindsym $mod+l focus right
 
     # _move_ the focused window with the same, but add Shift with arrow keys
     bindsym $mod+Shift+Left move left
+    bindsym $mod+Shift+h move left
     bindsym $mod+Shift+Down move down
+    bindsym $mod+Shift+j move down
     bindsym $mod+Shift+Up move up
+    bindsym $mod+Shift+k move up
     bindsym $mod+Shift+Right move right
+    bindsym $mod+Shift+l move right
 #
 # Workspaces:
 #
@@ -239,9 +254,13 @@ mode "resize" {
     # down will grow the containers height
 
     bindsym Left resize shrink width 10px
+    bindsym h resize shrink width 10px
     bindsym Down resize grow height 10px
+    bindsym j resize grow height 10px
     bindsym Up resize shrink height 10px
+    bindsym k resize shrink height 10px
     bindsym Right resize grow width 10px
+    bindsym l resize grow width 10px
 
     # return to default mode
     bindsym Return mode "default"
