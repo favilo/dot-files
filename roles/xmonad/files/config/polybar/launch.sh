@@ -9,6 +9,15 @@ then
     nm-applet &
 fi
 
+if ! pgrep -x "flameshot" >/dev/null
+then
+  flameshot &
+fi
+if ! pgrep -x "blueman-applet" >/dev/null
+then
+  blueman-applet &
+fi
+
 if type "xrandr"; then
   for m in $(polybar --list-monitors | cut -d":" -f1); do
     declare PRIMARY=$(polybar --list-monitors | grep primary | cut -d":" -f1)

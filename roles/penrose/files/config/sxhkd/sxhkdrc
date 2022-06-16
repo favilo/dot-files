@@ -8,7 +8,12 @@ super + Return
 
 # program launcher
 super + r
-	dmenu_run
+	  rofi -show drun
+
+super + shift + z
+	xsecurelock &
+	echo -n "deep" > /sys/power/mem_sleep
+	echo -n "mem" > /sys/power/state
 
 # make sxhkd reload its configuration files:
 super + q
@@ -23,8 +28,8 @@ super + shift + {q,r}
 	bspc {quit,wm -r}
 
 # close and kill
-super + {_,shift + }c
-	bspc node -{c,k}
+super + {alt + shift + ,shift + }c
+	bspc node -{k,c}
 
 # alternate between the tiled and monocle layout
 super + m

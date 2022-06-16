@@ -117,6 +117,45 @@ label-indicator-margin = 1
 label-indicator-background = ${colors.secondary}
 label-indicator-underline = ${colors.grey}
 
+[module/bspwm_panel_monocle]
+type = custom/script
+exec = bspwm_panel_monocle
+tail = true
+
+[module/bspwm]
+type = internal/bspwm
+
+inline-mode = false
+;
+; UPDATE 2021-10-06: check module/bspwm_panel_monocle and my shell
+; script bspwm_panel_monocle.
+label-monocle =
+label-monocle-foreground = ${colors.fgalt}
+label-locked = L
+label-locked-foreground = ${colors.yellow}
+label-sticky = S
+label-sticky-foreground = ${colors.magenta}
+label-private = P
+label-private-foreground = ${colors.blue}
+label-marked = *
+label-marked-foreground = ${colors.red}
+
+label-focused = "[%name%]"
+label-focused-font = 2
+
+label-occupied = " %name%^ "
+label-occupied-foreground = ${colors.fgalt}
+
+label-urgent = " %name%! "
+label-urgent-font = 2
+label-urgent-foreground = ${colors.red}
+
+label-empty = " %name% "
+label-empty-foreground = ${colors.fgalt}
+
+format = <label-state> <label-mode>
+
+
 [module/filesystem]
 type = internal/fs
 interval = 25
