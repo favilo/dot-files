@@ -159,18 +159,23 @@
   (setq alert-default-style 'notifier)
   )
 
-(use-package! copilot
-  :config
-  (add-hook 'post-command-hook (lambda ()
-                                 (copilot-clear-overlay)
-                                 (when (evil-insert-state-p)
-                                   (copilot-complete))))
-  )
-
 (defun my-tab ()
   (interactive)
   (or (copilot-accept-completion)
       (company-indent-or-complete-common nil)))
+
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (("C-TAB" . 'copilot-accept-completion-by-word)
+         ("C-<tab>" . 'copilot-accept-completion-by-word)
+         :map company-active-map
+         ("<tab>" . 'my-tab)
+         ("TAB" . 'my-tab)
+         :map company-mode-map
+         ("<tab>" . 'my-tab)
+         ("TAB" . 'my-tab)
+        )
+  )
 
 (with-eval-after-load 'company
                                         ; disable inline previews
@@ -202,11 +207,35 @@
 ;;   (set-formatter! 'black \"black -S -q -\" :modes `(python-mode))
 ;;   )
 
+;; (when (featurep 'pgtk)
+;;   (add-hook 'after-focus-change-function
+;;             (lambda ()
+;;               (if (window-system (selected-frame))
+;;                   (setq mouse-wheel-down-event 'mouse-4
+;; 			mouse-wheel-up-event 'mouse-5)
+;;                 (setq mouse-wheel-down-event 'wheel-up
+;;                       mouse-wheel-up-event 'wheel-down)
+;;                 )
+;;               )
+;;             )
+;;   )
+
 (unless window-system
+  (defun track-mouse (e))
+  (xterm-mouse-mode 1)
+  ;; (global-set-key (kbd "<mouse-4>") 'pel-scroll-down)
+  ;; (global-set-key (kbd "<mouse-5>") 'pel-scroll-up)
+  (setq mouse-wheel-down-event 'mouse-4)
+  (setq mouse-wheel-up-event 'mouse-5)
   (global-set-key (kbd "<mouse-4>") 'mwheel-scroll)
   (global-set-key (kbd "<mouse-5>") 'mwheel-scroll)
-  (setq mouse-wheel-up-event 'mouse-5)
-  (setq mouse-wheel-down-event 'mouse-4))
+  (global-set-key (kbd "<C-mouse-4>") 'mouse-wheel-text-scale)
+  (global-set-key (kbd "<C-mouse-5>") 'mouse-wheel-text-scale)
+  (global-set-key (kbd "<S-mouse-4>") 'mwheel-scroll)
+  (global-set-key (kbd "<S-mouse-5>") 'mwheel-scroll)
+  ;; (global-set-key (kbd "<mouse-4>") (kbd "<wheel-up>"))
+  ;; (global-set-key (kbd "<mouse-5>") (kbd "<wheel-down>"))
+  )
 
 (if (featurep 'ns)
     (progn
