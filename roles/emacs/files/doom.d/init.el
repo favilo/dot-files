@@ -24,7 +24,7 @@
        (company +childframe)           ; the ultimate code completion backend
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
-       ;;ivy               ; a search engine for love and life
+       ;; ivy               ; a search engine for love and life
        vertico           ; the search engine of the future
 
        :ui
@@ -97,7 +97,7 @@
        (eval +overlay)     ; run code, run (also, repls)
        gist              ; interacting with github gists
        lookup              ; navigate your code and its documentation
-       (lsp )
+       (lsp +eglot)
        ;;macos             ; MacOS-specific commands
        (magit +forge)             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
@@ -151,15 +151,18 @@
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
-       (org                ; organize your plain life in plain text
-        +brain
-        +dragndrop         ; file drag & drop support
-        +roam
-        +ipython           ; ipython support for babel
-        +jupyter
-        +roam
-        +pandoc            ; pandoc integration into org's exporter
-        +present)          ; using Emacs for presentations
+       ;; (org                ; organize your plain life in plain text
+       ;;  +brain
+       ;;  +dragndrop         ; file drag & drop support
+       ;;  +gnuplot
+       ;;  ;; +roam2
+       ;;  +ipython           ; ipython support for babel
+       ;;  +jupyter
+       ;;  +pretty
+       ;;  +journal
+       ;;  +roam
+       ;;  +pandoc            ; pandoc integration into org's exporter
+       ;;  +present)          ; using Emacs for presentations
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
