@@ -62,6 +62,12 @@
   (setq lsp-rust-server 'rust-analyzer))
 (after! rustic
   (setq rustic-lsp-server 'rust-analyzer))
+(after! eglot
+  :config
+  (set-eglot-client! 'python-mode '("pylsp"))
+  ;; TODO set others?
+  ;; (set-eglot-client! 'python-mode '("pylsp"))
+  )
 
 (global-set-key (kbd "C-h") 'windmove-left)
 (global-set-key (kbd "C-j") 'windmove-down)

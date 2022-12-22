@@ -13,7 +13,7 @@ lsp.configure('sumneko_lua', {
     settings = {
         Lua = {
             diagnostics = {
-                globals = { 'vim', 'require' },
+                globals = { 'vim' },
             },
         },
     },
