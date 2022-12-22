@@ -40,7 +40,7 @@ eval "$(pyenv init -)"
 
 alias ls=exa
 alias la=ls -lah
-alias vim="emacs -nw"
+alias vim="nvim"
 alias ta="tmux attach"
 alias cat=bat
 

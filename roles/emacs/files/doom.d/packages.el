@@ -88,6 +88,11 @@
 (package! explain-pause-mode)
 (package! kubernetes)
 (package! kubernetes-evil)
+(package! beancount-mode
+  :recipe
+  (:host github
+   :repo "beancount/beancount-mode")
+  )
 
 ;; (package! copilot
 ;;   :recipe (:host github :repo "zerolfx/copilot.el"

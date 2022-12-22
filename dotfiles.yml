@@ -45,6 +45,9 @@
     - role: vim
       tags:
         - "vim"
+    - role: nvim
+      tags:
+        - "nvim"
     # - role: haskell
     #   tags:
     #     - "stack"
