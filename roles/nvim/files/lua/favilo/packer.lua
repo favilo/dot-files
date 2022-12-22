@@ -25,6 +25,12 @@ return require('packer').startup(function(use)
   use('nvim-treesitter/playground')
   use('mbbill/undotree')
   use('tpope/vim-fugitive')
+  use('tpope/vim-surround')
+  use('tpope/vim-commentary')
+  use('tpope/vim-dadbod')
+  use('tpope/vim-dispatch')
+  use('tpope/vim-endwise')
+  use('tpope/vim-speeddating')
 
   use {
 	  'VonHeikemen/lsp-zero.nvim',
@@ -49,3 +55,4 @@ return require('packer').startup(function(use)
   }
 
 end)
+

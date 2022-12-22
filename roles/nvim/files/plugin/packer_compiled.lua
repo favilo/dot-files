@@ -170,10 +170,40 @@ _G.packer_plugins = {
     path = "/home/klah/.local/share/nvim/site/pack/packer/start/undotree",
     url = "https://github.com/mbbill/undotree"
   },
+  ["vim-commentary"] = {
+    loaded = true,
+    path = "/home/klah/.local/share/nvim/site/pack/packer/start/vim-commentary",
+    url = "https://github.com/tpope/vim-commentary"
+  },
+  ["vim-dadbod"] = {
+    loaded = true,
+    path = "/home/klah/.local/share/nvim/site/pack/packer/start/vim-dadbod",
+    url = "https://github.com/tpope/vim-dadbod"
+  },
+  ["vim-dispatch"] = {
+    loaded = true,
+    path = "/home/klah/.local/share/nvim/site/pack/packer/start/vim-dispatch",
+    url = "https://github.com/tpope/vim-dispatch"
+  },
+  ["vim-endwise"] = {
+    loaded = true,
+    path = "/home/klah/.local/share/nvim/site/pack/packer/start/vim-endwise",
+    url = "https://github.com/tpope/vim-endwise"
+  },
   ["vim-fugitive"] = {
     loaded = true,
     path = "/home/klah/.local/share/nvim/site/pack/packer/start/vim-fugitive",
     url = "https://github.com/tpope/vim-fugitive"
+  },
+  ["vim-speeddating"] = {
+    loaded = true,
+    path = "/home/klah/.local/share/nvim/site/pack/packer/start/vim-speeddating",
+    url = "https://github.com/tpope/vim-speeddating"
+  },
+  ["vim-surround"] = {
+    loaded = true,
+    path = "/home/klah/.local/share/nvim/site/pack/packer/start/vim-surround",
+    url = "https://github.com/tpope/vim-surround"
   }
 }
 
