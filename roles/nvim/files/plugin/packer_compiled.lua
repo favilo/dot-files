@@ -195,6 +195,11 @@ _G.packer_plugins = {
     path = "/home/klah/.local/share/nvim/site/pack/packer/start/vim-fugitive",
     url = "https://github.com/tpope/vim-fugitive"
   },
+  ["vim-rhubarb"] = {
+    loaded = true,
+    path = "/home/klah/.local/share/nvim/site/pack/packer/start/vim-rhubarb",
+    url = "https://github.com/tpope/vim-rhubarb"
+  },
   ["vim-speeddating"] = {
     loaded = true,
     path = "/home/klah/.local/share/nvim/site/pack/packer/start/vim-speeddating",

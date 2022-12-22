@@ -25,3 +25,6 @@ vim.keymap.set("v", "<leader>d", "\"_d")
 
 vim.keymap.set("n", "Q", "<nop>")
 -- vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+
+vim.keymap.set("n", "<leader>goo", vim.cmd.GBrowse)
+vim.keymap.set("v", "<leader>go", vim.cmd.GBrowse)
