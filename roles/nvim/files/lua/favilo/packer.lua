@@ -1,7 +1,7 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
 -- Only required if you have packer configured as `opt`
-vim.cmd [[packadd packer.nvim]]
+-- vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
     -- Packer can manage itself
@@ -59,7 +59,8 @@ return require('packer').startup(function(use)
             { 'neovim/nvim-lspconfig' },
             { 'williamboman/mason.nvim' },
             { 'williamboman/mason-lspconfig.nvim' },
-
+            -- { "lukas-reineke/lsp-format.nvim" },
+ 
             -- Autocompletion
             { 'hrsh7th/nvim-cmp' },
             { 'hrsh7th/cmp-buffer' },
@@ -80,5 +81,6 @@ return require('packer').startup(function(use)
         cmd = 'CodeActionMenu',
     }
     use({ 'mrjones2014/op.nvim', run = 'make install' })
+    use 'mfussenegger/nvim-dap'
 
 end)

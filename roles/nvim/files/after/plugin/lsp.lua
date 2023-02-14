@@ -6,7 +6,8 @@ lsp.ensure_installed({
     'eslint',
     'sumneko_lua',
     'rust_analyzer',
-    'pyright',
+    'pylsp',
+    'efm',
 })
 
 lsp.configure('sumneko_lua', {
