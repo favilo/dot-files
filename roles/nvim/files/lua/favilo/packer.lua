@@ -27,6 +27,7 @@ return require('packer').startup(function(use)
                 -- order matters: if one is not detected, the other is used as fallback. You
                 -- can also delete or rearangne the detection methods.
                 detection_methods = { "lsp", "pattern" },
+                patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
 
                 -- When set to false, you will get a message when project.nvim changes your
                 -- directory.
@@ -52,6 +53,14 @@ return require('packer').startup(function(use)
     use('tpope/vim-sensible')
     use('Townk/vim-autoclose')
 
+    use {
+        'saecki/crates.nvim',
+        event = { "BufRead Cargo.toml" },
+        requires = { 'nvim-lua/plenary.nvim' },
+        config = function()
+            require('crates').setup()
+        end,
+    }
     use {
         'VonHeikemen/lsp-zero.nvim',
         requires = {
@@ -82,5 +91,24 @@ return require('packer').startup(function(use)
     }
     use({ 'mrjones2014/op.nvim', run = 'make install' })
     use 'mfussenegger/nvim-dap'
+
+    use {
+        "folke/todo-comments.nvim",
+        requires = "nvim-lua/plenary.nvim",
+        config = function()
+            require("todo-comments").setup {
+                -- your configuration comes here
+                -- or leave it empty to use the default settings
+                -- refer to the configuration section below
+            }
+        end
+    }
+
+    -- use 'simrat39/rust-tools.nvim'
+
+    use 'nvim-lua/plenary.nvim'
+    use 'mfussenegger/nvim-dap'
+
+    use 'nvim-telescope/telescope-dap.nvim'
 
 end)
