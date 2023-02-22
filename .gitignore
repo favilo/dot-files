@@ -6,3 +6,4 @@ fish_variables
 tmp/
 .stack-work
 *.lock
+roles/nvim/files/plugin/packer_compiled.lua

@@ -4,17 +4,32 @@ lsp.preset('recommended')
 lsp.ensure_installed({
     'tsserver',
     'eslint',
-    'sumneko_lua',
+    'lua_ls',
     'rust_analyzer',
     'pylsp',
-    'efm',
 })
 
-lsp.configure('sumneko_lua', {
+lsp.configure('lua_ls', {
     settings = {
         Lua = {
             diagnostics = {
                 globals = { 'vim' },
+            },
+        },
+    },
+})
+
+lsp.configure('pylsp', {
+    settings = {
+        pylsp = {
+            plugins = {
+                black = { enabled = true },
+                isort = { enabled = true, profile = 'black' },
+                flake8 = {
+                    enabled = true,
+                    ignore = { '501' },
+                    maxLineLength = 88,
+                },
             },
         },
     },
@@ -38,7 +53,7 @@ lsp.setup_nvim_cmp({
     sources = {
         { name = 'path' },
         { name = 'nvim_lsp', keyword_length = 3 },
-        { name = 'buffer', keyword_length = 3 },
+        { name = 'buffer',   keyword_length = 3 },
         { name = 'crates' },
     }
 })
@@ -78,7 +93,6 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, opts)
     vim.keymap.set("v", "<leader>cf", vim.lsp.buf.format, opts)
     vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
-
 end)
 
 lsp.setup()

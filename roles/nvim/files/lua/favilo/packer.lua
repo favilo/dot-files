@@ -91,6 +91,7 @@ return require('packer').startup(function(use)
     }
     use({ 'mrjones2014/op.nvim', run = 'make install' })
     use 'mfussenegger/nvim-dap'
+    use({ 'averms/black-nvim', cmd = 'UpdateRemotePlugins' })
 
     use {
         "folke/todo-comments.nvim",
@@ -107,8 +108,8 @@ return require('packer').startup(function(use)
     -- use 'simrat39/rust-tools.nvim'
 
     use 'nvim-lua/plenary.nvim'
-    use 'mfussenegger/nvim-dap'
 
     use 'nvim-telescope/telescope-dap.nvim'
+    use 'nvim-telescope/telescope-project.nvim'
 
 end)
