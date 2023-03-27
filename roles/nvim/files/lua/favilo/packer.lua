@@ -104,6 +104,7 @@ return require('packer').startup(function(use)
     }
     use({ 'mrjones2014/op.nvim', run = 'make install' })
     use 'mfussenegger/nvim-dap'
+    use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
     use({ 'averms/black-nvim', cmd = 'UpdateRemotePlugins' })
 
     use {
@@ -118,7 +119,7 @@ return require('packer').startup(function(use)
         end
     }
 
-    -- use 'simrat39/rust-tools.nvim'
+    use 'simrat39/rust-tools.nvim'
 
     use 'nvim-lua/plenary.nvim'
 
