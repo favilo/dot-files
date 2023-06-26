@@ -82,7 +82,7 @@ return require('packer').startup(function(use)
             { 'williamboman/mason.nvim' },
             { 'williamboman/mason-lspconfig.nvim' },
             -- { "lukas-reineke/lsp-format.nvim" },
- 
+
             -- Autocompletion
             { 'hrsh7th/nvim-cmp' },
             { 'hrsh7th/cmp-buffer' },
@@ -104,7 +104,7 @@ return require('packer').startup(function(use)
     }
     use({ 'mrjones2014/op.nvim', run = 'make install' })
     use 'mfussenegger/nvim-dap'
-    use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
+    use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } }
     use({ 'averms/black-nvim', cmd = 'UpdateRemotePlugins' })
 
     use {
@@ -125,5 +125,9 @@ return require('packer').startup(function(use)
 
     use 'nvim-telescope/telescope-dap.nvim'
     use 'nvim-telescope/telescope-project.nvim'
+
+    use 'github/copilot.vim'
+
+    -- use { 'tzachar/cmp-tabnine', run = './install.sh', requires = 'hrsh7th/nvim-cmp' }
 
 end)

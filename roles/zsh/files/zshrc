@@ -173,3 +173,5 @@ setopt prompt_subst # enable command substition in prompt
 # }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+eval "$(atuin init zsh --disable-up-arrow)"
