@@ -1,11 +1,14 @@
-# export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
 export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git'"
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+export FZF_CTRL_T_OPTS="\
+  --preview 'bat -n --color=always {}'\
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 
 HYPHEN_INSENSITIVE="true"
 COMPLETION_WAITING_DOTS="true"
 
-[ -f /usr/share/doc/fzf ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
-
+[ -f /usr/share/fzf ] && source /usr/share/fzf/key-bindings.zsh
+[ -f /usr/share/fzf ] && source /usr/share/fzf/completion.zsh
 
 # alias docker=podman
 
@@ -33,7 +36,10 @@ export PATH="$PATH:/snap/bin"
 export PATH="$PATH:$HOME/.pyenv/bin"
 export PATH="$PATH:$HOME/.emacs.d/bin"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
+export PATH="${PATH}:/opt/muslcc/arm-linux-musleabihf/bin"
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}"
+export QT_QPA_PLATFORM=xcb
+export GPG_TTY=$(tty)
 
 eval "$(pyenv init -)"
 # eval "$(pyenv virtualenv-init -)"
