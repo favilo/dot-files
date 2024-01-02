@@ -78,7 +78,7 @@ enable-ipc = true
 inherit = bar/base
 monitor = ${env:MONITOR:HDMI-A-1}
 
-modules-left = xworkspaces xwindow
+modules-left = xmonad
 modules-center = date
 modules-right = volume cpu memory battery backlight powermenu
 
