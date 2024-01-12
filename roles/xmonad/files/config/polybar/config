@@ -34,7 +34,7 @@ screenchange-reload = true
 
 [bar/base]
 width = 100%
-height = 24
+height = 28
 offset-x = 0
 offset-y = 0
 
@@ -73,12 +73,13 @@ tray-padding = 2
 tray-background = ${colors.background}
 
 enable-ipc = true
+override-redirect = true
 
 [bar/desktop]
 inherit = bar/base
-monitor = ${env:MONITOR:HDMI-A-1}
+monitor = ${env:MONITOR:eDP-1}
 
-modules-left = xmonad
+modules-left = xworkspaces xwindow
 modules-center = date
 modules-right = volume cpu memory battery backlight powermenu
 
@@ -87,7 +88,7 @@ inherit = bar/base
 monitor = ${env:MONITOR:DP-0}
 monitor-fallback = ${env:MONITOR:HDMI-0}
 
-modules-left = xmonad
+modules-left = xworkspaces xwindow
 modules-center = date
 modules-right = volume battery backlight powermenu
 
@@ -96,6 +97,25 @@ type = custom/script
 exec = ~/go/bin/xmonad-log
 
 tail = true
+
+[module/xworkspaces]
+type = internal/xworkspaces
+
+label-active = %name%
+label-active-background = ${colors.foreground-alt}
+label-active-underline = ${colors.primary}
+label-active-padding = 1
+
+label-occupied = %name%
+label-occupied-padding = 1
+
+label-urgent = %name%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 1
+
+label-empty = %name%
+label-empty-foreground = ${colors.disabled}
+label-empty-padding = 1
 
 [module/xwindow]
 type = internal/xwindow
@@ -227,7 +247,7 @@ ramp-load-3 = ▄
 ramp-load-2 = ▃
 ramp-load-1 = ▂
 ramp-load-0 = ▁
-format-prefix = "%{T2}%{T-} "
+format-prefix = "%{T2} %{T-} "
 format-prefix-foreground = ${colors.foreground}
 format-underline = ${colors.grey}
 label = %percentage%%
@@ -235,7 +255,7 @@ label = %percentage%%
 [module/memory]
 type = internal/memory
 interval = 2
-format-prefix = "%{T2}%{T-} "
+format-prefix = "%{T2} %{T-} "
 format-prefix-foreground = ${colors.foreground}
 format-underline = ${colors.grey}
 label = %percentage_used%%
@@ -260,7 +280,7 @@ date-alt = " %Y-%m-%d"
 time = %H:%M
 time-alt = %H:%M
 
-format-prefix = "%{T2}%{T-}"
+format-prefix = "%{T2} %{T-}"
 format-prefix-foreground = ${colors.foreground}
 format-underline = ${colors.grey}
 

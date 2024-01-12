@@ -1,24 +1,24 @@
+vim.g.lsp_zero_extend_lspconfig = 0
 local lsp = require('lsp-zero')
 lsp.extend_lspconfig()
 
-requires('mason').setup()
+require('mason').setup()
 require('mason-lspconfig').setup({
     -- Replace the language servers listed here 
     -- with the ones you want to install
-    ensure_installed = {'tsserver', 'rust_analyzer'},
+    ensure_installed = {
+        'tsserver', 
+        'eslint',
+        'lua_ls',
+        'rust_analyzer',
+        'pylsp',
+    },
     handlers = {
-      lsp_zero.default_setup,
+      lsp.default_setup,
     },
 })
 
 lsp.preset('recommended')
-lsp.ensure_installed({
-    'tsserver',
-    'eslint',
-    'lua_ls',
-    'rust_analyzer',
-    'pylsp',
-})
 
 lsp.configure('lua_ls', {
     settings = {
@@ -47,6 +47,7 @@ lsp.configure('pylsp', {
 })
 
 local cmp = require('cmp')
+local cmp_action = require('lsp-zero').cmp_action()
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
 local cmp_mappings = lsp.defaults.cmp_mappings({
     ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
@@ -59,14 +60,15 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 cmp_mappings['<Tab>'] = nil
 cmp_mappings['<S-Tab>'] = nil
 
-lsp.setup_nvim_cmp({
-    mapping = cmp_mappings,
+cmp.setup({
+    window = {
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
+    },
     sources = {
-        { name = 'path' },
-        { name = 'nvim_lsp', keyword_length = 3 },
-        { name = 'buffer',   keyword_length = 3 },
-        { name = 'crates' },
-    }
+        {name = "nvim_lsp"},
+    },
+    mapping = cmp_mappings
 })
 
 lsp.set_preferences({

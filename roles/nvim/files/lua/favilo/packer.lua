@@ -82,7 +82,7 @@ return require('packer').startup(function(use)
             { 'neovim/nvim-lspconfig' },
             { 'williamboman/mason.nvim' },
             { 'williamboman/mason-lspconfig.nvim' },
-            -- { "lukas-reineke/lsp-format.nvim" },
+            { "lukas-reineke/lsp-format.nvim" },
 
             -- Autocompletion
             { 'hrsh7th/nvim-cmp' },
@@ -128,10 +128,4 @@ return require('packer').startup(function(use)
     use 'nvim-telescope/telescope-project.nvim'
 
     use 'github/copilot.vim'
-<<<<<<< HEAD
-
-    -- use { 'tzachar/cmp-tabnine', run = './install.sh', requires = 'hrsh7th/nvim-cmp' }
-
-=======
->>>>>>> 09c574c (small changes for arch)
 end)
