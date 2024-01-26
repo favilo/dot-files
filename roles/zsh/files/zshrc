@@ -96,6 +96,7 @@ plugins=(
     ripgrep
     rust
     vi-mode
+    fzf
     web-search
 )
 
@@ -166,9 +167,6 @@ setopt prompt_subst # enable command substition in prompt
 # }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-<<<<<<< HEAD
 
 eval "$(atuin init zsh --disable-up-arrow)"
-=======
 [ -f /home/klah/.zshrc.local ] && source /home/klah/.zshrc.local
->>>>>>> 09c574c (small changes for arch)

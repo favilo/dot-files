@@ -5,6 +5,11 @@ vim.keymap.set("n", "<C-h>", "<C-w>h")
 vim.keymap.set("n", "<C-l>", "<C-w>l")
 vim.keymap.set("n", "<C-k>", "<C-w>k")
 
+vim.keymap.set("t", "<C-j>", "<C-\\><C-N><C-w>j")
+vim.keymap.set("t", "<C-h>", "<C-\\><C-N><C-w>h")
+vim.keymap.set("t", "<C-l>", "<C-\\><C-N><C-w>l")
+vim.keymap.set("t", "<C-k>", "<C-\\><C-N><C-w>k")
+
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
@@ -31,6 +36,8 @@ vim.keymap.set("n", "Q", "<nop>")
 
 vim.keymap.set("n", "<leader>goo", vim.cmd.GBrowse)
 vim.keymap.set("v", "<leader>go", vim.cmd.GBrowse)
+
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
 
 -- vim.keymap.set("i", "<C-Space>", "coc#pum#visible() ? coc#pum#stop() : coc#refresh()", { expr = true, noremap = true, silent = true })
 -- vim.keymap.set("i", "<Tab>", "coc#pum#visible() ? coc#pum#next(1) : '<Tab>'", { expr = true, noremap = true, silent = true })
