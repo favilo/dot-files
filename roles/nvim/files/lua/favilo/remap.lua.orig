@@ -37,11 +37,14 @@ vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<leader>goo", vim.cmd.GBrowse)
 vim.keymap.set("v", "<leader>go", vim.cmd.GBrowse)
 
+<<<<<<< HEAD
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
+=======
 -- vim.g['copilot_no_tab_map'] = true
 -- vim.g['copilot_assume_mapped'] = true
 
 -- vim.api.nvim_set_keymap('i', '<C-/>', 'copilot#Accept("<CR>")', { expr = true, silent = true })
+>>>>>>> 3ef6f3d (Change out copilot plugins)
 
 -- vim.keymap.set("i", "<C-Space>", "coc#pum#visible() ? coc#pum#stop() : coc#refresh()", { expr = true, noremap = true, silent = true })
 -- vim.keymap.set("i", "<Tab>", "coc#pum#visible() ? coc#pum#next(1) : '<Tab>'", { expr = true, noremap = true, silent = true })

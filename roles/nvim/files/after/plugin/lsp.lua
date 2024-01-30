@@ -4,17 +4,17 @@ lsp.extend_lspconfig()
 
 require('mason').setup()
 require('mason-lspconfig').setup({
-    -- Replace the language servers listed here 
+    -- Replace the language servers listed here
     -- with the ones you want to install
     ensure_installed = {
-        'tsserver', 
+        'tsserver',
         'eslint',
         'lua_ls',
         'rust_analyzer',
         'pylsp',
     },
     handlers = {
-      lsp.default_setup,
+        lsp.default_setup,
     },
 })
 
@@ -57,16 +57,16 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
     ['<C-e>'] = cmp.mapping.abort(),
 })
 
-cmp_mappings['<Tab>'] = nil
-cmp_mappings['<S-Tab>'] = nil
+-- cmp_mappings['<Tab>'] = nil
+-- cmp_mappings['<S-Tab>'] = nil
 
 cmp.setup({
     window = {
-      completion = cmp.config.window.bordered(),
-      documentation = cmp.config.window.bordered(),
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
     },
     sources = {
-        {name = "nvim_lsp"},
+        { name = "nvim_lsp" },
     },
     mapping = cmp_mappings
 })
