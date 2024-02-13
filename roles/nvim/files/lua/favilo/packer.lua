@@ -104,8 +104,8 @@ return require('packer').startup(function(use)
         cmd = 'CodeActionMenu',
     }
     use({ 'mrjones2014/op.nvim', run = 'make install' })
-    use 'mfussenegger/nvim-dap'
-    use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } }
+    -- use 'mfussenegger/nvim-dap'
+    -- use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } }
     use({ 'averms/black-nvim', cmd = 'UpdateRemotePlugins' })
 
     use {
@@ -124,9 +124,8 @@ return require('packer').startup(function(use)
 
     use 'nvim-lua/plenary.nvim'
 
-    use 'nvim-telescope/telescope-dap.nvim'
+    -- use 'nvim-telescope/telescope-dap.nvim'
     use 'nvim-telescope/telescope-project.nvim'
-
 
     use {
         "someone-stole-my-name/yaml-companion.nvim",
@@ -157,4 +156,29 @@ return require('packer').startup(function(use)
             })
         end,
     }
+
+    use 'github/copilot.vim'
+
+    use {
+        "X3eRo0/dired.nvim",
+        requires = "MunifTanjim/nui.nvim",
+        config = function()
+            require("dired").setup {
+                path_separator = "/",
+                show_banner = true,
+                show_hidden = true,
+                show_dot_dirs = true,
+                show_colors = true,
+
+                colors = {
+                    DiredDimText = { link = {}, bg = "NONE", fg = "505050", gui = "NONE" },
+                    DiredDirectoryName = { link = {}, bg = "NONE", fg = "9370DB", gui = "NONE" },
+                    -- ... (define more colors as needed)
+                    DiredMoveFile = { link = {}, bg = "NONE", fg = "ff3399", gui = "bold" },
+                },
+            }
+        end
+    }
+
+    use 'lambdalisue/suda.vim'
 end)
