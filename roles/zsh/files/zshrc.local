@@ -66,3 +66,6 @@ if (( $+commands[tag] )); then
   # alias rg=tag  # replace with rg for ripgrep
 fi
 eval "$(op completion zsh)"; compdef _op op
+eval "$(zoxide init zsh)"
+alias cd=z
+alias cdi=zi
