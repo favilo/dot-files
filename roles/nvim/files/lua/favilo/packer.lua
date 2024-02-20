@@ -157,6 +157,7 @@ return require('packer').startup(function(use)
         end,
     }
 
+    use 'nanotee/zoxide.vim'
     use 'github/copilot.vim'
 
     use {
