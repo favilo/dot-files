@@ -76,6 +76,8 @@ return require('packer').startup(function(use)
         config = true,
     }
 
+    use 'lewis6991/gitsigns.nvim'
+
     use {
         'saecki/crates.nvim',
         event = { "BufRead Cargo.toml" },
@@ -264,7 +266,10 @@ return require('packer').startup(function(use)
     -- DAP plugins
     use 'mfussenegger/nvim-dap'
     use 'folke/neodev.nvim'
-    use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } }
+    use { "rcarriga/nvim-dap-ui", requires = {
+        "mfussenegger/nvim-dap",
+        "nvim-neotest/nvim-nio",
+    } }
     -- use 'nvim-telescope/telescope-dap.nvim'
     use { 'mfussenegger/nvim-dap-python', requires = { "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui" } }
 end)

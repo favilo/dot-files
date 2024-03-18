@@ -1,4 +1,5 @@
 local neogit = require('neogit')
+require('gitsigns').setup()
 
 neogit.setup {
     -- Hides the hints at the top of the status buffer
