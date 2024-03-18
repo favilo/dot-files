@@ -74,7 +74,7 @@ neogit.setup {
         kind = "auto",
     },
     commit_select_view = {
-        kind = "tab",
+        kind = "auto",
     },
     commit_view = {
         kind = "vsplit",
