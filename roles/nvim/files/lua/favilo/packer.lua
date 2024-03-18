@@ -56,7 +56,7 @@ return require('packer').startup(function(use)
         end
     }
     use('chaoren/vim-wordmotion')
-    use('tpope/vim-fugitive')
+    -- use('tpope/vim-fugitive')
     use('tpope/vim-rhubarb')
     use('tpope/vim-surround')
     use('tpope/vim-commentary')
@@ -66,6 +66,15 @@ return require('packer').startup(function(use)
     use('tpope/vim-speeddating')
     use('tpope/vim-sensible')
     use('Townk/vim-autoclose')
+
+    use { 'NeogitOrg/neogit',
+        requires = {
+            'nvim-lua/plenary.nvim',
+            "sindrets/diffview.nvim",
+            'nvim-telescope/telescope.nvim',
+        },
+        config = true,
+    }
 
     use {
         'saecki/crates.nvim',
@@ -104,8 +113,6 @@ return require('packer').startup(function(use)
         cmd = 'CodeActionMenu',
     }
     use({ 'mrjones2014/op.nvim', run = 'make install' })
-    -- use 'mfussenegger/nvim-dap'
-    -- use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } }
     use({ 'averms/black-nvim', cmd = 'UpdateRemotePlugins' })
 
     use {
@@ -124,7 +131,6 @@ return require('packer').startup(function(use)
 
     use 'nvim-lua/plenary.nvim'
 
-    -- use 'nvim-telescope/telescope-dap.nvim'
     use 'nvim-telescope/telescope-project.nvim'
 
     use {
@@ -136,10 +142,9 @@ return require('packer').startup(function(use)
         },
         config = function()
             require("telescope").load_extension("yaml_schema")
-	end,
+        end,
     }
 
-    -- use 'github/copilot.vim'
     use {
         "zbirenbaum/copilot.lua",
         cmd = "Copilot",
@@ -158,7 +163,6 @@ return require('packer').startup(function(use)
     }
 
     use 'nanotee/zoxide.vim'
-    use 'github/copilot.vim'
 
     use {
         "X3eRo0/dired.nvim",
@@ -181,5 +185,86 @@ return require('packer').startup(function(use)
         end
     }
 
+    use 'lambdalisue/fern.vim'
     use 'lambdalisue/suda.vim'
+
+    use({
+        "epwalsh/obsidian.nvim",
+        tag = "*", -- recommended, use latest release instead of latest commit
+        requires = {
+            -- Required.
+            "nvim-lua/plenary.nvim",
+
+            -- see below for full list of optional dependencies 👇
+        },
+        config = function()
+            require("obsidian").setup({
+                workspaces = {
+                    {
+                        name = "personal",
+                        path = "~/Obsidian/Main Vault",
+                    },
+                    -- {
+                    --     name = "work",
+                    --     path = "~/vaults/work",
+                    -- },
+                },
+
+                -- see below for full list of options 👇
+                notes_subdir = "working-notes",
+                log_level = vim.log.levels.INFO,
+                daily_notes = {
+                    folder = "tracking/dailies",
+                    date_format = "%Y-%m-%d",
+                    template = "templates/daily-update",
+                },
+                completion = {
+                    nvim_cmp = true,
+                    min_chars = 2,
+                },
+
+                -- Optional, configure key mappings. These are the defaults. If you don't want to set any keymappings this
+                -- way then set 'mappings = {}'.
+                mappings = {
+                    -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
+                    ["gf"] = {
+                        action = function()
+                            return require("obsidian").util.gf_passthrough()
+                        end,
+                        opts = { noremap = false, expr = true, buffer = true },
+                    },
+                    -- Toggle check-boxes.
+                    ["<leader>ch"] = {
+                        action = function()
+                            return require("obsidian").util.toggle_checkbox()
+                        end,
+                        opts = { buffer = true },
+                    },
+                },
+
+
+            })
+        end,
+    })
+
+    use({
+        "epwalsh/pomo.nvim",
+        tag = "*", -- Recommended, use latest release instead of latest commit
+        requires = {
+            -- Optional, but highly recommended if you want to use the "Default" timer
+            "rcarriga/nvim-notify",
+        },
+        config = function()
+            require("pomo").setup({
+                -- See below for full list of options 👇
+            })
+        end,
+    })
+
+    -- DAP plugins
+    use 'mfussenegger/nvim-dap'
+    use 'folke/neodev.nvim'
+    use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } }
+    -- use 'nvim-telescope/telescope-dap.nvim'
+    use { 'mfussenegger/nvim-dap-python', requires = { "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui" } }
 end)
