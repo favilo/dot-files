@@ -16,6 +16,7 @@ function vim.getVisualSelection()
 end
 
 vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
+vim.keymap.set('n', '<leader>pp', function() builtin.find_files({ hidden = true }) end, {})
 vim.keymap.set('n', '<leader>pb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>po', builtin.oldfiles, {})
 vim.keymap.set('n', '<leader>pe', require 'telescope'.extensions.projects.projects, {})
