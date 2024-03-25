@@ -281,4 +281,19 @@ return require('packer').startup(function(use)
     } }
     -- use 'nvim-telescope/telescope-dap.nvim'
     use { 'mfussenegger/nvim-dap-python', requires = { "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui" } }
+
+    use 'almo7aya/openingh.nvim'
+
+    use {
+        "nvim-neotest/neotest",
+        requires = {
+            "nvim-neotest/nvim-nio",
+            "nvim-neotest/neotest-python",
+            "nvim-neotest/neotest-plenary",
+            "nvim-neotest/neotest-vim-test",
+            "nvim-lua/plenary.nvim",
+            "antoinemadec/FixCursorHold.nvim",
+            "nvim-treesitter/nvim-treesitter"
+        }
+    }
 end)
