@@ -37,10 +37,9 @@ return require('packer').startup(function(use)
 
     use 'bluz71/vim-nightfly-colors'
 
-    use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
-    use('nvim-treesitter/playground')
-    use('mbbill/undotree')
-    -- use('neoclide/coc.nvim')
+    use { 'nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' } }
+    use { 'nvim-treesitter/playground' }
+    use { 'mbbill/undotree' }
     use {
         "ahmedkhalf/project.nvim",
         config = function()
@@ -64,17 +63,16 @@ return require('packer').startup(function(use)
             }
         end
     }
-    use('chaoren/vim-wordmotion')
-    -- use('tpope/vim-fugitive')
-    use('tpope/vim-rhubarb')
-    use('tpope/vim-surround')
-    use('tpope/vim-commentary')
-    use('tpope/vim-dadbod')
-    use('tpope/vim-dispatch')
-    use('tpope/vim-endwise')
-    use('tpope/vim-speeddating')
-    use('tpope/vim-sensible')
-    use('Townk/vim-autoclose')
+    use { 'chaoren/vim-wordmotion' }
+    use { 'tpope/vim-rhubarb' }
+    use { 'tpope/vim-surround' }
+    use { 'tpope/vim-commentary' }
+    use { 'tpope/vim-dadbod' }
+    use { 'tpope/vim-dispatch' }
+    use { 'tpope/vim-endwise' }
+    use { 'tpope/vim-speeddating' }
+    use { 'tpope/vim-sensible' }
+    use { 'Townk/vim-autoclose' }
 
     use { 'NeogitOrg/neogit',
         requires = {
@@ -82,7 +80,7 @@ return require('packer').startup(function(use)
             "sindrets/diffview.nvim",
             'nvim-telescope/telescope.nvim',
         },
-        config = true,
+        -- config = true,
     }
 
     use 'lewis6991/gitsigns.nvim'
@@ -118,13 +116,13 @@ return require('packer').startup(function(use)
         }
     }
 
-    use('ray-x/lsp_signature.nvim')
+    use { 'ray-x/lsp_signature.nvim' }
     use {
         'weilbith/nvim-code-action-menu',
         cmd = 'CodeActionMenu',
     }
-    use({ 'mrjones2014/op.nvim', run = 'make install' })
-    use({ 'averms/black-nvim', cmd = 'UpdateRemotePlugins' })
+    use { 'mrjones2014/op.nvim', run = 'make install' }
+    use { 'averms/black-nvim', cmd = 'UpdateRemotePlugins' }
 
     use {
         "folke/todo-comments.nvim",
@@ -175,76 +173,79 @@ return require('packer').startup(function(use)
 
     use 'nanotee/zoxide.vim'
 
-    use({
+    use {
         "stevearc/oil.nvim",
-        config = function()
-            require("oil").setup()
-        end,
-    })
+        requires = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        -- config = function()
+        --     require("oil").setup()
+        -- end,
+    }
 
     use 'lambdalisue/fern.vim'
     use 'lambdalisue/suda.vim'
 
-    use({
-        "epwalsh/obsidian.nvim",
-        tag = "*", -- recommended, use latest release instead of latest commit
-        requires = {
-            -- Required.
-            "nvim-lua/plenary.nvim",
+    -- use {
+    --     "epwalsh/obsidian.nvim",
+    --     tag = "*", -- recommended, use latest release instead of latest commit
+    --     requires = {
+    --         -- Required.
+    --         "nvim-lua/plenary.nvim",
 
-            -- see below for full list of optional dependencies 👇
-        },
-        config = function()
-            require("obsidian").setup({
-                workspaces = {
-                    {
-                        name = "personal",
-                        path = "~/Obsidian/Main Vault",
-                    },
-                    -- {
-                    --     name = "work",
-                    --     path = "~/vaults/work",
-                    -- },
-                },
+    --         -- see below for full list of optional dependencies 👇
+    --     },
+    --     config = function()
+    --         require("obsidian").setup({
+    --             workspaces = {
+    --                 {
+    --                     name = "personal",
+    --                     path = "~/Obsidian/Main Vault",
+    --                 },
+    --                 -- {
+    --                 --     name = "work",
+    --                 --     path = "~/vaults/work",
+    --                 -- },
+    --             },
 
-                -- see below for full list of options 👇
-                notes_subdir = "working-notes",
-                log_level = vim.log.levels.INFO,
-                daily_notes = {
-                    folder = "tracking/dailies",
-                    date_format = "%Y-%m-%d",
-                    template = "templates/daily-update",
-                },
-                completion = {
-                    nvim_cmp = true,
-                    min_chars = 2,
-                },
+    --             -- see below for full list of options 👇
+    --             notes_subdir = "working-notes",
+    --             log_level = vim.log.levels.INFO,
+    --             daily_notes = {
+    --                 folder = "tracking/dailies",
+    --                 date_format = "%Y-%m-%d",
+    --                 template = "templates/daily-update",
+    --             },
+    --             completion = {
+    --                 nvim_cmp = true,
+    --                 min_chars = 2,
+    --             },
 
-                -- Optional, configure key mappings. These are the defaults. If you don't want to set any keymappings this
-                -- way then set 'mappings = {}'.
-                mappings = {
-                    -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
-                    ["gf"] = {
-                        action = function()
-                            return require("obsidian").util.gf_passthrough()
-                        end,
-                        opts = { noremap = false, expr = true, buffer = true },
-                    },
-                    -- Toggle check-boxes.
-                    ["<leader>ch"] = {
-                        action = function()
-                            return require("obsidian").util.toggle_checkbox()
-                        end,
-                        opts = { buffer = true },
-                    },
-                },
+    --             -- Optional, configure key mappings. These are the defaults. If you don't want to set any keymappings this
+    --             -- way then set 'mappings = {}'.
+    --             mappings = {
+    --                 -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
+    --                 ["gf"] = {
+    --                     action = function()
+    --                         return require("obsidian").util.gf_passthrough()
+    --                     end,
+    --                     opts = { noremap = false, expr = true, buffer = true },
+    --                 },
+    --                 -- Toggle check-boxes.
+    --                 ["<leader>ch"] = {
+    --                     action = function()
+    --                         return require("obsidian").util.toggle_checkbox()
+    --                     end,
+    --                     opts = { buffer = true },
+    --                 },
+    --             },
 
 
-            })
-        end,
-    })
+    --         })
+    --     end,
+    -- }
 
-    use({
+    use {
         "epwalsh/pomo.nvim",
         tag = "*", -- Recommended, use latest release instead of latest commit
         requires = {
@@ -256,16 +257,19 @@ return require('packer').startup(function(use)
                 -- See below for full list of options 👇
             })
         end,
-    })
+    }
 
     -- DAP plugins
     use 'mfussenegger/nvim-dap'
     use 'folke/neodev.nvim'
-    use { "rcarriga/nvim-dap-ui", requires = {
-        "mfussenegger/nvim-dap",
-        "nvim-neotest/nvim-nio",
-    } }
-    -- use 'nvim-telescope/telescope-dap.nvim'
+    use {
+        "rcarriga/nvim-dap-ui",
+        requires = {
+            "mfussenegger/nvim-dap",
+            "nvim-neotest/nvim-nio",
+        }
+    }
+
     use { 'mfussenegger/nvim-dap-python', requires = { "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui" } }
 
     use 'almo7aya/openingh.nvim'
