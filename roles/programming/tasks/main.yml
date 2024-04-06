@@ -55,13 +55,13 @@
     dest: "{{ dotfiles_user_home }}/.cargo/bin/rls"
     state: absent
 
-- name: Checkout rust-analyzer
-  git:
-    repo: https://github.com/rust-analyzer/rust-analyzer.git
-    dest: "{{ dotfiles_user_home }}/git/utilities/rust-analyzer"
-    update: no
+# - name: Checkout rust-analyzer
+#   git:
+#     repo: https://github.com/rust-analyzer/rust-analyzer.git
+#     dest: "{{ dotfiles_user_home }}/git/utilities/rust-analyzer"
+#     update: no
 
-- name: Install rust-analyzer
-  command: "cargo xtask install --server"
-  args:
-    chdir: "{{ dotfiles_user_home }}/git/utilities/rust-analyzer"
+# - name: Install rust-analyzer
+#   command: "cargo xtask install --server"
+#   args:
+#     chdir: "{{ dotfiles_user_home }}/git/utilities/rust-analyzer"

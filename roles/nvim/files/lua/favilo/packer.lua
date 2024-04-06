@@ -175,26 +175,12 @@ return require('packer').startup(function(use)
 
     use 'nanotee/zoxide.vim'
 
-    use {
-        "X3eRo0/dired.nvim",
-        requires = "MunifTanjim/nui.nvim",
+    use({
+        "stevearc/oil.nvim",
         config = function()
-            require("dired").setup {
-                path_separator = "/",
-                show_banner = true,
-                show_hidden = true,
-                show_dot_dirs = true,
-                show_colors = true,
-
-                colors = {
-                    DiredDimText = { link = {}, bg = "NONE", fg = "505050", gui = "NONE" },
-                    DiredDirectoryName = { link = {}, bg = "NONE", fg = "9370DB", gui = "NONE" },
-                    -- ... (define more colors as needed)
-                    DiredMoveFile = { link = {}, bg = "NONE", fg = "ff3399", gui = "bold" },
-                },
-            }
-        end
-    }
+            require("oil").setup()
+        end,
+    })
 
     use 'lambdalisue/fern.vim'
     use 'lambdalisue/suda.vim'
