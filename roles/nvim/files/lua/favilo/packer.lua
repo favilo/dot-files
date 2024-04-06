@@ -18,7 +18,7 @@ local packer_bootstrap = ensure_packer()
 
 return require('packer').startup(function(use)
     -- Packer can manage itself
-    use 'wbthomason/packer.nvim'
+    use { 'wbthomason/packer.nvim' }
 
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.4',
@@ -35,7 +35,7 @@ return require('packer').startup(function(use)
         }
     }
 
-    use 'bluz71/vim-nightfly-colors'
+    use { 'bluz71/vim-nightfly-colors' }
 
     use { 'nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' } }
     use { 'nvim-treesitter/playground' }
@@ -83,7 +83,7 @@ return require('packer').startup(function(use)
         -- config = true,
     }
 
-    use 'lewis6991/gitsigns.nvim'
+    use { 'lewis6991/gitsigns.nvim' }
 
     use {
         'saecki/crates.nvim',
@@ -136,11 +136,11 @@ return require('packer').startup(function(use)
         end
     }
 
-    use 'simrat39/rust-tools.nvim'
+    use { 'simrat39/rust-tools.nvim' }
 
-    use 'nvim-lua/plenary.nvim'
+    use { 'nvim-lua/plenary.nvim' }
 
-    use 'nvim-telescope/telescope-project.nvim'
+    use { 'nvim-telescope/telescope-project.nvim' }
 
     use {
         "someone-stole-my-name/yaml-companion.nvim",
@@ -171,7 +171,7 @@ return require('packer').startup(function(use)
         end,
     }
 
-    use 'nanotee/zoxide.vim'
+    use { 'nanotee/zoxide.vim' }
 
     use {
         "stevearc/oil.nvim",
@@ -183,8 +183,8 @@ return require('packer').startup(function(use)
         -- end,
     }
 
-    use 'lambdalisue/fern.vim'
-    use 'lambdalisue/suda.vim'
+    use { 'lambdalisue/fern.vim' }
+    use { 'lambdalisue/suda.vim' }
 
     -- use {
     --     "epwalsh/obsidian.nvim",
@@ -260,8 +260,8 @@ return require('packer').startup(function(use)
     }
 
     -- DAP plugins
-    use 'mfussenegger/nvim-dap'
-    use 'folke/neodev.nvim'
+    use { 'mfussenegger/nvim-dap' }
+    use { 'folke/neodev.nvim' }
     use {
         "rcarriga/nvim-dap-ui",
         requires = {
@@ -272,7 +272,7 @@ return require('packer').startup(function(use)
 
     use { 'mfussenegger/nvim-dap-python', requires = { "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui" } }
 
-    use 'almo7aya/openingh.nvim'
+    use { 'almo7aya/openingh.nvim' }
 
     use {
         "nvim-neotest/neotest",
