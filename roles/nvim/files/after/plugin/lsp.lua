@@ -1,6 +1,5 @@
 vim.g.lsp_zero_extend_lspconfig = 0
 local lsp = require('lsp-zero')
-lsp.extend_lspconfig()
 
 require('mason').setup()
 require('mason-lspconfig').setup({
@@ -109,6 +108,7 @@ lsp.on_attach(function(client, bufnr)
 end)
 
 lsp.setup()
+lsp.extend_lspconfig()
 
 vim.diagnostic.config({
     virtual_text = true,
