@@ -37,7 +37,10 @@ return require('packer').startup(function(use)
 
     use { 'bluz71/vim-nightfly-colors' }
 
-    use { 'nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' } }
+    use {
+        'nvim-treesitter/nvim-treesitter',
+        run = ':TSUpdate'
+    }
     use { 'nvim-treesitter/playground' }
     use { 'mbbill/undotree' }
     use {
@@ -92,6 +95,15 @@ return require('packer').startup(function(use)
         config = function()
             require('crates').setup()
         end,
+    }
+
+    use {
+        'williamboman/mason.nvim',
+    }
+
+    use {
+        'williamboman/mason-lspconfig.nvim',
+        run = ':PylspInstall python-lsp-black',
     }
     use {
         'VonHeikemen/lsp-zero.nvim',

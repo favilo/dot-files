@@ -2,7 +2,8 @@ vim.g.lsp_zero_extend_lspconfig = 0
 local lsp = require('lsp-zero')
 
 require('mason').setup()
-require('mason-lspconfig').setup({
+local mason_lspconfig = require('mason-lspconfig')
+mason_lspconfig.setup {
     -- Replace the language servers listed here
     -- with the ones you want to install
     ensure_installed = {
@@ -12,38 +13,86 @@ require('mason-lspconfig').setup({
         'rust_analyzer',
         'pylsp',
     },
-    handlers = {
-        lsp.default_setup,
+}
+
+local servers = {
+    pylsp = {
+        pylsp = {
+            plugins = {
+                black = { enabled = true },
+                isort = { enabled = false, profile = 'black' },
+                autopep8 = { enabled = false },
+                yapf = { enabled = false },
+                ruff = {
+                    enabled = false,
+                    formatEnabled = false,
+                },
+                pycodestyle = { enabled = false },
+                pyflakes = { enabled = false },
+                mccabe = { enabled = false },
+                flake8 = {
+                    enabled = false,
+                    ignore = { 'E501' },
+                    maxLineLength = 140,
+                },
+            },
+        },
     },
-})
-
-lsp.preset('recommended')
-
-lsp.configure('lua_ls', {
-    settings = {
+    sumneko_lua = {
         Lua = {
             diagnostics = {
                 globals = { 'vim' },
             },
         },
-    },
-})
+    }
+}
 
-lsp.configure('pylsp', {
-    settings = {
-        pylsp = {
-            plugins = {
-                black = { enabled = true },
-                isort = { enabled = true, profile = 'black' },
-                flake8 = {
-                    enabled = true,
-                    ignore = { '501' },
-                    maxLineLength = 88,
-                },
-            },
-        },
-    },
-})
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+mason_lspconfig.setup_handlers {
+    function(server_name)
+        require('lspconfig')[server_name].setup {
+            capabilities = capabilities,
+            on_attach = lsp.on_attach,
+            settings = servers[server_name],
+        }
+    end,
+}
+
+lsp.preset('recommended')
+
+-- lsp.configure('lua_ls', {
+--     settings = {
+--         Lua = {
+--             diagnostics = {
+--                 globals = { 'vim' },
+--             },
+--         },
+--     },
+-- })
+
+-- lsp.configure('pylsp', {
+--     settings = {
+--         pylsp = {
+--             plugins = {
+--                 black = { enabled = true },
+--                 isort = { enabled = false, profile = 'black' },
+--                 autopep8 = { enabled = false },
+--                 yapf = { enabled = false },
+--                 ruff = {
+--                     enabled = false,
+--                     formatEnabled = false,
+--                 },
+--                 flake8 = {
+--                     enabled = true,
+--                     ignore = { '501' },
+--                     maxLineLength = 100,
+--                 },
+--             },
+--         },
+--     },
+-- })
 
 local cmp = require('cmp')
 local cmp_action = require('lsp-zero').cmp_action()
