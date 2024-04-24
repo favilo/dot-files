@@ -3,17 +3,6 @@ local lsp = require('lsp-zero')
 
 require('mason').setup()
 local mason_lspconfig = require('mason-lspconfig')
-mason_lspconfig.setup {
-    -- Replace the language servers listed here
-    -- with the ones you want to install
-    ensure_installed = {
-        'tsserver',
-        'eslint',
-        'lua_ls',
-        'rust_analyzer',
-        'pylsp',
-    },
-}
 
 local servers = {
     pylsp = {
@@ -50,49 +39,7 @@ local servers = {
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-mason_lspconfig.setup_handlers {
-    function(server_name)
-        require('lspconfig')[server_name].setup {
-            capabilities = capabilities,
-            on_attach = lsp.on_attach,
-            settings = servers[server_name],
-        }
-    end,
-}
-
 lsp.preset('recommended')
-
--- lsp.configure('lua_ls', {
---     settings = {
---         Lua = {
---             diagnostics = {
---                 globals = { 'vim' },
---             },
---         },
---     },
--- })
-
--- lsp.configure('pylsp', {
---     settings = {
---         pylsp = {
---             plugins = {
---                 black = { enabled = true },
---                 isort = { enabled = false, profile = 'black' },
---                 autopep8 = { enabled = false },
---                 yapf = { enabled = false },
---                 ruff = {
---                     enabled = false,
---                     formatEnabled = false,
---                 },
---                 flake8 = {
---                     enabled = true,
---                     ignore = { '501' },
---                     maxLineLength = 100,
---                 },
---             },
---         },
---     },
--- })
 
 local cmp = require('cmp')
 local cmp_action = require('lsp-zero').cmp_action()
@@ -143,10 +90,10 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>cD", vim.lsp.buf.declaration, opts)
     vim.keymap.set("n", "<leader>ci", vim.lsp.buf.implementation, opts)
     vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-    vim.keymap.set("n", "<leader>cws", vim.lsp.buf.workspace_symbol, opts)
-    -- vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, opts)
+    vim.keymap.set({ "n", "v" }, "<leader>cws", vim.lsp.buf.workspace_symbol, opts)
     vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
     vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+    vim.keymap.set("n", "<leader>dd", vim.diagnostic.open_float, opts)
     vim.keymap.set("n", "<leader>ca", vim.cmd.CodeActionMenu, opts)
     vim.keymap.set("v", "<leader>ca", vim.cmd.CodeActionMenu, opts)
     vim.keymap.set("n", "<leader>cR", vim.lsp.buf.references, opts)
@@ -156,8 +103,30 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 end)
 
+mason_lspconfig.setup {
+    -- Replace the language servers listed here
+    -- with the ones you want to install
+    ensure_installed = {
+        'tsserver',
+        'eslint',
+        'lua_ls',
+        'rust_analyzer',
+        'pylsp',
+    },
+}
+
 lsp.setup()
 lsp.extend_lspconfig()
+
+mason_lspconfig.setup_handlers {
+    function(server_name)
+        require('lspconfig')[server_name].setup {
+            capabilities = capabilities,
+            on_attach = lsp.on_attach,
+            settings = servers[server_name],
+        }
+    end,
+}
 
 vim.diagnostic.config({
     virtual_text = true,
