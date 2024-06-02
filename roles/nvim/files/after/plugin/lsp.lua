@@ -9,7 +9,11 @@ local servers = {
         pylsp = {
             plugins = {
                 black = { enabled = true },
-                isort = { enabled = false, profile = 'black' },
+                rope = { enabled = true },
+                mypy = {
+                    enabled = true,
+                },
+                isort = { enabled = true, profile = 'black' },
                 autopep8 = { enabled = false },
                 yapf = { enabled = false },
                 ruff = {

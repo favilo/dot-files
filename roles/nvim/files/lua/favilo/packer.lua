@@ -103,7 +103,7 @@ return require('packer').startup(function(use)
 
     use {
         'williamboman/mason-lspconfig.nvim',
-        run = ':PylspInstall python-lsp-black',
+        run = ':PylspInstall python-lsp-black pyls-isort pylsp-rope',
     }
     use {
         'VonHeikemen/lsp-zero.nvim',
@@ -298,4 +298,7 @@ return require('packer').startup(function(use)
             "nvim-treesitter/nvim-treesitter"
         }
     }
+
+    use { 'sk1418/HowMuch' }
+    use { 'diepm/vim-rest-console' }
 end)

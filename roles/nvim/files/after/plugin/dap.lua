@@ -104,9 +104,15 @@ require('dap-python').setup('~/.local/share/nvim/mason/packages/debugpy/venv/bin
 --     }
 -- })
 
+local continue = function()
+    if vim.fn.filereadable(".vscode/launch.json") then
+        require('dap.ext.vscode').load_launchjs()
+    end
+    require('dap').continue()
+end
 
 -- DAP mappings
-vim.keymap.set('n', '<leader>dc', function() require('dap').continue() end)
+vim.keymap.set('n', '<leader>dc', continue)
 vim.keymap.set('n', '<leader>do', function() require('dap').step_over() end)
 vim.keymap.set('n', '<leader>di', function() require('dap').step_into() end)
 vim.keymap.set('n', '<leader>du', function() require('dap').step_out() end)
