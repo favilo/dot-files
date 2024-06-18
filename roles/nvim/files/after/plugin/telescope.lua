@@ -1,5 +1,6 @@
 local builtin = require('telescope.builtin')
 require('telescope').load_extension('projects')
+require('telescope').load_extension('fzf')
 -- require('telescope').load_extension('dap')
 
 function vim.getVisualSelection()

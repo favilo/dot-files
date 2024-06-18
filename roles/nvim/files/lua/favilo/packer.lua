@@ -26,11 +26,8 @@ return require('packer').startup(function(use)
         requires = {
             { 'nvim-lua/plenary.nvim' },
             {
-                "nvim-telescope/telescope-fzf-native.nvim",
-                build = "make",
-                config = function()
-                    require('telescope').load_extension('fzf')
-                end,
+                'nvim-telescope/telescope-fzf-native.nvim',
+                run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build',
             },
         }
     }
@@ -301,4 +298,12 @@ return require('packer').startup(function(use)
 
     use { 'sk1418/HowMuch' }
     use { 'diepm/vim-rest-console' }
+
+    use { 'airblade/vim-rooter' }
+
+    -- Automatically set up your configuration after cloning packer.nvim
+    -- Put this at the end after all plugins
+    if packer_bootstrap then
+        require('packer').sync()
+    end
 end)
