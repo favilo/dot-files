@@ -126,10 +126,11 @@ return require('packer').startup(function(use)
     }
 
     use { 'ray-x/lsp_signature.nvim' }
-    use {
-        'weilbith/nvim-code-action-menu',
-        cmd = 'CodeActionMenu',
-    }
+    use { 'aznhe21/actions-preview.nvim' }
+    -- use {
+    --     'weilbith/nvim-code-action-menu',
+    --     cmd = 'CodeActionMenu',
+    -- }
     use { 'mrjones2014/op.nvim', run = 'make install' }
     use { 'averms/black-nvim', cmd = 'UpdateRemotePlugins' }
 

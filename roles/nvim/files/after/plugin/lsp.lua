@@ -98,8 +98,7 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
     vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
     vim.keymap.set("n", "<leader>dd", vim.diagnostic.open_float, opts)
-    vim.keymap.set("n", "<leader>ca", vim.cmd.CodeActionMenu, opts)
-    vim.keymap.set("v", "<leader>ca", vim.cmd.CodeActionMenu, opts)
+    vim.keymap.set({ "v", "n" }, "<leader>ca", require('actions-preview').code_actions, opts)
     vim.keymap.set("n", "<leader>cR", vim.lsp.buf.references, opts)
     vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, opts)
     vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, opts)
@@ -122,6 +121,30 @@ mason_lspconfig.setup {
 
 lsp.setup()
 lsp.extend_lspconfig()
+
+require("actions-preview").setup {
+    highlight_command = {
+        require("actions-preview.highlight").diff_so_fancy(),
+    },
+
+    backend = { "telescope" },
+    telescope = vim.tbl_extend(
+        "force",
+        -- telescope theme: https://github.com/nvim-telescope/telescope.nvim#themes
+        require("telescope.themes").get_dropdown(),
+        -- a table for customizing content
+        {
+            -- a function to make a table containing the values to be displayed.
+            -- fun(action: Action): { title: string, client_name: string|nil }
+            make_value = nil,
+
+            -- a function to make a function to be used in `display` of a entry.
+            -- see also `:h telescope.make_entry` and `:h telescope.pickers.entry_display`.
+            -- fun(values: { index: integer, action: Action, title: string, client_name: string }[]): function
+            make_make_display = nil,
+        }
+    )
+}
 
 mason_lspconfig.setup_handlers {
     function(server_name)
