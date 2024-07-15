@@ -66,43 +66,9 @@ dap.listeners.before.event_exited['dapui_config'] = function()
     dapui.close()
 end
 
-require('dap-python').setup('~/.local/share/nvim/mason/packages/debugpy/venv/bin/python')
--- require('core.utils').load_mappings("dap_python")
-
--- dap.adapters.lldb = {
---     type = 'executable',
---     command = '/usr/bin/lldb-vscode',
---     name = 'lldb',
--- }
-
--- dap.configurations.cpp = {
---     {
---         name = 'Launch',
---         type = 'lldb',
---         request = 'launch',
---         program = function()
---             return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
---         end,
---         cwd = '${workspaceFolder}',
---         stopOnEntry = false,
---         args = {},
---         runInTerminal = false,
---     }
--- }
-
--- dap.configurations.c = dap.configurations.cpp
--- dap.configurations.rust = dap.configurations.cpp
-
--- local rt = require("rust-tools")
-
--- rt.setup({
---     server = {
---         on_attach = function(_, bufnr)
---             vim.keymap.set("n", "<Leader>cc", rt.hover_actions.hover_actions, { buffer = bufnr })
---             -- vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
---         end,
---     }
--- })
+local dap_python = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
+require('dap-python').setup(dap_python)
+require('dap-python').test_runner = 'pytest'
 
 local continue = function()
     if vim.fn.filereadable(".vscode/launch.json") then
@@ -122,6 +88,7 @@ vim.keymap.set('n', '<leader>dm',
     function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
 vim.keymap.set('n', '<leader>dr', function() require('dap').repl.open() end)
 vim.keymap.set('n', '<leader>dl', function() require('dap').run_last() end)
+vim.keymap.set({ 'n', 'v' }, '<leader>dt', function() require('dap-python').test_method() end)
 vim.keymap.set({ 'n', 'v' }, '<leader>dh', function()
     require('dap.ui.widgets').hover()
 end)

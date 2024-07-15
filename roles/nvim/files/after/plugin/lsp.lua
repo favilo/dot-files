@@ -4,6 +4,13 @@ local lsp = require('lsp-zero')
 require('mason').setup()
 local mason_lspconfig = require('mason-lspconfig')
 
+local venv_path = os.getenv('VIRTUAL_ENV')
+local py_path = nil
+
+if venv_path ~= nil then
+    py_path = venv_path .. '/bin/python'
+end
+
 local servers = {
     pylsp = {
         pylsp = {
@@ -12,6 +19,8 @@ local servers = {
                 rope = { enabled = true },
                 mypy = {
                     enabled = true,
+                    overrides = { "--python-executable", py_path, true },
+                    report_progress = true,
                 },
                 isort = { enabled = true, profile = 'black' },
                 autopep8 = { enabled = false },
@@ -101,8 +110,14 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set({ "v", "n" }, "<leader>ca", require('actions-preview').code_actions, opts)
     vim.keymap.set("n", "<leader>cR", vim.lsp.buf.references, opts)
     vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, opts)
-    vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, opts)
-    vim.keymap.set("v", "<leader>cf", vim.lsp.buf.format, opts)
+    vim.keymap.set({ "n", "v" }, "<leader>cf", function()
+        vim.print("formatting")
+        vim.lsp.buf.format {
+            filter = function(_client)
+                return true
+            end,
+        }
+    end, opts)
     vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 end)
 
