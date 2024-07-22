@@ -26,6 +26,9 @@
     exe: sccache
   - name: alacritty
     exe: alacritty
+  - name: git-branchless
+    exe: git-branchless
+
 - name: Install fun crates
   command: "{{ dotfiles_user_home }}/.cargo/bin/cargo binstall {{ item.name }}"
   args:

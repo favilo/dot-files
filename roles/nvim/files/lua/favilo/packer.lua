@@ -120,7 +120,11 @@ return require('packer').startup(function(use)
             { 'hrsh7th/cmp-nvim-lua' },
 
             -- Snippets
-            { 'L3MON4D3/LuaSnip' },
+            {
+                'L3MON4D3/LuaSnip',
+                version = "v2.*",
+                build = "make install_jsregexp",
+            },
             { 'rafamadriz/friendly-snippets' },
         }
     }
@@ -164,20 +168,28 @@ return require('packer').startup(function(use)
         end,
     }
 
+    -- use {
+    --     "zbirenbaum/copilot.lua",
+    --     cmd = "Copilot",
+    --     event = "InsertEnter",
+    --     config = function()
+    --         require("copilot").setup({
+    --             suggestion = {
+    --                 enabled = true,
+    --                 auto_trigger = true,
+    --             },
+    --             filetypes = {
+    --                 yaml = true,
+    --             }
+    --         })
+    --     end,
+    -- }
+
+    -- TODO: Think about using supermaven instead of copilot
     use {
-        "zbirenbaum/copilot.lua",
-        cmd = "Copilot",
-        event = "InsertEnter",
+        "supermaven-inc/supermaven-nvim",
         config = function()
-            require("copilot").setup({
-                suggestion = {
-                    enabled = true,
-                    auto_trigger = true,
-                },
-                filetypes = {
-                    yaml = true,
-                }
-            })
+            require("supermaven-nvim").setup({})
         end,
     }
 

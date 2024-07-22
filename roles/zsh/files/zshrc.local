@@ -51,6 +51,8 @@ alias la=ls -lah
 alias vim="nvim"
 alias ta="tmux attach"
 alias cat=bat
+alias jq="jaq"
+alias git="git-branchless wrap"
 
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
@@ -78,3 +80,8 @@ if [[ -d $HOME/Android/Sdk/ ]] ; then
     export ANDROID_HOME=$HOME/Android/Sdk
     export ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/26.2.11394342
 fi
+
+export JAVA_HOME=/usr/lib/jvm/default
+export JAVA11_HOME=/usr/lib/jvm/java-11-openjdk
+export JAVA17_HOME=/usr/lib/jvm/java-17-openjdk
+export JAVA21_HOME=/usr/lib/jvm/java-21-openjdk

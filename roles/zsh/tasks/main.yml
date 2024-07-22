@@ -37,14 +37,14 @@
   file:
     src: "{{ dotfiles_home }}/roles/zsh/files/zshrc.local"
     dest: "{{ dotfiles_user_home }}/.zshrc.local"
-    state: hard
+    state: soft
     force: true
 
 - name: link .zshrc
   file:
     src: "{{ dotfiles_home }}/roles/zsh/files/zshrc"
     dest: "{{ dotfiles_user_home }}/.zshrc"
-    state: hard
+    state: soft
     force: true
 
 - name: link .zshrc
