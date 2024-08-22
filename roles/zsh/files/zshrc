@@ -93,7 +93,6 @@ plugins=(
     history-substring-search
     kubectl
     macos
-    ripgrep
     rust
     vi-mode
     fzf
