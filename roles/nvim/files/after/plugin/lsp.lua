@@ -46,6 +46,24 @@ local servers = {
                 globals = { 'vim' },
             },
         },
+    },
+    rust_analyzer = {
+        ["rust-analyzer"] = {
+            assist = {
+                importGranularity = "module",
+                importPrefix = "by_self",
+            },
+            checkOnSave = {
+                command = "clippy",
+            },
+            cargo = {
+                allFeatures = true,
+                loadOutDirsFromCheck = true,
+            },
+            procMacro = {
+                enable = true,
+            },
+        },
     }
 }
 

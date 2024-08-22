@@ -11,3 +11,17 @@
     state: link
     src: "{{ dotfiles_home }}/roles/tmux/files/tmux.conf"
     dest: "{{ dotfiles_user_home }}/.tmux.conf"
+
+- name: tmux folder
+  file:
+    state: directory
+    dest: "{{ dotfiles_user_home }}/.tmux/keybindings"
+
+- name: Symlink keybindings
+  file:
+    state: link
+    src: "{{ dotfiles_home }}/roles/tmux/files/tmux/keybindings/{{ item }}"
+    dest: "{{ dotfiles_user_home }}/.tmux/keybindings/{{ item }}"
+  loop:
+    - f-keys.conf
+    - f-keys.conf.disable
