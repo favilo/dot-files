@@ -50,6 +50,9 @@ return require('packer').startup(function(use)
                 -- can also delete or rearangne the detection methods.
                 detection_methods = { "lsp", "pattern" },
                 patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
+                exclude_dirs = { "~/.cargo/*" },
+
+                show_hidden = true,
 
                 -- When set to false, you will get a message when project.nvim changes your
                 -- directory.
