@@ -29,3 +29,12 @@ vim.opt.signcolumn = 'yes'
 vim.opt.isfname:append("@-@")
 
 vim.g.mapleader = " "
+
+vim.opt.list = true
+vim.opt.listchars:append({ space = "⋅" })
+vim.opt.listchars:append({ eol = "↴" })
+vim.opt.listchars:append({ tab = "→ " })
+vim.opt.listchars:append({ trail = "↴" })
+vim.opt.listchars:append({ extends = "↴" })
+vim.opt.listchars:append({ precedes = "↴" })
+vim.opt.listchars:append({ nbsp = "⎵" })

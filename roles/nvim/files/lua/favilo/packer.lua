@@ -29,6 +29,7 @@ return require('packer').startup(function(use)
                 'nvim-telescope/telescope-fzf-native.nvim',
                 run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build',
             },
+            { "nvim-telescope/telescope-live-grep-args.nvim" },
         }
     }
 
@@ -48,8 +49,8 @@ return require('packer').startup(function(use)
                 -- lsp, while **"pattern"** uses vim-rooter like glob pattern matching. Here
                 -- order matters: if one is not detected, the other is used as fallback. You
                 -- can also delete or rearangne the detection methods.
-                detection_methods = { "lsp", "pattern" },
-                patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
+                detection_methods = { "pattern", "lsp", },
+                patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn" },
                 exclude_dirs = { "~/.cargo/*" },
 
                 show_hidden = true,
@@ -86,7 +87,7 @@ return require('packer').startup(function(use)
         -- config = true,
     }
 
-    use { 'lewis6991/gitsigns.nvim' }
+    -- use { 'lewis6991/gitsigns.nvim' }
 
     use {
         'saecki/crates.nvim',
@@ -98,20 +99,15 @@ return require('packer').startup(function(use)
     }
 
     use {
-        'williamboman/mason.nvim',
-    }
-
-    use {
-        'williamboman/mason-lspconfig.nvim',
-        run = ':PylspInstall python-lsp-black pyls-isort pylsp-rope',
-    }
-    use {
         'VonHeikemen/lsp-zero.nvim',
         requires = {
             -- LSP Support
             { 'neovim/nvim-lspconfig' },
             { 'williamboman/mason.nvim' },
-            { 'williamboman/mason-lspconfig.nvim' },
+            {
+                'williamboman/mason-lspconfig.nvim',
+                run = ':PylspInstall python-lsp-black pyls-isort pylsp-rope',
+            },
             { "lukas-reineke/lsp-format.nvim" },
 
             -- Autocompletion
@@ -129,6 +125,9 @@ return require('packer').startup(function(use)
                 build = "make install_jsregexp",
             },
             { 'rafamadriz/friendly-snippets' },
+
+            -- LSP Extras
+            { 'b0o/schemastore.nvim' },
         }
     }
 
@@ -175,16 +174,48 @@ return require('packer').startup(function(use)
     --     "zbirenbaum/copilot.lua",
     --     cmd = "Copilot",
     --     event = "InsertEnter",
+    --     dependencies = { "hrsh7th/nvim-cmp" },
     --     config = function()
     --         require("copilot").setup({
+    --             panel = { enabled = true },
     --             suggestion = {
     --                 enabled = true,
     --                 auto_trigger = true,
+    --                 hide_during_completion = true,
+    --                 keymap = {
+    --                     accept = "M-l",
+    --                     accept_word = false,
+    --                     accept_line = false,
+    --                     next = "<C-space>",
+    --                     prev = "<C-S-space>",
+    --                     dismiss = "<C-]>",
+    --                 },
     --             },
     --             filetypes = {
     --                 yaml = true,
+    --                 python = true,
+    --                 lua = true,
     --             }
     --         })
+
+    --         local suggestion = require("copilot.suggestion")
+    --         local function toggle_auto_trigger()
+    --             local auto_trig = vim.b.copilot_suggestion_auto_trigger
+    --             if auto_trig == nil or auto_trig == true then
+    --                 vim.notify("Copilot auto-suggestion disabled")
+    --                 suggestion.dismiss()
+    --             else
+    --                 vim.notify("Copilot auto-suggestion enabled")
+    --                 suggestion.next()
+    --             end
+    --             suggestion.toggle_auto_trigger()
+    --         end
+
+    --         vim.keymap.set({ "i", "n", "v" }, "<A-space>", function() suggestion.toggle_auto_trigger() end,
+    --             { desc = "Toggle auto trigger" })
+    --         vim.keymap.set("n", "<leader>cT", "<cmd>Copilot toggle", { desc = "Copilot toggle" })
+    --         vim.keymap.set("n", "<leader>cs", toggle_auto_trigger, { desc = "Copilot Suggestion toggle" })
+    --         vim.keymap.set("i", "<C-e>", toggle_auto_trigger, { desc = "Copilot Suggestion toggle" })
     --     end,
     -- }
 
@@ -192,7 +223,14 @@ return require('packer').startup(function(use)
     use {
         "supermaven-inc/supermaven-nvim",
         config = function()
-            require("supermaven-nvim").setup({})
+            require("supermaven-nvim").setup({
+                keymap = {
+                    accept_suggestion = "<CR>",
+                    clear_suggestion = "<C-]>",
+                    accept_word = "<C-j>",
+                },
+
+            })
         end,
     }
 
@@ -286,6 +324,10 @@ return require('packer').startup(function(use)
 
     -- DAP plugins
     use { 'mfussenegger/nvim-dap' }
+    -- use {
+    --     'ldelossa/nvim-dap-projects',
+    --     requires = { 'mfussenegger/nvim-dap' },
+    -- }
     use { 'folke/neodev.nvim' }
     use {
         "rcarriga/nvim-dap-ui",
@@ -296,7 +338,6 @@ return require('packer').startup(function(use)
     }
 
     use { 'mfussenegger/nvim-dap-python', requires = { "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui" } }
-
     use { 'almo7aya/openingh.nvim' }
 
     use {
@@ -306,6 +347,8 @@ return require('packer').startup(function(use)
             "nvim-neotest/neotest-python",
             "nvim-neotest/neotest-plenary",
             "nvim-neotest/neotest-vim-test",
+            "mrcjkb/rustaceanvim",
+            -- "rouge8/neotest-rust",
             "nvim-lua/plenary.nvim",
             "antoinemadec/FixCursorHold.nvim",
             "nvim-treesitter/nvim-treesitter"
@@ -315,7 +358,21 @@ return require('packer').startup(function(use)
     use { 'sk1418/HowMuch' }
     use { 'diepm/vim-rest-console' }
 
-    use { 'airblade/vim-rooter' }
+    -- use { 'airblade/vim-rooter' }
+    use {
+        "hedyhli/outline.nvim",
+        config = function()
+            -- Example mapping to toggle outline
+            vim.keymap.set("n", "<leader>o",
+                function() require("outline").toggle({ placement = "topleft", focus_outline = false }) end,
+                { desc = "Toggle Outline" })
+            vim.keymap.set("n", "<leader>O", function() require("outline").focus_toggle() end, { desc = "Focus Outline" })
+
+            require("outline").setup {
+                -- Your setup opts here (leave empty to use defaults)
+            }
+        end,
+    }
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

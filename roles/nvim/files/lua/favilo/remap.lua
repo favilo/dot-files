@@ -22,7 +22,7 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
-vim.keymap.set("x", "<leader>p", [["_dP]])
+vim.keymap.set("v", "<leader>p", [["_dP]])
 
 vim.keymap.set("n", "<leader>y", [["+y]])
 vim.keymap.set("v", "<leader>y", [["+y]])
@@ -41,6 +41,8 @@ vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
 
 vim.keymap.set("n", "<leader>rr", "yyp!!sh<CR>")
 vim.keymap.set("v", "<leader>rr", "!sh<CR>")
+
+vim.keymap.set("c", "w!!", "execute 'silent! write !sudo tee % >/dev/null' <bar> edit!")
 -- vim.g['copilot_no_tab_map'] = true
 -- vim.g['copilot_assume_mapped'] = true
 

@@ -1,4 +1,5 @@
 vim.g.lsp_zero_extend_lspconfig = 0
+vim.opt.exrc = true
 local lsp = require('lsp-zero')
 
 require('mason').setup()
@@ -8,6 +9,7 @@ local venv_path = os.getenv('VIRTUAL_ENV')
 local py_path = nil
 
 if venv_path ~= nil then
+    vim.notify("Found venv at " .. venv_path)
     py_path = venv_path .. '/bin/python'
 end
 
@@ -29,7 +31,10 @@ local servers = {
                     enabled = false,
                     formatEnabled = false,
                 },
-                pycodestyle = { enabled = false },
+                pycodestyle = {
+                    enabled = true,
+                    maxLineLength = 140,
+                },
                 pyflakes = { enabled = false },
                 mccabe = { enabled = false },
                 flake8 = {
@@ -47,24 +52,70 @@ local servers = {
             },
         },
     },
-    rust_analyzer = {
-        ["rust-analyzer"] = {
-            assist = {
-                importGranularity = "module",
-                importPrefix = "by_self",
-            },
-            checkOnSave = {
-                command = "clippy",
-            },
-            cargo = {
-                allFeatures = true,
-                loadOutDirsFromCheck = true,
-            },
-            procMacro = {
+    -- rust_analyzer = {
+    --     ["rust-analyzer"] = {
+    --         assist = {
+    --             importGranularity = "module",
+    --             importPrefix = "by_self",
+    --         },
+    --         checkOnSave = {
+    --             command = "clippy",
+    --         },
+    --         cargo = {
+    --             allFeatures = true,
+    --             loadOutDirsFromCheck = true,
+    --         },
+    --         procMacro = {
+    --             enable = true,
+    --         },
+    --     },
+    -- },
+    jsonls = {
+        formatting_options = {
+            tabSize = 2,
+        },
+        json = {
+            colorDecorators = {
                 enable = true,
             },
+            format = {
+                enable = true,
+                keepLines = true,
+            },
+            validate = {
+                enable = true,
+            },
+            schemaDownload = {
+                enable = true,
+            },
+            schemas = require("schemastore").json.schemas(
+            -- {
+            --     select = {
+            --         "package.json",
+            --         ".eslintrc",
+            --         "tsconfig.json",
+            --         "*.docnav.vson",
+            --     },
+            -- }
+            ),
+        }
+        -- → json.maxItemsComputed        default: 5000
+        -- → json.schemaDownload.enable   default: true
+        -- → json.schemas
+        -- → json.trace.server            default: "off"
+    },
+    yamlls = {
+        formatting_options = {
+            tabSize = 2,
         },
-    }
+        yaml = {
+            schemaStore = {
+                enable = false,
+                url = "",
+            },
+            schemas = require("schemastore").yaml.schemas()
+        }
+    },
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -72,15 +123,42 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 lsp.preset('recommended')
 
+local has_words_before = function()
+    unpack = unpack or table.unpack
+    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+    return col ~= 0 and
+        vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") ==
+        nil
+end
+
 local cmp = require('cmp')
 local cmp_action = require('lsp-zero').cmp_action()
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
+local luasnip = require("luasnip")
+
 local cmp_mappings = lsp.defaults.cmp_mappings({
     ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
     ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
     ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-    ['<C-space>'] = cmp.mapping.complete(),
+    ['<M-space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
+    ['<TAB>'] = cmp.mapping(function(fallback)
+        local suggestion = require('supermaven-nvim.completion_preview')
+        if suggestion.has_suggestion() then
+            suggestion.on_accept_suggestion()
+            -- Copilot stuff for if I go back.
+            -- if require("copilot.suggestion").is_visible() then
+            --     require("copilot.suggestion").accept()
+        elseif cmp.visible() then
+            cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })
+        elseif luasnip.expand_or_locally_jumpable() then
+            luasnip.expand_or_jump()
+        elseif has_words_before() then
+            cmp.complete()
+        else
+            fallback()
+        end
+    end),
 })
 
 -- cmp_mappings['<Tab>'] = nil
@@ -92,6 +170,7 @@ cmp.setup({
         documentation = cmp.config.window.bordered(),
     },
     sources = {
+        { name = "supermaven" },
         { name = "nvim_lsp" },
     },
     mapping = cmp_mappings
@@ -117,10 +196,22 @@ lsp.on_attach(function(client, bufnr)
         return
     end
 
+    if client.name == "yamlls" then
+        client.server_capabilities.documentFormattingProvider = true
+    end
+    if client.name == "jsonls" then
+        client.server_capabilities.snippetSupport = true
+    end
+
     vim.keymap.set("n", "<leader>cd", vim.lsp.buf.definition, opts)
     vim.keymap.set("n", "<leader>cD", vim.lsp.buf.declaration, opts)
     vim.keymap.set("n", "<leader>ci", vim.lsp.buf.implementation, opts)
     vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+    vim.keymap.set("n", "<leader>cl",
+        function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), opts)
+        end,
+        opts)
     vim.keymap.set({ "n", "v" }, "<leader>cws", vim.lsp.buf.workspace_symbol, opts)
     vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
     vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
@@ -129,12 +220,22 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>cR", vim.lsp.buf.references, opts)
     vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, opts)
     vim.keymap.set({ "n", "v" }, "<leader>cf", function()
-        vim.print("formatting")
-        vim.lsp.buf.format {
-            filter = function(_client)
-                return true
-            end,
-        }
+        local formatting_options = nil
+        if servers[client.name] and servers[client.name].formatting_options then
+            formatting_options = servers[client.name].formatting_options
+        else
+            formatting_options = {}
+        end
+
+        local filter = function(_client)
+            return true
+        end
+        local ret = vim.lsp.buf.format({
+            filter = filter,
+            async = true,
+            formatting_options = formatting_options,
+        })
+        vim.print("formatting return: " .. vim.inspect(ret))
     end, opts)
     vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 end)
@@ -143,12 +244,17 @@ mason_lspconfig.setup {
     -- Replace the language servers listed here
     -- with the ones you want to install
     ensure_installed = {
-        'tsserver',
+        'ts_ls',
         'eslint',
         'lua_ls',
-        'rust_analyzer',
+        -- Taken care of by rustaceanvim
+        -- 'rust_analyzer',
         'pylsp',
         'clangd',
+        'jsonls',
+        'yamlls',
+        -- 'cpptools',
+        -- 'codelldb',
     },
 }
 
@@ -181,6 +287,9 @@ require("actions-preview").setup {
 
 mason_lspconfig.setup_handlers {
     function(server_name)
+        if server_name == 'rust-analyzer' then
+            return true
+        end
         require('lspconfig')[server_name].setup {
             capabilities = capabilities,
             on_attach = lsp.on_attach,

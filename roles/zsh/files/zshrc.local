@@ -2,10 +2,7 @@ export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git'"
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 export FZF_CTRL_T_OPTS="\
   --preview 'bat -n --color=always {}'\
-  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
-
-HYPHEN_INSENSITIVE="true"
-COMPLETION_WAITING_DOTS="true"
+  --bind 'ctrl-]:change-preview-window(down|hidden|)'"
 
 [ -f /usr/share/fzf ] && source /usr/share/fzf/key-bindings.zsh
 [ -f /usr/share/fzf ] && source /usr/share/fzf/completion.zsh
@@ -37,7 +34,7 @@ export PATH="$PATH:$HOME/.emacs.d/bin"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
 export PATH="${PATH}:/opt/muslcc/arm-linux-musleabihf/bin"
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}"
-export QT_QPA_PLATFORM=xcb
+# export QT_QPA_PLATFORM=wayland
 export GPG_TTY=$(tty)
 export EDITOR=nvim
 
@@ -50,8 +47,9 @@ alias ls=exa
 alias la=ls -lah
 alias vim="nvim"
 alias ta="tmux attach"
-alias cat=bat
+alias cat="bat -p"
 alias jq="jaq"
+alias autorandr="autorandr --match-edid"
 alias git="git-branchless wrap"
 
 autoload -U up-line-or-beginning-search
@@ -91,3 +89,11 @@ if [ -f '/home/favilo/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/home/
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/favilo/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/favilo/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+source /usr/share/nvm/init-nvm.sh
+
+PROMPT='%{$fg[yellow]%}[%*] '$PROMPT
+# LPROMPT='[%D{%L:%M:%S %p}]'
+TMOUT=1
+TRAPALRM() {
+    zle reset-prompt
+}

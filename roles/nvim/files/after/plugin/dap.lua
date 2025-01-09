@@ -20,7 +20,7 @@ dap.adapters.python = function(cb, config)
     else
         cb({
             type = 'executable',
-            command = '~/.local/share/nvim/mason/bin/debugpy',
+            command = 'debugpy',
             args = {},
             options = {
                 source_filetype = 'python',
@@ -36,7 +36,8 @@ dap.configurations.python = {
         request = 'launch',
         name = "Launch file",
 
-        -- Options below are for debugpy, see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for supported options
+        -- Options below are for debugpy, see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings
+        -- for supported options
 
         program = "${file}", -- This configuration will launch the current file if used.
         pythonPath = function()
@@ -66,19 +67,20 @@ dap.listeners.before.event_exited['dapui_config'] = function()
     dapui.close()
 end
 
-local dap_python = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
+local dap_python = ".venv/bin/python"
 require('dap-python').setup(dap_python)
 require('dap-python').test_runner = 'pytest'
 
-local continue = function()
+local continue_debug = function()
     if vim.fn.filereadable(".vscode/launch.json") then
+        vim.notify("Loading .vscode/launch.json")
         require('dap.ext.vscode').load_launchjs()
     end
     require('dap').continue()
 end
 
 -- DAP mappings
-vim.keymap.set('n', '<leader>dc', continue)
+vim.keymap.set('n', '<leader>dc', continue_debug)
 vim.keymap.set('n', '<leader>do', function() require('dap').step_over() end)
 vim.keymap.set('n', '<leader>di', function() require('dap').step_into() end)
 vim.keymap.set('n', '<leader>du', function() require('dap').step_out() end)
@@ -87,19 +89,21 @@ vim.keymap.set('n', '<leader>dB', function() require('dap').set_breakpoint() end
 vim.keymap.set('n', '<leader>dm',
     function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
 vim.keymap.set('n', '<leader>dr', function() require('dap').repl.open() end)
-vim.keymap.set('n', '<leader>dl', function() require('dap').run_last() end)
-vim.keymap.set({ 'n', 'v' }, '<leader>dt', function() require('dap-python').test_method() end)
+
+-- See neotest.lua for neotest mappings
 vim.keymap.set({ 'n', 'v' }, '<leader>dh', function()
     require('dap.ui.widgets').hover()
-end)
+end, { desc = 'Hover' })
 vim.keymap.set({ 'n', 'v' }, '<leader>dp', function()
     require('dap.ui.widgets').preview()
 end)
-vim.keymap.set('n', '<leader>df', function()
+vim.keymap.set('n', '<leader>dF', function()
     local widgets = require('dap.ui.widgets')
     widgets.centered_float(widgets.frames)
 end)
-vim.keymap.set('n', '<leader>ds', function()
+vim.keymap.set('n', '<leader>DS', function()
     local widgets = require('dap.ui.widgets')
     widgets.centered_float(widgets.scopes)
 end)
+
+-- require("nvim-dap-projects").search_project_config()

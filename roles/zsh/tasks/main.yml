@@ -40,6 +40,11 @@
     state: link
     force: true
 
+- name: check if ~/.config/zsh exists
+  stat:
+    path: "{{ dotfiles_user_home }}/.config/zsh"
+  register: zsh_config
+
 - name: link .zshrc
   file:
     src: "{{ dotfiles_home }}/roles/zsh/files/zshrc"
@@ -53,7 +58,7 @@
     dest: "{{ dotfiles_user_home }}/.config/zsh/.zshrc"
     state: link
     force: true
-
+  when: zsh_config.stat.exists
 #- name: Set zsh as default shell
 #   user: name="{{ dotfiles_user }}" shell=/usr/bin/zsh
 #   become: true
