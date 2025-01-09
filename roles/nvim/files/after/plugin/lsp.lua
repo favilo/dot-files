@@ -137,6 +137,8 @@ local cmp_select = { behavior = cmp.SelectBehavior.Select }
 local luasnip = require("luasnip")
 
 local cmp_mappings = lsp.defaults.cmp_mappings({
+    ['<Tab>'] = nil,
+    ['<S-Tab>'] = nil,
     ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
     ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
     ['<C-y>'] = cmp.mapping.confirm({ select = true }),
@@ -161,8 +163,8 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
     end),
 })
 
--- cmp_mappings['<Tab>'] = nil
--- cmp_mappings['<S-Tab>'] = nil
+cmp_mappings['<Tab>'] = nil
+cmp_mappings['<S-Tab>'] = nil
 
 cmp.setup({
     window = {
