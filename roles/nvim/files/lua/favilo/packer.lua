@@ -87,7 +87,7 @@ return require('packer').startup(function(use)
         -- config = true,
     }
 
-    -- use { 'lewis6991/gitsigns.nvim' }
+    use { 'lewis6991/gitsigns.nvim' }
 
     use {
         'saecki/crates.nvim',
@@ -341,13 +341,53 @@ return require('packer').startup(function(use)
     use { 'almo7aya/openingh.nvim' }
 
     use {
+        "mrcjkb/rustaceanvim",
+        version = "^5",
+        config = function()
+            vim.print("Setting up rustaceanvim")
+            vim.g.rustaceanvim = function()
+                -- Update this path
+                local codelldb = require('mason-registry').get_package('codelldb')
+                local extension_path = codelldb:get_install_path() .. '/extension/'
+                local codelldb_path = extension_path .. 'adapter/codelldb'
+                local liblldb_path = extension_path .. 'lldb/lib/liblldb'
+                local this_os = vim.uv.os_uname().sysname;
+
+                -- The path is different on Windows
+                if this_os:find "Windows" then
+                    codelldb_path = extension_path .. "adapter\\codelldb.exe"
+                    liblldb_path = extension_path .. "lldb\\bin\\liblldb.dll"
+                else
+                    -- The liblldb extension is .so for Linux and .dylib for MacOS
+                    liblldb_path = liblldb_path .. (this_os == "Linux" and ".so" or ".dylib")
+                end
+
+                local cfg = require('rustaceanvim.config')
+                return {
+                    crate_graph = {
+                        backend = "svg",
+                        output = "target/crate-graph.svg",
+                    },
+                    server = {
+                        ra_multiplex = {
+                            enable = true,
+                        },
+                    },
+                    dap = {
+                        adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
+                    },
+                }
+            end
+        end,
+    }
+
+    use {
         "nvim-neotest/neotest",
         requires = {
             "nvim-neotest/nvim-nio",
             "nvim-neotest/neotest-python",
             "nvim-neotest/neotest-plenary",
             "nvim-neotest/neotest-vim-test",
-            "mrcjkb/rustaceanvim",
             -- "rouge8/neotest-rust",
             "nvim-lua/plenary.nvim",
             "antoinemadec/FixCursorHold.nvim",

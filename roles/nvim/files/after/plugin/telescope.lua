@@ -1,5 +1,6 @@
 local telescope = require('telescope')
 local builtin = require('telescope.builtin')
+telescope.setup({})
 require('telescope').load_extension('projects')
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('live_grep_args')
@@ -35,16 +36,16 @@ vim.keymap.set('n', '<C-p>', builtin.git_files, { desc = "Telescope git files" }
 vim.keymap.set('n', '<leader>sp', builtin.live_grep, { desc = "Telescope live grep" })
 vim.keymap.set('v', '<leader>sp', function() builtin.live_grep({ default_text = vim.getVisualSelection() }) end,
     { desc = "Telescope live grep (starting w/ selected text)" })
+
+
 local hidden_args = { '--no-ignore', '--no-ignore-vcs', }
-
-
 vim.keymap.set('n', '<leader>so',
     function() builtin.live_grep({ additional_args = hidden_args }) end, { desc = "Telescope live grep with hidden" })
 vim.keymap.set('v', '<leader>so',
     function() builtin.live_grep({ default_text = vim.getVisualSelection(), additional_args = hidden_args }) end,
     { desc = "Telescope live grep with hidden (starting w/ selected text)" })
 vim.keymap.set('n', '<leader>sa',
-    function() telescope.extensions.live_grep_args({ additional_args = hidden_args }) end,
+    function() telescope.extensions.live_grep_args.live_grep_args({ additional_args = hidden_args }) end,
     { desc = "Telescope live grep with hidden" })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = "Telescope live grep through nvim help tags" })
 vim.keymap.set('n', '<leader>fc', builtin.command_history, { desc = "Telescope live grep through command history" })

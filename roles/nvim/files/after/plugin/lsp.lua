@@ -2,7 +2,10 @@ vim.g.lsp_zero_extend_lspconfig = 0
 vim.opt.exrc = true
 local lsp = require('lsp-zero')
 
-require('mason').setup()
+require('mason').setup({
+    PATH = "append",
+})
+
 local mason_lspconfig = require('mason-lspconfig')
 
 local venv_path = os.getenv('VIRTUAL_ENV')
@@ -15,90 +18,98 @@ end
 
 local servers = {
     pylsp = {
-        pylsp = {
-            plugins = {
-                black = { enabled = true },
-                rope = { enabled = true },
-                mypy = {
-                    enabled = true,
-                    overrides = { "--python-executable", py_path, true },
-                    report_progress = true,
-                },
-                isort = { enabled = true, profile = 'black' },
-                autopep8 = { enabled = false },
-                yapf = { enabled = false },
-                ruff = {
-                    enabled = false,
-                    formatEnabled = false,
-                },
-                pycodestyle = {
-                    enabled = true,
-                    maxLineLength = 140,
-                },
-                pyflakes = { enabled = false },
-                mccabe = { enabled = false },
-                flake8 = {
-                    enabled = false,
-                    ignore = { 'E501' },
-                    maxLineLength = 140,
+        settings = {
+            pylsp = {
+                plugins = {
+                    black = { enabled = true },
+                    rope = { enabled = true },
+                    mypy = {
+                        enabled = true,
+                        overrides = { "--python-executable", py_path, true },
+                        report_progress = true,
+                    },
+                    isort = { enabled = true, profile = 'black' },
+                    autopep8 = { enabled = false },
+                    yapf = { enabled = false },
+                    ruff = {
+                        enabled = false,
+                        formatEnabled = false,
+                    },
+                    pycodestyle = {
+                        enabled = true,
+                        maxLineLength = 140,
+                    },
+                    pyflakes = { enabled = false },
+                    mccabe = { enabled = false },
+                    flake8 = {
+                        enabled = false,
+                        ignore = { 'E501' },
+                        maxLineLength = 140,
+                    },
                 },
             },
         },
     },
     sumneko_lua = {
-        Lua = {
-            diagnostics = {
-                globals = { 'vim' },
+        settings = {
+            Lua = {
+                diagnostics = {
+                    globals = { 'vim' },
+                },
             },
         },
     },
     -- rust_analyzer = {
-    --     ["rust-analyzer"] = {
-    --         assist = {
-    --             importGranularity = "module",
-    --             importPrefix = "by_self",
-    --         },
-    --         checkOnSave = {
-    --             command = "clippy",
-    --         },
-    --         cargo = {
-    --             allFeatures = true,
-    --             loadOutDirsFromCheck = true,
-    --         },
-    --         procMacro = {
-    --             enable = true,
-    --         },
-    --     },
+    --     settings = {
+    --       ["rust-analyzer"] = {
+    --           assist = {
+    --               importGranularity = "module",
+    --               importPrefix = "by_self",
+    --           },
+    --           checkOnSave = {
+    --               command = "clippy",
+    --           },
+    --           cargo = {
+    --               allFeatures = true,
+    --               loadOutDirsFromCheck = true,
+    --           },
+    --           procMacro = {
+    --               enable = true,
+    --           },
+    --       },
+    --    },
     -- },
     jsonls = {
         formatting_options = {
             tabSize = 2,
         },
-        json = {
-            colorDecorators = {
-                enable = true,
+        settings = {
+            json = {
+                colorDecorators = {
+                    enable = true,
+                },
+                format = {
+                    enable = true,
+                    keepLines = true,
+                },
+                validate = {
+                    enable = true,
+                },
+                schemaDownload = {
+                    enable = true,
+                },
+                schemas = require("schemastore").json.schemas(
+                -- {
+                --     select = {
+                --         "package.json",
+                --         ".eslintrc",
+                --         "tsconfig.json",
+                --         "*.docnav.vson",
+                --     },
+                -- }
+                ),
             },
-            format = {
-                enable = true,
-                keepLines = true,
-            },
-            validate = {
-                enable = true,
-            },
-            schemaDownload = {
-                enable = true,
-            },
-            schemas = require("schemastore").json.schemas(
-            -- {
-            --     select = {
-            --         "package.json",
-            --         ".eslintrc",
-            --         "tsconfig.json",
-            --         "*.docnav.vson",
-            --     },
-            -- }
-            ),
-        }
+        },
         -- → json.maxItemsComputed        default: 5000
         -- → json.schemaDownload.enable   default: true
         -- → json.schemas
@@ -108,18 +119,20 @@ local servers = {
         formatting_options = {
             tabSize = 2,
         },
-        yaml = {
-            schemaStore = {
-                enable = false,
-                url = "",
+        settings = {
+            yaml = {
+                schemaStore = {
+                    enable = false,
+                    url = "",
+                },
+                schemas = require("schemastore").yaml.schemas()
             },
-            schemas = require("schemastore").yaml.schemas()
-        }
+        },
     },
 }
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+local client_capabilities = vim.lsp.protocol.make_client_capabilities()
+client_capabilities = require('cmp_nvim_lsp').default_capabilities(client_capabilities)
 
 lsp.preset('recommended')
 
@@ -174,6 +187,7 @@ cmp.setup({
     sources = {
         { name = "supermaven" },
         { name = "nvim_lsp" },
+        { name = "digraphs" },
     },
     mapping = cmp_mappings
 })
@@ -229,15 +243,15 @@ lsp.on_attach(function(client, bufnr)
             formatting_options = {}
         end
 
-        local filter = function(_client)
+        local filter = function(client)
+            vim.print(vim.inspect(client.name))
             return true
         end
-        local ret = vim.lsp.buf.format({
+        vim.lsp.buf.format({
             filter = filter,
             async = true,
             formatting_options = formatting_options,
         })
-        vim.print("formatting return: " .. vim.inspect(ret))
     end, opts)
     vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 end)
@@ -249,7 +263,7 @@ mason_lspconfig.setup {
         'ts_ls',
         'eslint',
         'lua_ls',
-        -- Taken care of by rustaceanvim
+        -- Handled by rustaceanvim
         -- 'rust_analyzer',
         'pylsp',
         'clangd',
@@ -292,11 +306,17 @@ mason_lspconfig.setup_handlers {
         if server_name == 'rust-analyzer' then
             return true
         end
-        require('lspconfig')[server_name].setup {
-            capabilities = capabilities,
-            on_attach = lsp.on_attach,
-            settings = servers[server_name],
-        }
+        local config = servers[server_name]
+        if config == nil then
+            config = {}
+        end
+
+        config.capabilitis = client_capabilities
+        if config.on_attach ~= nil then
+            config.on_attach = lsp.on_attach
+        end
+
+        require('lspconfig')[server_name].setup(config)
     end,
 }
 
@@ -304,3 +324,13 @@ vim.diagnostic.config({
     virtual_text = true,
 })
 require('lspconfig').glslls.setup {}
+
+for _, method in ipairs({ "textDocument/diagnostic", "workspace/diagnostic" }) do
+    local default_diagnostic_handler = vim.lsp.handlers[method]
+    vim.lsp.handlers[method] = function(err, result, context, config)
+        if err ~= nil and err.code == -32802 then
+            return
+        end
+        return default_diagnostic_handler(err, result, context, config)
+    end
+end

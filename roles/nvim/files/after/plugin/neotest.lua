@@ -1,4 +1,4 @@
-vim.g.rustaceanvim.tools.test_executor = 'background'
+-- vim.g.rustaceanvim.tools.test_executor = 'background'
 
 require("neotest").setup({
     adapters = {
