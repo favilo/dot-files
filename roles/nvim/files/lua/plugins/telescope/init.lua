@@ -1,10 +1,76 @@
 local telescope = require('telescope')
+-- local actions = require('telescope.actions')
+-- local previewers = require('telescope.previewers')
 local builtin = require('telescope.builtin')
-telescope.setup({})
-require('telescope').load_extension('projects')
-require('telescope').load_extension('fzf')
-require('telescope').load_extension('live_grep_args')
--- require('telescope').load_extension('dap')
+local icons = require('utils.icons')
+
+telescope.load_extension('projects')
+telescope.load_extension('fzf')
+telescope.load_extension('live_grep_args')
+telescope.load_extension('repo')
+-- telescope.load_extension("git_worktree")
+-- telescope.load_extension('dap')
+--
+local git_icons = {
+  added = icons.gitAdd,
+  changed = icons.gitChange,
+  copied = ">",
+  deleted = icons.gitRemove,
+  renamed = "➡",
+  unmerged = "‡",
+  untracked = "?",
+}
+
+-- telescope.setup({})
+telescope.setup {
+  defaults = {
+    border            = true,
+    hl_result_eol     = true,
+    multi_icon        = '',
+    vimgrep_arguments = {
+      'rg',
+      '--color=never',
+      '--no-heading',
+      '--with-filename',
+      '--line-number',
+      '--column',
+      '--smart-case'
+    },
+    layout_config     = {
+      horizontal = {
+        preview_cutoff = 120,
+      },
+      prompt_position = "top",
+    },
+    file_sorter       = require('telescope.sorters').get_fzy_sorter,
+    -- prompt_prefix     = '  ',
+    color_devicons    = true,
+    git_icons         = git_icons,
+    sorting_strategy  = "ascending",
+    file_previewer    = require('telescope.previewers').vim_buffer_cat.new,
+    grep_previewer    = require('telescope.previewers').vim_buffer_vimgrep.new,
+    qflist_previewer  = require('telescope.previewers').vim_buffer_qflist.new,
+    -- mappings          = {
+    --   i = {
+    --     ["<C-x>"] = false,
+    --     ["<C-j>"] = actions.move_selection_next,
+    --     ["<C-k>"] = actions.move_selection_previous,
+    --     ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+    --     ["<C-s>"] = actions.cycle_previewers_next,
+    --     ["<C-a>"] = actions.cycle_previewers_prev,
+    --     -- ["<C-h>"] = "which_key",
+    --     ["<ESC>"] = actions.close,
+    --   },
+    --   n = {
+    --     ["<C-s>"] = actions.cycle_previewers_next,
+    --     ["<C-a>"] = actions.cycle_previewers_prev,
+    --   }
+    -- }
+  },
+  extensions = {
+  }
+}
+
 
 function vim.getVisualSelection()
     vim.cmd('noau normal! "vy"')

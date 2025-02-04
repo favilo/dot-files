@@ -1,4 +1,4 @@
-vim.keymap.set("n", "<leader>pv", vim.cmd.Explore)
+vim.keymap.set("n", "<leader>pv", vim.cmd.Oil)
 
 vim.keymap.set("n", "<C-j>", "<C-w>j")
 vim.keymap.set("n", "<C-h>", "<C-w>h")
