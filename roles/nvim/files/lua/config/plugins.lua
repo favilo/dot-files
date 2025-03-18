@@ -11,8 +11,7 @@ return {
       { "nvim-lua/plenary.nvim" },
       {
         'nvim-telescope/telescope-fzf-native.nvim',
-        build =
-        'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build',
+        build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release',
       },
 
       { "cljoly/telescope-repo.nvim" },
@@ -28,7 +27,10 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate'
+    build = ':TSUpdate',
+    dependencies = {
+      'IndianBoy42/tree-sitter-just',
+    },
   },
   { 'nvim-treesitter/playground' },
   { 'mbbill/undotree' },
@@ -111,6 +113,19 @@ return {
   { 'lewis6991/gitsigns.nvim' },
 
   {
+    'polarmutex/git-worktree.nvim',
+    version = '^2',
+    lazy = false,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+    config = function()
+      require('plugins.git_worktree')
+    end,
+  },
+
+  {
     'saecki/crates.nvim',
     event = { "BufRead Cargo.toml" },
     dependencies = { 'nvim-lua/plenary.nvim' },
@@ -123,7 +138,7 @@ return {
     'williamboman/mason.nvim',
     lazy = false,
     opts = {
-      PATH = "append",
+      PATH = "prepend",
     },
   },
 
@@ -136,47 +151,44 @@ return {
   -- LSP
   {
     'neovim/nvim-lspconfig',
+    lazy = false,
     cmd = { 'LspInfo', 'LspInstall', 'LspStart', 'LspRestart', 'LspStop' },
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-      { 'hrsh7th/cmp-nvim-lsp' },
-      { 'williamboman/mason.nvim' },
+      'hrsh7th/cmp-nvim-lsp',
+      'williamboman/mason.nvim',
       {
         'williamboman/mason-lspconfig.nvim',
-        build = ':PylspInstall python-lsp-black pyls-isort pylsp-rope pylsp-mypy',
+        lazy = false,
+        build = ':PylspInstall python-lsp-black pyls-isort pylsp-rope pylsp-mypy pylint',
       },
-      { 'b0o/schemastore.nvim' },
-      { "lukas-reineke/lsp-format.nvim" },
-      { 'saadparwaiz1/cmp_luasnip' },
+      'folke/neodev.nvim',
+      'saghen/blink.cmp',
+      'mrcjkb/rustaceanvim',
+      'b0o/schemastore.nvim',
+      "lukas-reineke/lsp-format.nvim",
+      'saadparwaiz1/cmp_luasnip',
       -- Snippets
       {
         'L3MON4D3/LuaSnip',
         version = "v2.*",
         build = "make install_jsregexp",
       },
-      { 'rafamadriz/friendly-snippets' },
+      'rafamadriz/friendly-snippets',
     },
+    opts = {
+      diagnostics = {
+        underline = true,
+        update_in_insert = true,
+        virtual_text = { spacing = 4, prefix = "●" },
+        severity_sort = true,
+      },
+    },
+    config = function()
+      require('plugins.lsp.config')
+      require('plugins.lsp.setup')
+    end,
   },
-  -- {
-  --     'VonHeikemen/lsp-zero.nvim',
-  --     dependencies = {
-  --         -- LSP Support
-  --         { 'neovim/nvim-lspconfig' },
-  --         { 'williamboman/mason.nvim' },
-  --         {
-  --             'williamboman/mason-lspconfig.nvim',
-  --             build = ':PylspInstall python-lsp-black pyls-isort pylsp-rope',
-  --         },
-  --
-  --         -- Autocompletion
-  --         { 'hrsh7th/cmp-buffer' },
-  --         { 'hrsh7th/cmp-path' },
-  --         { 'hrsh7th/cmp-nvim-lua' },
-  --
-  --
-  --         -- LSP Extras
-  --     }
-  -- },
 
   { 'ray-x/lsp_signature.nvim' },
   { 'aznhe21/actions-preview.nvim' },
@@ -213,23 +225,75 @@ return {
       { "nvim-telescope/telescope.nvim" },
     },
     config = function()
-      require("telescope").load_extension("yaml_schema")
+      require("plugins.telescope").load_extension("yaml_schema")
     end,
   },
   {
-    "supermaven-inc/supermaven-nvim",
-    lazy = false,
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    dependencies = { "hrsh7th/nvim-cmp" },
     config = function()
-      require("supermaven-nvim").setup({
-        keymap = {
-          accept_suggestion = "<CR>",
-          clear_suggestion = "<C-]>",
-          accept_word = "<C-j>",
+      require("copilot").setup({
+        panel = { enabled = true },
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          hide_during_completion = true,
+          keymap = {
+            accept = "<TAB>",
+            accept_word = false,
+            accept_line = false,
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+          },
         },
-
+        filetypes = {
+          yaml = true,
+          python = true,
+          lua = true,
+          rust = true,
+          toml = true,
+          markdown = true,
+        }
       })
+
+      local suggestion = require("copilot.suggestion")
+      local function toggle_auto_trigger()
+        local auto_trig = vim.b.copilot_suggestion_auto_trigger
+        if auto_trig == nil or auto_trig == true then
+          vim.notify("Copilot auto-suggestion disabled")
+          suggestion.dismiss()
+        else
+          vim.notify("Copilot auto-suggestion enabled")
+          suggestion.next()
+        end
+        suggestion.toggle_auto_trigger()
+      end
+
+      vim.keymap.set({ "i", "n", "v" }, "<A-space>", function() suggestion.toggle_auto_trigger() end,
+        { desc = "Toggle auto trigger" })
+      vim.keymap.set("n", "<leader>cT", "<cmd>Copilot toggle", { desc = "Copilot toggle" })
+      vim.keymap.set("n", "<leader>cs", toggle_auto_trigger, { desc = "Copilot Suggestion toggle" })
+      vim.keymap.set("i", "<C-e>", toggle_auto_trigger, { desc = "Copilot Suggestion toggle" })
     end,
   },
+  -- Can't use supermaven for work.
+  -- {
+  --   "supermaven-inc/supermaven-nvim",
+  --   lazy = false,
+  --   config = function()
+  --     require("supermaven-nvim").setup({
+  --       keymap = {
+  --         accept_suggestion = "<CR>",
+  --         clear_suggestion = "<C-]>",
+  --         accept_word = "<C-j>",
+  --       },
+
+  --     })
+  --   end,
+  -- },
 
   { 'nanotee/zoxide.vim' },
 
@@ -299,6 +363,7 @@ return {
       },
     },
   },
+  { 'wakatime/vim-wakatime',        lazy = false },
 
   {
     "epwalsh/pomo.nvim",
@@ -326,7 +391,6 @@ return {
   --     'ldelossa/nvim-dap-projects',
   --     dependencies = { 'mfussenegger/nvim-dap' },
   -- }
-  { 'folke/neodev.nvim' },
   {
     "rcarriga/nvim-dap-ui",
     dependencies = {
@@ -340,47 +404,14 @@ return {
 
   -- When I can figure out how to actually use this crap, I'll put it back in. Until then, I'll just use the
   -- built-in LSP, and `Mason` with rust-analyzer.
-  -- {
-  --   "mrcjkb/rustaceanvim",
-  --   version = "^5",
-  --   lazy = false,
-  --   config = function()
-  --     vim.g.rustaceanvim = function()
-  --       -- Update this path
-  --       local codelldb = require('mason-registry').get_package('codelldb')
-  --       local extension_path = codelldb:get_install_path() .. '/extension/'
-  --       local codelldb_path = extension_path .. 'adapter/codelldb'
-  --       local liblldb_path = extension_path .. 'lldb/lib/liblldb'
-  --       local this_os = vim.uv.os_uname().sysname;
-  --
-  --       -- The path is different on Windows
-  --       if this_os:find "Windows" then
-  --         codelldb_path = extension_path .. "adapter\\codelldb.exe"
-  --         liblldb_path = extension_path .. "lldb\\bin\\liblldb.dll"
-  --       else
-  --         -- The liblldb extension is .so for Linux and .dylib for MacOS
-  --         liblldb_path = liblldb_path .. (this_os == "Linux" and ".so" or ".dylib")
-  --       end
-  --
-  --       local cfg = require('rustaceanvim.config')
-  --       return {
-  --         crate_graph = {
-  --           backend = "svg",
-  --           output = "target/crate-graph.svg",
-  --         },
-  --         server = {
-  --           ra_multiplex = {
-  --             enable = true,
-  --           },
-  --         },
-  --         dap = {
-  --           adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
-  --         },
-  --       }
-  --     end
-  --   end,
-  -- },
-
+  {
+    "mrcjkb/rustaceanvim",
+    version = "^5",
+    lazy = false,
+    config = function()
+      require("plugins.lsp.rust")
+    end,
+  },
   {
     "nvim-neotest/neotest",
     dependencies = {
@@ -412,5 +443,29 @@ return {
         -- Your setup opts here (leave empty to use defaults)
       }
     end,
+  },
+
+  {
+    "Vigemus/iron.nvim",
+    config = function()
+      require("plugins.iron")
+    end,
+  },
+  {
+    "smoka7/multicursors.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      'nvimtools/hydra.nvim',
+    },
+    opts = {},
+    cmd = { 'MCstart', 'MCvisual', 'MCclear', 'MCpattern', 'MCvisualPattern', 'MCunderCursor' },
+    keys = {
+      {
+        mode = { 'v', 'n' },
+        '<Leader>m',
+        '<cmd>MCstart<cr>',
+        desc = 'Create a selection for selected text or word under the cursor',
+      },
+    },
   },
 }

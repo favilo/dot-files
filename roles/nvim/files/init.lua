@@ -10,5 +10,5 @@ require("config.colors")
 
 require("config.keymaps")
 
-require("lsp.config")
-require("lsp.setup")
+-- require("lsp.config")
+-- require("lsp.setup")
