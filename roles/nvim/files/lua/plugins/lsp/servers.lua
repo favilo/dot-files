@@ -17,15 +17,22 @@ local servers = {
           rope = { enabled = true },
           pylsp_mypy = {
             enabled = true,
-            dmypy = true,
-            live_mode = false,
-            strict = false,
+            dmypy = false,
+            live_mode = true,
+            strict = true,
           },
           pylsp_inlay_hints = {
             enabled = true,
           },
-          mypy = {
+          pyright = {
             enabled = true,
+            typeCheckingMode = "on",
+            useLibraryCodeForTypes = false,
+            disableLanguageServices = false,
+            disableOrganizeImports = false,
+          },
+          mypy = {
+            enabled = false,
             overrides = { "--python-executable", py_path, true },
             report_progress = true,
           },
@@ -36,11 +43,11 @@ local servers = {
           autopep8 = { enabled = false },
           yapf = { enabled = false },
           ruff = {
-            enabled = false,
+            enabled = true,
             formatEnabled = false,
           },
           pylint = {
-            enabled = true,
+            enabled = false,
             -- args = { '--rcfile', '.pylintrc' },
             args = {},
           },
@@ -59,6 +66,19 @@ local servers = {
       },
     },
   },
+
+  -- basedpyright = {
+  --   settings = {
+  --     basedpyright = {
+  --       analysis = {
+  --         autoSearchPaths = true,
+  --         useLibraryCodeForTypes = true,
+  --         diagnosticMode = "workspace",
+  --       }
+  --     }
+  --   },
+  -- },
+
   lua_ls = {
     settings = {
       Lua = {
@@ -68,37 +88,43 @@ local servers = {
       },
     },
   },
+
   -- rustaceanvim handles it now
-  -- rust_analyzer = {
-  --   cmd = vim.lsp.rpc.connect(vim.env.HOME .. "/.local/var/run/ra-mux/ra-mux.sock"),
-  --   settings = {
-  --     ['rust-analyzer'] = {
-  --       lspMux = {
-  --         version = "1",
-  --         method = "connect",
-  --         server = "rust-analyzer",
-  --       },
-  --       assist = {
-  --         emitMustUse = true,
-  --       },
-  --       checkOnSave = true,
-  --       check = {
-  --         command = "clippy",
-  --       },
-  --       cargo = {
-  --         allFeatures = true,
-  --       },
-  --       completion = {
-  --         autoself = {
-  --           enable = true,
-  --         },
-  --       },
-  --       procMacro = {
-  --         enable = true,
-  --       },
-  --     },
-  --   },
-  -- },
+  rust_analyzer = {
+    cmd = vim.lsp.rpc.connect("127.0.0.1", 27631),
+    settings = {
+      ['rust-analyzer'] = {
+        lspMux = {
+          version = "1",
+          method = "connect",
+          server = "rust-analyzer",
+        },
+        server = {
+        },
+        installCargo = false,
+        installRustc = false,
+        assist = {
+          emitMustUse = true,
+        },
+        checkOnSave = true,
+        check = {
+          command = "clippy",
+        },
+        cargo = {
+          allFeatures = true,
+        },
+        completion = {
+          autoself = {
+            enable = true,
+          },
+        },
+        procMacro = {
+          enable = true,
+        },
+      },
+    },
+  },
+
   jsonls = {
     formatting_options = {
       tabSize = 2,
@@ -133,6 +159,7 @@ local servers = {
     -- → json.maxItemsComputed        default: 5000
     -- → json.trace.server            default: "off"
   },
+
   yamlls = {
     formatting_options = {
       tabSize = 2,
@@ -147,12 +174,28 @@ local servers = {
       },
     },
   },
+
   glslls = {},
+
   ts_ls = {
     filetypes = { 'typescript', 'typescriptreact', 'typescript.tsx', 'javascript', 'javascriptreact', 'javascript.jsx', 'svelte' },
   },
+
   bashls = {
     filetypes = { 'sh', 'zsh', 'bash', },
+  },
+
+  beancount = {
+    filetypes = { 'beancount', 'bean' },
+    init_options = {
+      journal_file = "~/git/finance/oberlies-family/main.bean",
+    },
+    flags = {
+      debounce_text_changes = 500,
+    },
+  },
+  graphql = {
+    filetypes = { 'graphql', 'gql' },
   },
 }
 M.servers = servers

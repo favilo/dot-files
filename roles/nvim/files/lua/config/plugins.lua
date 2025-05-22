@@ -31,6 +31,20 @@ return {
     dependencies = {
       'IndianBoy42/tree-sitter-just',
     },
+    config = function()
+      local configs = require('nvim-treesitter.configs')
+      vim.filetype.add({
+        extension = {
+          bean = "beancount",
+        }
+      })
+      configs.setup({
+        ensure_installed = { "c", "cpp", "lua", "python", "rust", "javascript", "typescript", "html", "css", "json",
+          "yaml", "toml", "bash", "markdown", "beancount" },
+        highlight = { enable = true },
+        indent = { enable = true },
+      })
+    end,
   },
   { 'nvim-treesitter/playground' },
   { 'mbbill/undotree' },
@@ -164,7 +178,7 @@ return {
       },
       'folke/neodev.nvim',
       'saghen/blink.cmp',
-      'mrcjkb/rustaceanvim',
+      -- 'mrcjkb/rustaceanvim',
       'b0o/schemastore.nvim',
       "lukas-reineke/lsp-format.nvim",
       'saadparwaiz1/cmp_luasnip',
@@ -400,18 +414,21 @@ return {
   },
 
   { 'mfussenegger/nvim-dap-python', dependencies = { "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui" } },
-  { 'almo7aya/openingh.nvim' },
+  {
+    'almo7aya/openingh.nvim',
+    lazy = false,
+  },
 
   -- When I can figure out how to actually use this crap, I'll put it back in. Until then, I'll just use the
   -- built-in LSP, and `Mason` with rust-analyzer.
-  {
-    "mrcjkb/rustaceanvim",
-    version = "^5",
-    lazy = false,
-    config = function()
-      require("plugins.lsp.rust")
-    end,
-  },
+  -- {
+  --   "mrcjkb/rustaceanvim",
+  --   version = "^6",
+  --   lazy = false,
+  --   config = function()
+  --     require("plugins.lsp.rust")
+  --   end,
+  -- },
   {
     "nvim-neotest/neotest",
     dependencies = {

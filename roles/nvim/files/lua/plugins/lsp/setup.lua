@@ -19,7 +19,7 @@ local cmp_mappings = cmp.mapping.preset.insert({
   ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
   ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
   ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-  ['<M-space>'] = cmp.mapping.complete(),
+  ['<C-space>'] = cmp.mapping.complete(),
   ['<C-e>'] = cmp.mapping.abort(),
   ['<TAB>'] = cmp.mapping(function(fallback)
     -- Supermaven stuff
@@ -78,8 +78,9 @@ require('mason-lspconfig').setup({
     'eslint',
     'lua_ls',
     -- rustaceanvim handles this now
-    -- 'rust_analyzer',
+    'rust_analyzer',
     'pylsp',
+    -- 'basedpyright',
     'clangd',
     'jsonls',
     'yamlls',

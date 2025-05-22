@@ -9,15 +9,6 @@ export FZF_CTRL_T_OPTS="\
 
 # alias docker=podman
 
-##
-# Load any extra Zshell profile scripts
-##
-if [[ -d $HOME/.profile.d  ]]; then
-    for f in $HOME/.profile.d/*.zsh; do
-        source "$f"
-    done
-fi
-
 [[ /snap/bin/kubectl ]] && source <(kubectl completion zsh)
 
 fpath=($fpath $HOME/.zsh/completion)
@@ -38,12 +29,12 @@ export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}"
 export GPG_TTY=$(tty)
 export EDITOR=nvim
 
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+# export PYENV_ROOT="$HOME/.pyenv"
+# [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init -)"
 # eval "$(pyenv virtualenv-init -)"
 
-alias ls=exa
+alias ls=eza
 alias la=ls -lah
 alias vim="nvim"
 alias ta="tmux attach"
@@ -60,14 +51,15 @@ zle -N down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
 
+#  shellcheck source=/dev/null
 source <(kubectl completion zsh)
 [[ /snap/bin/kubectl ]] && source <(kubectl completion zsh)
 
-if (( $+commands[tag] )); then
-    export TAG_SEARCH_PROG=rg  # replace with rg for ripgrep
-    tag() { command tag "$@"; source ${TAG_ALIAS_FILE:-/tmp/tag_aliases} 2>/dev/null }
-    # alias rg=tag  # replace with rg for ripgrep
-fi
+# if (( $+commands[tag] )); then
+#     export TAG_SEARCH_PROG=rg  # replace with rg for ripgrep
+#     tag() { command tag "$@"; source ${TAG_ALIAS_FILE:-/tmp/tag_aliases} 2>/dev/null }
+#     # alias rg=tag  # replace with rg for ripgrep
+# fi
 eval "$(op completion zsh)"; compdef _op op
 eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
@@ -99,17 +91,21 @@ setopt prompt_subst # enable command substition in prompt
 
 autoload -U is-at-least
 autoload -Uz vcs_info
-precmd() { vcs_info }
+function precmd() { 
+  vcs_info 
+}
 
 zstyle ':vcs_info:git:*' format '%b '
 
 # INFO: Steal the PROMPT variable from my oh-my-zsh theme
-local ret_status="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ %s)"
+# shellcheck disable=SC2154
+ret_status="%(?:%{${fg_bold[green]}%}➜ :%{${fg_bold[red]}%}➜ %s)"
 # INFO: Change %T to %* to show the seconds in the prompt
-PROMPT=$'%{$fg[yellow]%}[%T] %{$fg[green]%}%n@%m: %{$reset_color%}%{$fg[blue]%}%/ %{$reset_color%}%{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}
+export PROMPT=$'%{$fg[yellow]%}[%T] %{$fg[green]%}%n@%m: %{$reset_color%}%{$fg[blue]%}%/ %{$reset_color%}%{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}
 ${ret_status} %{$reset_color%} '
 
-PROMPT3='{ ‥ } '
+# shellcheck disable=SC2034
+export PROMPT3='{ ‥ } '  
 
 # TODO: Figure out how to make this work with atuin
 # TMOUT=1
@@ -140,7 +136,7 @@ schedprompt() {
   # "schedprompt" work OK.  (You could put one in precmd to push
   # the timer 30 seconds into the future, for example.)
   integer i=${"${(@)zsh_scheduled_events#*:*:}"[(I)schedprompt]}
-  (( i )) && sched -$i
+  (( i )) && sched "-$i"
 
   # Test that zle is running before calling the widget (recommended
   # to avoid error messages).
@@ -150,3 +146,17 @@ schedprompt() {
   # This ensures we're not too far off the start of the minute
   sched +30 schedprompt
 }
+
+export LESS='-R'
+export LESSOPEN='| ~/.lessfilter %s'
+
+##
+# Load any extra Zshell profile scripts
+##
+if [[ -d "${HOME}/.profile.d"  ]]; then
+    for f in "${HOME}"/.profile.d/*.zsh; do
+        # shellcheck source=$HOME/.profile.d/*.zsh
+        source "$f"
+    done
+fi
+
