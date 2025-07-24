@@ -30,6 +30,19 @@ local servers = {
             useLibraryCodeForTypes = false,
             disableLanguageServices = false,
             disableOrganizeImports = false,
+            diagnosticSeverityOverrides = {
+              -- reportGeneralTypeIssues = 'none',
+              -- reportMissingImports = 'none',
+              -- reportImportCycles = 'none',
+              -- reportUnusedImport = 'none',
+              -- reportUnusedClass = 'none',
+              -- reportUnusedFunction = 'none',
+              -- reportUnusedVariable = 'none',
+              -- reportUnnecessaryComparison = 'none',
+              -- reportUnnecessaryIsInstance = 'none',
+              -- reportUnnecessaryCast = 'none',
+              reportExplicitAny = 'none',
+            },
           },
           mypy = {
             enabled = false,
@@ -72,10 +85,25 @@ local servers = {
   --     basedpyright = {
   --       analysis = {
   --         autoSearchPaths = true,
-  --         useLibraryCodeForTypes = true,
   --         diagnosticMode = "workspace",
-  --       }
-  --     }
+  --         useLibraryCodeForTypes = false,
+  --         disableLanguageServices = false,
+  --         disableOrganizeImports = false,
+  --         diagnosticSeverityOverrides = {
+  --           -- reportGeneralTypeIssues = 'none',
+  --           -- reportMissingImports = 'none',
+  --           -- reportImportCycles = 'none',
+  --           -- reportUnusedImport = 'none',
+  --           -- reportUnusedClass = 'none',
+  --           -- reportUnusedFunction = 'none',
+  --           -- reportUnusedVariable = 'none',
+  --           -- reportUnnecessaryComparison = 'none',
+  --           -- reportUnnecessaryIsInstance = 'none',
+  --           -- reportUnnecessaryCast = 'none',
+  --           reportExplicitAny = 'none',
+  --         },
+  --       },
+  --     },
   --   },
   -- },
 
@@ -120,6 +148,9 @@ local servers = {
         },
         procMacro = {
           enable = true,
+          -- ignored = {
+          --   bevy_simple_subsecond_system_macros = { "hot" },
+          -- },
         },
       },
     },
@@ -196,6 +227,9 @@ local servers = {
   },
   graphql = {
     filetypes = { 'graphql', 'gql' },
+  },
+  ["jinja_lsp"] = {
+    filetypes = { 'jinja', 'yaml-jinja', 'yaml.jinja', },
   },
 }
 M.servers = servers

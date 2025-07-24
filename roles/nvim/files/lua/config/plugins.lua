@@ -43,8 +43,20 @@ return {
           "yaml", "toml", "bash", "markdown", "beancount" },
         highlight = { enable = true },
         indent = { enable = true },
+        incremental_selection = {
+          enable = true,
+          keymaps = {
+            node_incremental = 'v',
+            node_decremental = 'V',
+          },
+        },
       })
     end,
+  },
+  {
+    "davidmh/mdx.nvim",
+    config = true,
+    dependencies = { "nvim-treesitter/nvim-treesitter" }
   },
   { 'nvim-treesitter/playground' },
   { 'mbbill/undotree' },
@@ -174,7 +186,7 @@ return {
       {
         'williamboman/mason-lspconfig.nvim',
         lazy = false,
-        build = ':PylspInstall python-lsp-black pyls-isort pylsp-rope pylsp-mypy pylint',
+        -- build = ':PylspInstall python-lsp-black pyls-isort pylsp-rope pylsp-mypy pylint',
       },
       'folke/neodev.nvim',
       'saghen/blink.cmp',
@@ -225,7 +237,7 @@ return {
     end
   },
 
-  { 'simrat39/rust-tools.nvim' },
+  -- { 'simrat39/rust-tools.nvim' },
 
   { 'nvim-lua/plenary.nvim' },
 
@@ -288,7 +300,7 @@ return {
 
       vim.keymap.set({ "i", "n", "v" }, "<A-space>", function() suggestion.toggle_auto_trigger() end,
         { desc = "Toggle auto trigger" })
-      vim.keymap.set("n", "<leader>cT", "<cmd>Copilot toggle", { desc = "Copilot toggle" })
+      vim.keymap.set("n", "<leader>cT", "<cmd>Copilot toggle<CR>", { desc = "Copilot toggle" })
       vim.keymap.set("n", "<leader>cs", toggle_auto_trigger, { desc = "Copilot Suggestion toggle" })
       vim.keymap.set("i", "<C-e>", toggle_auto_trigger, { desc = "Copilot Suggestion toggle" })
     end,
@@ -449,6 +461,11 @@ return {
   -- use { 'airblade/vim-rooter' }
   {
     "hedyhli/outline.nvim",
+    lazy = false,
+    -- cmd = { "Outline", "OutlineOpen", },
+    -- keys = {
+    --   { "<leader>o",
+    -- },
     config = function()
       -- Example mapping to toggle outline
       vim.keymap.set("n", "<leader>o",
@@ -484,5 +501,115 @@ return {
         desc = 'Create a selection for selected text or word under the cursor',
       },
     },
+  },
+  {
+    "olimorris/codecompanion.nvim",
+    cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
+    opts = {
+      strategies = {
+        -- Change the default chat adapter
+        chat = {
+          adapter = "copilot",
+          model = "gemini-2.5-pro",
+        },
+        inline = {
+          adapter = "copilot",
+          model = "gemini-2.5-pro",
+        },
+        roles = {
+          user = "favilo",
+        },
+        keymaps = {
+          send = {
+            modes = {
+              i = { "<C-CR>", "<C-s>" },
+            },
+          },
+          completion = {
+            modes = {
+              i = "<C-x>",
+            },
+          },
+        },
+      },
+      adapters = {
+        gemini = function()
+          return require("codecompanion.adapters").extend("gemini", {
+            schema = {
+              model = {
+                default = "gemini-2.5-flash-preview",
+              },
+            },
+            env = {
+              api_key = "cmd:op read op://Private/GeminiAPI/credential --no-newline",
+            },
+          })
+        end,
+      },
+      extensions = {
+        history = {
+          enabled = true,
+          opts = {
+            keymap = "gh",
+            save_chat_keymap = "sc",
+            auto_save = false,
+            auto_generate_title = true,
+            continue_last_chat = false,
+            delete_on_clearing_chat = false,
+            picker = "snacks",
+            enable_logging = false,
+            dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
+          },
+        },
+        mcphub = {
+          callback = "mcphub.extensions.codecompanion",
+          opts = {
+            make_vars = true,
+            make_slash_commands = true,
+            show_result_in_chat = true,
+          },
+        },
+      },
+      opts = {
+        -- Set debug logging
+        log_level = "DEBUG",
+      },
+      keys = {
+        {
+          "<C-a>",
+          "<cmd>CodeCompanionActions<CR>",
+          desc = "Open the action palette",
+          mode = { "n", "v" },
+        },
+        {
+          "<Leader>a",
+          "<cmd>CodeCompanionChat Toggle<CR>",
+          desc = "Toggle a chat buffer",
+          mode = { "n", "v" },
+        },
+        {
+          "<LocalLeader>a",
+          "<cmd>CodeCompanionChat Add<CR>",
+          desc = "Add code to a chat buffer",
+          mode = { "v" },
+        },
+      },
+    },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "j-hui/fidget.nvim",                    -- Display status
+      "ravitemer/codecompanion-history.nvim", -- Save and load conversation history
+      {
+        "ravitemer/mcphub.nvim",              -- Manage MCP servers
+        cmd = "MCPHub",
+        build = "npm install -g mcp-hub@latest",
+        config = true,
+      },
+    },
+  },
+  {
+    "nextmn/vim-yaml-jinja",
+    lazy = false,
   },
 }

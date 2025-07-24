@@ -43,6 +43,7 @@ vim.keymap.set("n", "<leader>rr", "yyp!!sh<CR>")
 vim.keymap.set("v", "<leader>rr", "!sh<CR>")
 
 vim.keymap.set("c", "w!!", "execute 'silent! write !sudo tee % >/dev/null' <bar> edit!")
+vim.keymap.set({ "n", "v" }, "<leader>a", "<cmd>CodeCompanionChat Toggle<CR>")
 -- vim.g['copilot_no_tab_map'] = true
 -- vim.g['copilot_assume_mapped'] = true
 

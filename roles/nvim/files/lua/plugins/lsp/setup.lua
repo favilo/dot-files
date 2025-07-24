@@ -72,23 +72,23 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
-require('mason-lspconfig').setup({
-  ensure_installed = {
-    'ts_ls',
-    'eslint',
-    'lua_ls',
-    -- rustaceanvim handles this now
-    'rust_analyzer',
-    'pylsp',
-    -- 'basedpyright',
-    'clangd',
-    'jsonls',
-    'yamlls',
-    'bashls',
-    -- 'cpptools',
-    -- 'codelldb',
-  },
-})
+-- require('mason-lspconfig').setup({
+--   -- ensure_installed = {
+--   --   'ts_ls',
+--   --   'eslint',
+--   --   'lua_ls',
+--   --   -- rustaceanvim handles this now
+--   --   -- 'rust_analyzer',
+--   --   'pylsp',
+--   --   -- 'basedpyright',
+--   --   'clangd',
+--   --   'jsonls',
+--   --   'yamlls',
+--   --   'bashls',
+--   --   -- 'cpptools',
+--   --   -- 'codelldb',
+--   -- },
+-- })
 
 -- Setup the LSP servers
 local lspconfig = require('lspconfig')
