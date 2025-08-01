@@ -24,22 +24,22 @@
     exe: cargo-add
   - name: sccache
     exe: sccache
-  - name: alacritty
-    exe: alacritty
-  - name: git-branchless
-    exe: git-branchless
 
 - name: Install fun crates
   command: "{{ dotfiles_user_home }}/.cargo/bin/cargo binstall {{ item.name }}"
   args:
     creates: "{{ dotfiles_user_home }}/.cargo/bin/{{ item.exe }}"
   with_items:
-  - name: exa
-    exe: exa
+  - name: eza
+    exe: eza
   - name: bat
     exe: bat
   - name: ripgrep
     exe: rg
+  - name: zoxide
+    exe: z
+  - name: zellij
+    exe: zellij
 
 - name: Alacritty config dir
   file:

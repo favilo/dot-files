@@ -12,7 +12,6 @@ fi
 # if ! [ -x "$(ansible-galaxy list viasite-ansible.zsh)" ]; then
 #     ansible-galaxy install viasite-ansible.zsh --force --ignore-certs
 # fi
-# ansible-galaxy install markosamuli.pyenv
 
 echo "Setting up local dev environment"
 ansible-playbook -i ~/git/dot-files/hosts ~/git/dot-files/dotfiles.yml --ask-become-pass -v "$@"

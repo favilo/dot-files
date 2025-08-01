@@ -12,5 +12,3 @@ git_email: favilo@gmail.com
 
 git_signing_key: "{{ lookup('env', 'GIT_SIGNING_KEY_ID') }}"
 
-pyenv_global_versions:
-  - 3.8.1

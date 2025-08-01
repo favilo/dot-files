@@ -129,5 +129,4 @@ fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-eval "$(atuin init zsh --disable-up-arrow)"
 [ -f $HOME/.zshrc.local ] && source $HOME/.zshrc.local
