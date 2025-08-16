@@ -1,7 +1,9 @@
 M = {}
 
 local servers = require("plugins.lsp.servers").servers
-local lsp_on_attach = function(client, bufnr)
+local lsp_on_attach = function(client, event)
+  vim.notify("Attaching to " .. client.name .. " Lsp server")
+  local bufnr = event.buf
   local opts = { buffer = bufnr, remap = false }
   if client == nil then
     return
@@ -19,10 +21,17 @@ local lsp_on_attach = function(client, bufnr)
   -- if client.name == "jsonls" then
   --   client.textDocument.completion.snippetSupport = true
   -- end
+  --
+  if client:supports_method('textDocument/implementation') then
+    vim.keymap.set("n", "<leader>ci", vim.lsp.buf.implementation, opts)
+  end
+
+  if client:supports_method('textDocument/completion') then
+    vim.lsp.completion.enable(true, client.id, bufnr, {autotrigger = true})
+  end
 
   vim.keymap.set("n", "<leader>cd", vim.lsp.buf.definition, opts)
   vim.keymap.set("n", "<leader>cD", vim.lsp.buf.declaration, opts)
-  vim.keymap.set("n", "<leader>ci", vim.lsp.buf.implementation, opts)
   vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
   vim.keymap.set("n", "<leader>cl",
     function()

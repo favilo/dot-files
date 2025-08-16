@@ -1,6 +1,6 @@
 - set_fact:
-    firefox_dir: "{{dotfiles_user_home}}/.mozilla/firefox"
-    profiles_dir: "{{dotfiles_user_home}}/.mozilla/firefox"
+    firefox_dir: "{{dotfiles_user_home}}/snap/firefox/common/.mozilla/firefox"
+    profiles_dir: "{{dotfiles_user_home}}/snap/firefox/common/.mozilla/firefox"
   when: ansible_os_family != "Darwin"
 
 - set_fact:

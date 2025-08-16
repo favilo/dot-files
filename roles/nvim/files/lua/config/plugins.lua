@@ -1,3 +1,6 @@
+local home_dir = os.getenv('HOME')
+vim.g.copilot_node_command = home_dir .. "/.local/bin/nodejs"
+
 return {
   {
     "nvim-telescope/telescope.nvim",
@@ -216,6 +219,123 @@ return {
     end,
   },
 
+  {
+    "j-hui/fidget.nvim",
+    lazy = false,
+    opts = {
+      progress = {
+        poll_rate = 0,                -- How and when to poll for progress messages
+        suppress_on_insert = false,   -- Suppress new messages while in insert mode
+        ignore_done_already = false,  -- Ignore new tasks that are already complete
+        ignore_empty_message = false, -- Ignore new tasks that don't contain a message
+        clear_on_detach =             -- Clear notification group when LSP server detaches
+            function(client_id)
+              local client = vim.lsp.get_client_by_id(client_id)
+              return client and client.name or nil
+            end,
+        notification_group = -- How to get a progress message's notification group key
+            function(msg) return msg.lsp_client.name end,
+        ignore = {},         -- List of LSP servers to ignore
+
+        -- Options related to how LSP progress messages are displayed as notifications
+        -- display = {
+        --   render_limit = 16, -- How many LSP messages to show at once
+        --   done_ttl = 3, -- How long a message should persist after completion
+        --   done_icon = "✔", -- Icon shown when all LSP progress tasks are complete
+        --   done_style = "Constant", -- Highlight group for completed LSP tasks
+        --   progress_ttl = math.huge, -- How long a message should persist when in progress
+        --   progress_icon = -- Icon shown when LSP progress tasks are in progress
+        --   { "dots" },
+        --   progress_style = -- Highlight group for in-progress LSP tasks
+        --   "WarningMsg",
+        --   group_style = "Title", -- Highlight group for group name (LSP server name)
+        --   icon_style = "Question", -- Highlight group for group icons
+        --   priority = 30, -- Ordering priority for LSP notification group
+        --   skip_history = true, -- Whether progress notifications should be omitted from history
+        --   format_message = -- How to format a progress message
+        --       require("fidget.progress.display").default_format_message,
+        --   format_annote = -- How to format a progress annotation
+        --       function(msg) return msg.title end,
+        --   format_group_name = -- How to format a progress notification group's name
+        --       function(group) return tostring(group) end,
+        --   overrides = { -- Override options from the default notification config
+        --     rust_analyzer = { name = "rust-analyzer" },
+        --   },
+        -- },
+
+        -- Options related to Neovim's built-in LSP client
+        lsp = {
+          progress_ringbuf_size = 0, -- Configure the nvim's LSP progress ring buffer size
+          log_handler = false,       -- Log `$/progress` handler invocations (for debugging)
+        },
+      },
+
+      -- Options related to notification subsystem
+      -- notification = {
+      --   poll_rate = 10,           -- How frequently to update and render notifications
+      --   filter = vim.log.levels.INFO, -- Minimum notifications level
+      --   history_size = 128,       -- Number of removed messages to retain in history
+      --   override_vim_notify = false, -- Automatically override vim.notify() with Fidget
+      --   configs =                 -- How to configure notification groups when instantiated
+      --   { default = require("fidget.notification").default_config },
+      --   redirect =                -- Conditionally redirect notifications to another backend
+      --       function(msg, level, opts)
+      --         if opts and opts.on_open then
+      --           return require("fidget.integration.nvim-notify").delegate(msg, level, opts)
+      --         end
+      --       end,
+      --
+      --   -- Options related to how notifications are rendered as text
+      --   view = {
+      --     stack_upwards = true, -- Display notification items from bottom to top
+      --     icon_separator = " ", -- Separator between group name and icon
+      --     group_separator = "---", -- Separator between notification groups
+      --     group_separator_hl = -- Highlight group used for group separator
+      --     "Comment",
+      --     line_margin = 1,     -- Spaces to pad both sides of each non-empty line
+      --     render_message =     -- How to render notification messages
+      --         function(msg, cnt)
+      --           return cnt == 1 and msg or string.format("(%dx) %s", cnt, msg)
+      --         end,
+      --   },
+      --
+      --   -- Options related to the notification window and buffer
+      --   window = {
+      --     normal_hl = "Comment", -- Base highlight group in the notification window
+      --     winblend = 100,    -- Background color opacity in the notification window
+      --     border = "none",   -- Border around the notification window
+      --     zindex = 45,       -- Stacking priority of the notification window
+      --     max_width = 0,     -- Maximum width of the notification window
+      --     max_height = 0,    -- Maximum height of the notification window
+      --     x_padding = 1,     -- Padding from right edge of window boundary
+      --     y_padding = 0,     -- Padding from bottom edge of window boundary
+      --     align = "bottom",  -- How to align the notification window
+      --     relative = "editor", -- What the notification window position is relative to
+      --     tabstop = 8,       -- Width of each tab character in the notification window
+      --   },
+      -- },
+
+      -- Options related to integrating with other plugins
+      integration = {
+        ["nvim-tree"] = {
+          enable = true, -- Integrate with nvim-tree/nvim-tree.lua (if installed)
+        },
+        ["xcodebuild-nvim"] = {
+          enable = true, -- Integrate with wojciech-kulik/xcodebuild.nvim (if installed)
+        },
+      },
+
+      -- Options related to logging
+      logger = {
+        level = vim.log.levels.WARN, -- Minimum logging level
+        max_size = 10000,            -- Maximum log file size, in KB
+        float_precision = 0.01,      -- Limit the number of decimals displayed for floats
+        path =                       -- Where Fidget writes its logs to
+            string.format("%s/fidget.nvim.log", vim.fn.stdpath("cache")),
+      },
+    },
+  },
+
   { 'ray-x/lsp_signature.nvim' },
   { 'aznhe21/actions-preview.nvim' },
   -- use {
@@ -255,56 +375,63 @@ return {
     end,
   },
   {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    dependencies = { "hrsh7th/nvim-cmp" },
-    config = function()
-      require("copilot").setup({
-        panel = { enabled = true },
-        suggestion = {
-          enabled = true,
-          auto_trigger = true,
-          hide_during_completion = true,
-          keymap = {
-            accept = "<TAB>",
-            accept_word = false,
-            accept_line = false,
-            next = "<M-]>",
-            prev = "<M-[>",
-            dismiss = "<C-]>",
-          },
-        },
-        filetypes = {
-          yaml = true,
-          python = true,
-          lua = true,
-          rust = true,
-          toml = true,
-          markdown = true,
-        }
-      })
-
-      local suggestion = require("copilot.suggestion")
-      local function toggle_auto_trigger()
-        local auto_trig = vim.b.copilot_suggestion_auto_trigger
-        if auto_trig == nil or auto_trig == true then
-          vim.notify("Copilot auto-suggestion disabled")
-          suggestion.dismiss()
-        else
-          vim.notify("Copilot auto-suggestion enabled")
-          suggestion.next()
-        end
-        suggestion.toggle_auto_trigger()
-      end
-
-      vim.keymap.set({ "i", "n", "v" }, "<A-space>", function() suggestion.toggle_auto_trigger() end,
-        { desc = "Toggle auto trigger" })
-      vim.keymap.set("n", "<leader>cT", "<cmd>Copilot toggle<CR>", { desc = "Copilot toggle" })
-      vim.keymap.set("n", "<leader>cs", toggle_auto_trigger, { desc = "Copilot Suggestion toggle" })
-      vim.keymap.set("i", "<C-e>", toggle_auto_trigger, { desc = "Copilot Suggestion toggle" })
-    end,
+    'github/copilot.vim',
+    cmd = { "Copilot", },
   },
+  -- {
+  --   "zbirenbaum/copilot.lua",
+  --   cmd = "Copilot",
+  --   event = "InsertEnter",
+  --   dependencies = { "hrsh7th/nvim-cmp" },
+  --   config = function()
+  --     require("copilot").setup({
+  --       panel = {
+  --         enabled = true,
+  --         auto_refresh = true,
+  --       },
+  --       suggestion = {
+  --         enabled = true,
+  --         auto_trigger = true,
+  --         hide_during_completion = true,
+  --         keymap = {
+  --           accept = "<TAB>",
+  --           accept_word = false,
+  --           accept_line = false,
+  --           next = "<M-]>",
+  --           prev = "<M-[>",
+  --           dismiss = "<C-]>",
+  --         },
+  --       },
+  --       filetypes = {
+  --         yaml = true,
+  --         python = true,
+  --         lua = true,
+  --         rust = true,
+  --         toml = true,
+  --         markdown = true,
+  --       }
+  --     })
+
+  --     local suggestion = require("copilot.suggestion")
+  --     local function toggle_auto_trigger()
+  --       local auto_trig = vim.b.copilot_suggestion_auto_trigger
+  --       if auto_trig == nil or auto_trig == true then
+  --         vim.notify("Copilot auto-suggestion disabled")
+  --         suggestion.dismiss()
+  --       else
+  --         vim.notify("Copilot auto-suggestion enabled")
+  --         suggestion.next()
+  --       end
+  --       suggestion.toggle_auto_trigger()
+  --     end
+
+  --     vim.keymap.set({ "i", "n", "v" }, "<A-space>", function() suggestion.toggle_auto_trigger() end,
+  --       { desc = "Toggle auto trigger" })
+  --     vim.keymap.set("n", "<leader>cT", "<cmd>Copilot toggle<CR>", { desc = "Copilot toggle" })
+  --     vim.keymap.set("n", "<leader>cs", toggle_auto_trigger, { desc = "Copilot Suggestion toggle" })
+  --     vim.keymap.set("i", "<C-e>", toggle_auto_trigger, { desc = "Copilot Suggestion toggle" })
+  --   end,
+  -- },
   -- Can't use supermaven for work.
   -- {
   --   "supermaven-inc/supermaven-nvim",
@@ -510,11 +637,11 @@ return {
         -- Change the default chat adapter
         chat = {
           adapter = "copilot",
-          model = "gemini-2.5-pro",
+          -- model = "gemini-2.5-pro",
         },
         inline = {
           adapter = "copilot",
-          model = "gemini-2.5-pro",
+          -- model = "gemini-2.5-pro",
         },
         roles = {
           user = "favilo",
@@ -533,18 +660,18 @@ return {
         },
       },
       adapters = {
-        gemini = function()
-          return require("codecompanion.adapters").extend("gemini", {
-            schema = {
-              model = {
-                default = "gemini-2.5-flash-preview",
-              },
-            },
-            env = {
-              api_key = "cmd:op read op://Private/GeminiAPI/credential --no-newline",
-            },
-          })
-        end,
+        -- copilot = function()
+        --   return require("codecompanion.adapters").extend("copilot", {
+        --     schema = {
+        --       model = {
+        --         default = "gemini-2.5-flash-preview",
+        --       },
+        --     },
+        --     env = {
+        --       api_key = "cmd:op read op://Private/GeminiAPI/credential --no-newline",
+        --     },
+        --   })
+        -- end,
       },
       extensions = {
         history = {
