@@ -66,32 +66,36 @@ local lsp_on_attach = require("plugins.lsp.keys").lsp_on_attach
 -- if there is a language server active in the file
 vim.api.nvim_create_autocmd('LspAttach', {
   desc = 'LSP actions',
+  group = vim.api.nvim_create_augroup('my.lsp', {}),
   callback = function(event)
     local client = vim.lsp.get_client_by_id(event.data.client_id)
-    lsp_on_attach(client, event.buf)
+    lsp_on_attach(client, event)
   end,
 })
 
--- require('mason-lspconfig').setup({
---   -- ensure_installed = {
---   --   'ts_ls',
---   --   'eslint',
---   --   'lua_ls',
---   --   -- rustaceanvim handles this now
---   --   -- 'rust_analyzer',
---   --   'pylsp',
---   --   -- 'basedpyright',
---   --   'clangd',
---   --   'jsonls',
---   --   'yamlls',
---   --   'bashls',
---   --   -- 'cpptools',
---   --   -- 'codelldb',
---   -- },
--- })
+require('mason').setup()
+require('mason-lspconfig').setup({
+  ensure_installed = {
+    'ts_ls',
+    'eslint',
+    'lua_ls',
+    -- rustaceanvim handles this now
+    -- 'rust_analyzer',
+    'pylsp',
+    -- 'basedpyright',
+    'clangd',
+    'jsonls',
+    'yamlls',
+    'bashls',
+    -- 'cpptools',
+    -- 'codelldb',
+  },
+  automatic_enable = false,
+})
+
 
 -- Setup the LSP servers
-local lspconfig = require('lspconfig')
+-- local lspconfig = require('lspconfig')
 for server_name, config in pairs(servers) do
   config.capabilities = capabilities
   if config.on_attach ~= nil then
@@ -99,8 +103,12 @@ for server_name, config in pairs(servers) do
   end
 
   -- vim.notify("Setting up " .. server_name, vim.log.levels.DEBUG)
-  lspconfig[server_name].setup(config)
+  -- vim.notify(vim.inspect(config))
+  vim.lsp.config(server_name, config)
 end
+
+vim.lsp.enable(vim.tbl_keys(servers))
+
 
 require("actions-preview").setup {
   highlight_command = {

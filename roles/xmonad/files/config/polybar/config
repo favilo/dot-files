@@ -188,8 +188,8 @@ label-unmounted-foreground = ${colors.foreground}
 
 [module/battery]
 type = internal/battery
-battery = BAT0
-adapter = ADP1
+battery = BAT1
+adapter = ACAD
 full-at = 98
 time-format = %H:%M
 

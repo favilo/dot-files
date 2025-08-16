@@ -1,5 +1,6 @@
 M = {}
 
+local home_path = os.getenv('HOME')
 local venv_path = os.getenv('VIRTUAL_ENV')
 local py_path = nil
 
@@ -119,27 +120,36 @@ local servers = {
 
   -- rustaceanvim handles it now
   rust_analyzer = {
-    cmd = vim.lsp.rpc.connect("127.0.0.1", 27631),
+    cmd = { "ra-multiplex", "client" },
+    -- cmd = { "rust-analyzer" },
+    -- cmd = vim.lsp.rpc.connect("/var/run/ra-mux/ra-mux.socket"),
+
+    -- filetypes = { 'rust' },
+    -- root_markers = { 'Cargo.toml', 'Cargo.lock' },
     settings = {
       ['rust-analyzer'] = {
         lspMux = {
           version = "1",
           method = "connect",
           server = "rust-analyzer",
+          env = { PATH = home_path .. "/.cargo/bin", CARGO_TARGET_DIR = home_path .. "/.cargo/target" },
         },
-        server = {
-        },
+        -- server = {
+        -- },
         installCargo = false,
         installRustc = false,
         assist = {
           emitMustUse = true,
         },
-        checkOnSave = true,
+        checkOnSave = {
+          enable = true,
+          -- extraArgs = { "--target-dir", "./target/check" },
+        },
         check = {
           command = "clippy",
         },
         cargo = {
-          allFeatures = true,
+          allFeatures = false,
         },
         completion = {
           autoself = {
@@ -152,6 +162,9 @@ local servers = {
           --   bevy_simple_subsecond_system_macros = { "hot" },
           -- },
         },
+        files = {
+          exclude = { ".direnv", "target" }
+        }
       },
     },
   },
@@ -230,6 +243,8 @@ local servers = {
   },
   ["jinja_lsp"] = {
     filetypes = { 'jinja', 'yaml-jinja', 'yaml.jinja', },
+  },
+  copilot = {
   },
 }
 M.servers = servers
