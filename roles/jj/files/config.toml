@@ -1,0 +1,48 @@
+"$schema" = "https://jj-vcs.github.io/jj/latest/config-schema.json"
+
+[user]
+name = "Kevin Oberlies"
+email = "favilo@gmail.com"
+
+[colors]
+commits = "green"
+change_id = "cyan"
+
+[ui]
+paginate = "never"
+editor = "nvim"
+diff-editor = "nvim -d"
+merge-tool = "nvimdiff"
+
+[merge-tools.nvimdiff]
+program = "nvim"
+args = ["-d", "$output", "$local", "$base", "$remote"]
+merge-tool-edits-conflict-markers = true
+
+[signing]
+behavior = "own"
+backend = "ssh"
+key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJPBnhmcYGJ2FlkWKS3iRo5gNUVwODPbu39fR3cPDBY0"
+
+
+[revset-aliases]
+"immutable_heads()" = "builtin_immutable_heads() | (trunk().. & ~mine())"
+
+
+## End of file, please
+[templates]
+draft_commit_description = '''
+concat(
+  coalesce(description, default_commit_description, "\n"),
+  surround(
+    "\nJJ: This commit contains the following changes:\n", "",
+    indent("JJ:     ", diff.stat(72)),
+  ),
+  "\nJJ: ignore-rest\n",
+  diff.git(),
+)
+'''
+commit_trailers = '''
+format_signed_off_by_trailer(self)
+++ if(!trailers.contains_key("Change-Id"), format_gerrit_change_id_trailer(self))'''
+
