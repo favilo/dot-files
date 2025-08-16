@@ -2,7 +2,7 @@ M = {}
 
 local servers = require("plugins.lsp.servers").servers
 local lsp_on_attach = function(client, event)
-  vim.notify("Attaching to " .. client.name .. " Lsp server")
+  -- vim.notify("Attaching to " .. client.name .. " Lsp server")
   local bufnr = event.buf
   local opts = { buffer = bufnr, remap = false }
   if client == nil then

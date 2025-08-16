@@ -31,7 +31,7 @@ key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJPBnhmcYGJ2FlkWKS3iRo5gNUVwODPbu39fR
 [templates]
 draft_commit_description = '''
 concat(
-  coalesce(description, default_commit_description, "\n"),
+  coalesce(default_commit_description, "\n"),
   surround(
     "\nJJ: This commit contains the following changes:\n", "",
     indent("JJ:     ", diff.stat(72)),
@@ -42,10 +42,10 @@ concat(
 '''
 commit_trailers = '''
 format_signed_off_by_trailer(self)
-++ if(!trailers.contains_key("Change-Id"), format_gerrit_change_id_trailer(self))'''
+'''
 
 [template-aliases]
-default_commit_description = '''
+'default_commit_description' = '''
 concat(
   'JJ: <type>(<scope>)!: <description> (72 characters maximum)\n',
   'JJ: |<--- preferably using up to 50 characters ->|<------------------->|\n',

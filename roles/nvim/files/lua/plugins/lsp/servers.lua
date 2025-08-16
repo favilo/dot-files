@@ -120,6 +120,7 @@ local servers = {
 
   -- rustaceanvim handles it now
   rust_analyzer = {
+    -- disable for different cargo version...
     cmd = { "ra-multiplex", "client" },
     -- cmd = { "rust-analyzer" },
     -- cmd = vim.lsp.rpc.connect("/var/run/ra-mux/ra-mux.socket"),
@@ -132,24 +133,29 @@ local servers = {
           version = "1",
           method = "connect",
           server = "rust-analyzer",
-          env = { PATH = home_path .. "/.cargo/bin", CARGO_TARGET_DIR = home_path .. "/.cargo/target" },
+          env = {
+            PATH = home_path .. "/.cargo/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/sbin:/bin",
+            CARGO_TARGET_DIR = home_path .. "/.cargo/target"
+          },
         },
         -- server = {
         -- },
-        installCargo = false,
-        installRustc = false,
+        installCargo = true,
+        installRustc = true,
         assist = {
           emitMustUse = true,
         },
         checkOnSave = {
-          enable = true,
+          enable = false,
           -- extraArgs = { "--target-dir", "./target/check" },
         },
         check = {
           command = "clippy",
         },
         cargo = {
+          allTargets = true,
           allFeatures = false,
+          loadOutDirsFromCheck = true,
         },
         completion = {
           autoself = {
@@ -219,6 +225,12 @@ local servers = {
     },
   },
 
+  clangd = {
+    filetypes = { 'cpp', 'h', 'c', },
+    settings = {
+    },
+  },
+
   glslls = {},
 
   ts_ls = {
@@ -243,8 +255,6 @@ local servers = {
   },
   ["jinja_lsp"] = {
     filetypes = { 'jinja', 'yaml-jinja', 'yaml.jinja', },
-  },
-  copilot = {
   },
 }
 M.servers = servers

@@ -6,21 +6,21 @@
   hosts: local
   tasks:
     - debug:
-        var:
-          - ansible_os_family
+        var: ansible_os_family
         verbosity: 1
       tags:
         - "git"
         - "fzf"
         - "zsh"
         - "tmux"
-      # - "emacs"
-      # - "doom-emacs"
+        # - "emacs"
+        # - "doom-emacs"
         - "nvim"
         - "rust"
-      # - "sway"
-        - "wm"
+        # - "sway"
+        # - "wm"
         - "packages"
+        - "xinput"
 
 - name: Set up local development environment
   hosts: local
@@ -58,10 +58,10 @@
         - "rust"
         - "go"
         - "programming"
-    - role: sway
-      tags:
-        - "sway"
-        - "wm"
+    # - role: sway
+    #   tags:
+    #     - "sway"
+    #     - "wm"
     # - role: penrose
     #   tags:
     #     - "wm"
@@ -79,3 +79,6 @@
     - role: jj
       tags:
         - "jj"
+    - role: xinput
+      tags:
+        - "xinput"

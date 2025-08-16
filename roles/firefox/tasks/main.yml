@@ -8,19 +8,36 @@
     profiles_dir: "{{dotfiles_user_home}}/Library/Application Support/Firefox/Profiles"
   when: ansible_os_family == "Darwin"
 
-- name: Profile
-  shell: "grep 'Path=' '{{ firefox_dir }}/profiles.ini' | sed s/^Path=//"
+- name: Check if profiles.ini exists
+  stat:
+    path: "{{ firefox_dir }}/profiles.ini"
+  register: profiles_ini_stat
+
+- name: Read Firefox profiles
+  shell: |
+    python3 -c "
+    import configparser
+    config = configparser.ConfigParser()
+    config.read('{{ firefox_dir }}/profiles.ini')
+    for section in config.sections():
+        if config.has_option(section, 'Path'):
+            print(config.get(section, 'Path'))
+    "
   register: profiles
+  when: profiles_ini_stat.stat.exists
+  changed_when: false
 
 - name: Create chrome directories
   file:
     path: "{{profiles_dir}}/{{ item }}/chrome"
     state: directory
   with_items: "{{ profiles.stdout_lines }}"
+  when: profiles_ini_stat.stat.exists
 
-- name: Create chrome directories
+- name: Link chrome CSS
   file:
     src: "{{ dotfiles_home }}/roles/firefox/files/userChrome.css"
     dest: "{{profiles_dir}}/{{ item }}/chrome/userChrome.css"
     state: hard
   with_items: "{{ profiles.stdout_lines }}"
+  when: profiles_ini_stat.stat.exists

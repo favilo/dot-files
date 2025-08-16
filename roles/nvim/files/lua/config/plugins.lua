@@ -126,6 +126,10 @@ return {
     'tpope/vim-sensible',
     lazy = false,
   },
+  {
+    'justinmk/vim-sneak',
+    lazy = false
+  },
   { 'Townk/vim-autoclose' },
   {
     'NeogitOrg/neogit',
@@ -139,6 +143,18 @@ return {
       require("plugins.git")
     end,
   },
+  {
+    'rafikdraoui/jj-diffconflicts',
+    lazy = false,
+  },
+  -- {
+  --   'swaits/lazyjj.nvim',
+  --   lazy = false,
+  --   dependencies = 'nvim-lua/plenary.nvim',
+  --   opts = {
+  --     mapping = '<leader>jj'
+  --   }
+  -- },
 
   {
     "julienvincent/hunk.nvim",
@@ -226,6 +242,12 @@ return {
       require('plugins.lsp.config')
       require('plugins.lsp.setup')
     end,
+  },
+  {
+    "vxpm/ferris.nvim",
+    opts = {
+      create_commands = true,
+    },
   },
 
   {
@@ -385,62 +407,66 @@ return {
   },
   {
     'github/copilot.vim',
-    cmd = { "Copilot", },
+    cmd = { "CopilotVim", },
   },
-  -- {
-  --   "zbirenbaum/copilot.lua",
-  --   cmd = "Copilot",
-  --   event = "InsertEnter",
-  --   dependencies = { "hrsh7th/nvim-cmp" },
-  --   config = function()
-  --     require("copilot").setup({
-  --       panel = {
-  --         enabled = true,
-  --         auto_refresh = true,
-  --       },
-  --       suggestion = {
-  --         enabled = true,
-  --         auto_trigger = true,
-  --         hide_during_completion = true,
-  --         keymap = {
-  --           accept = "<TAB>",
-  --           accept_word = false,
-  --           accept_line = false,
-  --           next = "<M-]>",
-  --           prev = "<M-[>",
-  --           dismiss = "<C-]>",
-  --         },
-  --       },
-  --       filetypes = {
-  --         yaml = true,
-  --         python = true,
-  --         lua = true,
-  --         rust = true,
-  --         toml = true,
-  --         markdown = true,
-  --       }
-  --     })
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    dependencies = { "hrsh7th/nvim-cmp" },
+    config = function()
+      require("copilot").setup({
+        panel = {
+          enabled = true,
+          auto_refresh = true,
+        },
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          hide_during_completion = true,
+          keymap = {
+            accept = "<TAB>",
+            accept_word = false,
+            accept_line = false,
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+          },
+        },
+        filetypes = {
+          yaml = true,
+          python = true,
+          lua = true,
+          rust = true,
+          toml = true,
+          markdown = true,
+        },
+        server = {
+          type = "nodejs",
+          custom_server_filepath = nil,
+        },
+      })
 
-  --     local suggestion = require("copilot.suggestion")
-  --     local function toggle_auto_trigger()
-  --       local auto_trig = vim.b.copilot_suggestion_auto_trigger
-  --       if auto_trig == nil or auto_trig == true then
-  --         vim.notify("Copilot auto-suggestion disabled")
-  --         suggestion.dismiss()
-  --       else
-  --         vim.notify("Copilot auto-suggestion enabled")
-  --         suggestion.next()
-  --       end
-  --       suggestion.toggle_auto_trigger()
-  --     end
+      local suggestion = require("copilot.suggestion")
+      local function toggle_auto_trigger()
+        local auto_trig = vim.b.copilot_suggestion_auto_trigger
+        if auto_trig == nil or auto_trig == true then
+          vim.notify("Copilot auto-suggestion disabled")
+          suggestion.dismiss()
+        else
+          vim.notify("Copilot auto-suggestion enabled")
+          suggestion.next()
+        end
+        suggestion.toggle_auto_trigger()
+      end
 
-  --     vim.keymap.set({ "i", "n", "v" }, "<A-space>", function() suggestion.toggle_auto_trigger() end,
-  --       { desc = "Toggle auto trigger" })
-  --     vim.keymap.set("n", "<leader>cT", "<cmd>Copilot toggle<CR>", { desc = "Copilot toggle" })
-  --     vim.keymap.set("n", "<leader>cs", toggle_auto_trigger, { desc = "Copilot Suggestion toggle" })
-  --     vim.keymap.set("i", "<C-e>", toggle_auto_trigger, { desc = "Copilot Suggestion toggle" })
-  --   end,
-  -- },
+      vim.keymap.set({ "i", "n", "v" }, "<A-space>", function() suggestion.toggle_auto_trigger() end,
+        { desc = "Toggle auto trigger" })
+      vim.keymap.set("n", "<leader>cT", "<cmd>Copilot toggle<CR>", { desc = "Copilot toggle" })
+      vim.keymap.set("n", "<leader>cs", toggle_auto_trigger, { desc = "Copilot Suggestion toggle" })
+      vim.keymap.set("i", "<C-e>", toggle_auto_trigger, { desc = "Copilot Suggestion toggle" })
+    end,
+  },
   -- Can't use supermaven for work.
   -- {
   --   "supermaven-inc/supermaven-nvim",
@@ -747,5 +773,13 @@ return {
   {
     "nextmn/vim-yaml-jinja",
     lazy = false,
+  },
+  {
+    "fresh2dev/zellij.vim",
+    lazy = false,
+    init = function()
+      -- vim.g.zelli_navigator_move_focus_or_tab = 1
+      -- vim.g.zellij_navigator_no_default_mappings = 1
+    end,
   },
 }

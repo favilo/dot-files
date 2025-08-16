@@ -1,3 +1,5 @@
+#!/bin/zsh
+#
 export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git'"
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 export FZF_CTRL_T_OPTS="\
@@ -13,7 +15,7 @@ command -v kubectl >/dev/null && source <(kubectl completion zsh)
 
 fpath=($fpath $HOME/.zsh/completion)
 
-[ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
+[ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 
 export PATH="$HOME/bin:/usr/local/bin:$PATH"
 export PATH="$PATH:$HOME/.cabal/bin"
@@ -24,9 +26,12 @@ export PATH="$PATH:/snap/bin"
 export PATH="$PATH:$HOME/.emacs.d/bin"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
 export PATH="${PATH}:/opt/muslcc/arm-linux-musleabihf/bin"
+export PATH="${PATH}:${HOME}/.local/share/gem/ruby/3.3.0/bin"
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}"
 # export QT_QPA_PLATFORM=wayland
-export GPG_TTY=$(tty)
+GPG_TTY="$(tty)"
+export GPG_TTY
 export EDITOR=nvim
 
 export CARGO_TARGET_DIR="$HOME/.cargo/target"
@@ -40,6 +45,7 @@ alias jq="jaq"
 alias autorandr="autorandr --match-edid"
 alias zshconfig="nvim ~/.zshrc.local"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
+alias jq="jq -C"
 
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
@@ -156,7 +162,6 @@ export LESSOPEN='| ~/.lessfilter %s'
 ##
 if [[ -d "${HOME}/.profile.d"  ]]; then
     for f in "${HOME}"/.profile.d/*.zsh; do
-        # shellcheck source=$HOME/.profile.d/*.zsh
         source "$f"
     done
 fi

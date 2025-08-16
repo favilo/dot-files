@@ -58,6 +58,8 @@
   command: "{{ dotfiles_user_home }}/.emacs.d/bin/doom sync"
 
 - name: install wakatime
-  command: pip3 install wakatime
+  pip:
+    name: wakatime
+    executable: pip3
   become: true
   become_method: sudo

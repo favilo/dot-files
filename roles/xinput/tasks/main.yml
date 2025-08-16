@@ -1,0 +1,11 @@
+- name: Ensure ~/.local/bin directory exists
+  file:
+    path: "{{ dotfiles_user_home }}/.local/bin"
+    state: directory
+    mode: '0755'
+
+- name: Copy touchpad fix script to ~/.local/bin
+  copy:
+    src: fix-touchpad.sh
+    dest: "{{ dotfiles_user_home }}/.local/bin/fix-touchpad"
+    mode: '0755'

@@ -27,7 +27,8 @@ local cmp_mappings = cmp.mapping.preset.insert({
     -- if suggestion.has_suggestion() then
     --   suggestion.on_accept_suggestion()
     -- Copilot stuff
-    if require("copilot.suggestion").is_visible() then
+    local copilot_installed, suggestion = pcall(require, "copilot.suggestion")
+    if copilot_installed and suggestion.is_visible() then
       require("copilot.suggestion").accept()
     elseif cmp.visible() then
       cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })

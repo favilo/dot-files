@@ -6,7 +6,7 @@
     path: "{{ dotfiles_user_home }}/.xmonad"
     state: directory
 
-- name: "create .xmonad folder"
+- name: "create .xmonad/lib folder"
   file:
     path: "{{ dotfiles_user_home }}/.xmonad/lib"
     state: directory

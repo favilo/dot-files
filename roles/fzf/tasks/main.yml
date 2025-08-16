@@ -7,9 +7,10 @@
     dest: '{{dotfiles_user_home}}/.fzf'
 
 - name: Check if fzf installed
-  shell: "which fzf"
+  shell: "command -v fzf"
   register: fzf_result
-  ignore_errors: true
+  failed_when: false
+  changed_when: false
 
 - name: Install fzf
   shell: "{{dotfiles_user_home}}/.fzf/install"

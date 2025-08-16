@@ -6,14 +6,10 @@
   become_method: sudo
   when: ansible_distribution_version == "20.04"
 
-- name: Fetch podman apt-key
-  get_url:
-   url: "https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_{{ ansible_distribution_version }}/Release.key"
-   dest: /tmp/podman.key
-  when: ansible_distribution_version == "20.04"
-
 - name: Install podman apt-key
-  command: "apt-key add /tmp/podman.key"
+  apt_key:
+    url: "https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_{{ ansible_distribution_version }}/Release.key"
+    state: present
   become: true
   become_method: sudo
   when: ansible_distribution_version == "20.04"
