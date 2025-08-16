@@ -57,11 +57,11 @@
   clean = git-lfs clean -- %f
 [commit]
 	gpgSign = true
-	template = /home/favilo/.gitmessage
+	template = {{ dotfiles_user_home }}/.gitmessage
 [gpg]
 	format = ssh
 [gpg "ssh"]
 	program = /opt/1Password/op-ssh-sign
-	allowedSignersFile = /home/favilo/.ssh/allowed_signers
+	allowedSignersFile = {{ dotfiles_user_home }}/.ssh/allowed_signers
 [pull]
 	rebase = true
