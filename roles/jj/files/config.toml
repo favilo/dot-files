@@ -10,14 +10,12 @@ change_id = "cyan"
 
 [ui]
 paginate = "never"
-editor = "nvim"
-diff-editor = "nvim -d"
-merge-tool = "nvimdiff"
+diff-editor = ["nvim", "-c", "DiffEditor $left $right $output"]
 
-[merge-tools.nvimdiff]
-program = "nvim"
-args = ["-d", "$output", "$local", "$base", "$remote"]
-merge-tool-edits-conflict-markers = true
+# [merge-tools.nvimdiff]
+# program = "nvim"
+# args = ["-d", "$output", "$local", "$base", "$remote"]
+# merge-tool-edits-conflict-markers = true
 
 [signing]
 behavior = "own"
@@ -46,3 +44,61 @@ commit_trailers = '''
 format_signed_off_by_trailer(self)
 ++ if(!trailers.contains_key("Change-Id"), format_gerrit_change_id_trailer(self))'''
 
+[template-aliases]
+default_commit_description = '''
+concat(
+  'JJ: <type>(<scope>)!: <description> (72 characters maximum)\n',
+  'JJ: |<--- preferably using up to 50 characters ->|<------------------->|\n',
+  '\n',
+  'JJ: Optional <body>\n',
+  'JJ: |<------------- try limiting to 72 characters per line ----------->|\n',
+  '\n',
+  'JJ: Optional <footer>\n',
+  '\n',
+  'JJ: ----- END COMMIT MESSAGE -----\n',
+  'JJ:\n',
+  'JJ: Conventional Commits Cheatsheet (https://www.conventionalcommits.org)\n',
+  'JJ:\n',
+  'JJ: <type> indicates what kind of commit this is.\n',
+  'JJ: It can be one of:\n',
+  'JJ:   - feat        for new features introduced (i.e. MINOR in SemVer standard)\n',
+  'JJ:   - fix         for bug-fixes (i.e. PATCH in SemVer standard)\n',
+  'JJ:   - build       for changes in build system or environment\n',
+  'JJ:   - ci          for configuring continuous integration systems\n',
+  'JJ:   - test        for adding new tests or correcting defective tests\n',
+  'JJ:   - docs        for changes in documentation only\n',
+  'JJ:   - refactor    for rewriting or restructuring of code that does not affect API behavior\n',
+  'JJ:   - perf        for performance-enhancing refactors\n',
+  'JJ:   - style       for changes in code styles and no changes in logic\n',
+  'JJ:   - chore       for miscellaneous tasks\n',
+  'JJ:   - revert      for reverting commits made previously\n',
+  'JJ:\n',
+  'JJ: <scope> describes a section of the codebase where this change is applied and is optional.\n',
+  'JJ: Note that allowed content of this section depends on the specific project.\n',
+  'JJ: Issue identifiers are not valid scopes.\n',
+  'JJ:\n',
+  'JJ: Inserting "!" before the colon indicates that this commit introduces a breaking change.\n',
+  'JJ: It is equivalent to a bump in MAJOR in SemVer standard.\n',
+  'JJ: With this, the breaking change indicator in <footer> becomes optional.\n',
+  'JJ:\n',
+  'JJ: <description> contains a concise description of the change.\n',
+  'JJ: The content should be in imperative mood, as if "This commit will..." is prepended.\n',
+  'JJ: Do not capitalize the beginning of the sentence, and full stop (.) is omitted.\n',
+  'JJ:\n',
+  'JJ: <body> provides additional contextual information about the code changes and is optional.\n',
+  'JJ: Multiple paragraphs separated by an empty line are allowed here.\n',
+  'JJ: Sentences should be in imperative mood with proper capitalization and full stops (.).\n',
+  'JJ:\n',
+  'JJ: <footer> is a list of key-value pairs that store "metadata" of a commit.\n',
+  'JJ: There are three types of a footer:\n',
+  'JJ:   - Breaking change indicator     verbatim "BREAKING CHANGE:", followed by a <description>\n',
+  'JJ:   - Automatic issue management    such as "Close #123", "Reference #123", "See #123", etc.\n',
+  'JJ:   - Email-like metadata           such as "Signed-off-by:", "Co-authored-by", etc.\n',
+  'JJ:\n',
+  'JJ: There are three exceptions to the subject line rules:\n',
+  'JJ:   1. "Initial commit"     for the first commit in a git repository\n',
+  'JJ:   2. "Merge branch..."    as it is the default commit message for automatic merges\n',
+  'JJ:   3. "Revert..."          as it is the default commit message for reverting commits\n',
+  'JJ:\n',
+)
+'''
