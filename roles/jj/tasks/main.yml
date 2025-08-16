@@ -1,0 +1,16 @@
+- name: Install jj with cargo binstall
+  command: cargo binstall -y --strategies crate-meta-data jj-cli
+  args:
+    creates: "{{ ansible_env.HOME }}/.cargo/bin/jj"
+
+- name: Create jj config directory
+  file:
+    state: directory
+    dest: "{{ dotfiles_user_home }}/.config/jj"
+
+- name: Hard link jj config.toml
+  file:
+    src: "{{ dotfiles_home }}/roles/jj/files/config.toml"
+    dest: "{{ dotfiles_user_home }}/.config/jj/config.toml"
+    state: hard
+    force: true
