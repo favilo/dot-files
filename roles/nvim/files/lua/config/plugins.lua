@@ -19,6 +19,7 @@ return {
 
       { "cljoly/telescope-repo.nvim" },
       { "nvim-telescope/telescope-live-grep-args.nvim" },
+      { 'jsongerber/telescope-ssh-config' },
       -- { "nvim-telescope/telescope-frecency.nvim" },
     },
   },

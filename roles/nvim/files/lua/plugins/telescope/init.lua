@@ -8,6 +8,7 @@ telescope.load_extension('projects')
 telescope.load_extension('fzf')
 telescope.load_extension('live_grep_args')
 telescope.load_extension('repo')
+telescope.load_extension('ssh-config')
 -- telescope.load_extension("git_worktree")
 -- telescope.load_extension('dap')
 --
@@ -68,6 +69,10 @@ telescope.setup {
     -- }
   },
   extensions = {
+    ['ssh-config'] = {
+      client = 'oil',
+      ssh_config_path = '~/.ssh/config',
+    },
   }
 }
 
@@ -121,3 +126,5 @@ vim.keymap.set('n', '<leader>fc', builtin.command_history,
 vim.keymap.set('v', '<leader>fc', function() builtin.command_history({ default_text = vim.getVisualSelection() }) end,
   { desc = "Telescope live grep through command history" })
 vim.keymap.set('n', '<leader>ff', builtin.treesitter, { desc = "Telescope grep through variables in scope" })
+vim.keymap.set({'n', 'v'}, '<leader>fs', '<cmd>Telescope ssh-config<CR>',
+  { desc = "Telescope find sibling files" })
