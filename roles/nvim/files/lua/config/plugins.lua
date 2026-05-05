@@ -34,8 +34,11 @@ return {
     build = ':TSUpdate',
     dependencies = {
       'IndianBoy42/tree-sitter-just',
+      'nvim-treesitter/playground',
     },
+    lazy = false,
     config = function()
+      require("plugins.treesitter")
       local configs = require('nvim-treesitter.configs')
       vim.filetype.add({
         extension = {
@@ -54,6 +57,12 @@ return {
             node_decremental = 'V',
           },
         },
+        playground = {
+          enable = true,
+          disable = {},
+          updatetime = 25,         -- Debounced time for highlighting nodes in the playground from source code
+          persist_queries = false, -- Whether the query persists across vim sessions
+        }
       })
     end,
   },
@@ -62,7 +71,6 @@ return {
     config = true,
     dependencies = { "nvim-treesitter/nvim-treesitter" }
   },
-  { 'nvim-treesitter/playground' },
   { 'mbbill/undotree' },
   {
     "ahmedkhalf/project.nvim",
@@ -204,6 +212,12 @@ return {
 
   -- LSP
   {
+    'saghen/blink.cmp',
+    dependencies = {
+      'saghen/blink.lib',
+    },
+  },
+  {
     'neovim/nvim-lspconfig',
     lazy = false,
     cmd = { 'LspInfo', 'LspInstall', 'LspStart', 'LspRestart', 'LspStop' },
@@ -217,7 +231,9 @@ return {
         -- build = ':PylspInstall python-lsp-black pyls-isort pylsp-rope pylsp-mypy pylint',
       },
       'folke/neodev.nvim',
-      'saghen/blink.cmp',
+      {
+        'saghen/blink.cmp',
+      },
       -- 'mrcjkb/rustaceanvim',
       'b0o/schemastore.nvim',
       "lukas-reineke/lsp-format.nvim",
@@ -551,7 +567,10 @@ return {
       },
     },
   },
-  { 'wakatime/vim-wakatime',        lazy = false },
+  {
+    'wakatime/vim-wakatime',
+    lazy = false,
+  },
 
   {
     "epwalsh/pomo.nvim",
@@ -586,8 +605,22 @@ return {
       "nvim-neotest/nvim-nio",
     }
   },
+  {
+    "jay-babu/mason-nvim-dap.nvim",
+    dependencies = {
+      "williamboman/mason.nvim",
+      "mfussenegger/nvim-dap",
+    },
+  },
 
   { 'mfussenegger/nvim-dap-python', dependencies = { "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui" } },
+  {
+    'julianolf/nvim-dap-lldb',
+    dependencies = {
+      "mfussenegger/nvim-dap",
+    },
+    opts = {},
+  },
   {
     'almo7aya/openingh.nvim',
     lazy = false,
@@ -667,96 +700,99 @@ return {
   {
     "olimorris/codecompanion.nvim",
     cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
-    opts = {
-      strategies = {
-        -- Change the default chat adapter
-        chat = {
-          adapter = "copilot",
-          -- model = "gemini-2.5-pro",
-        },
-        inline = {
-          adapter = "copilot",
-          -- model = "gemini-2.5-pro",
-        },
-        roles = {
-          user = "favilo",
-        },
-        keymaps = {
-          send = {
-            modes = {
-              i = { "<C-CR>", "<C-s>" },
-            },
-          },
-          completion = {
-            modes = {
-              i = "<C-x>",
-            },
-          },
-        },
-      },
-      adapters = {
-        -- copilot = function()
-        --   return require("codecompanion.adapters").extend("copilot", {
-        --     schema = {
-        --       model = {
-        --         default = "gemini-2.5-flash-preview",
-        --       },
-        --     },
-        --     env = {
-        --       api_key = "cmd:op read op://Private/GeminiAPI/credential --no-newline",
-        --     },
-        --   })
-        -- end,
-      },
-      extensions = {
-        history = {
-          enabled = true,
-          opts = {
-            keymap = "gh",
-            save_chat_keymap = "sc",
-            auto_save = false,
-            auto_generate_title = true,
-            continue_last_chat = false,
-            delete_on_clearing_chat = false,
-            picker = "snacks",
-            enable_logging = false,
-            dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
-          },
-        },
-        mcphub = {
-          callback = "mcphub.extensions.codecompanion",
-          opts = {
-            make_vars = true,
-            make_slash_commands = true,
-            show_result_in_chat = true,
-          },
-        },
-      },
-      opts = {
-        -- Set debug logging
-        log_level = "DEBUG",
-      },
-      keys = {
-        {
-          "<C-a>",
-          "<cmd>CodeCompanionActions<CR>",
-          desc = "Open the action palette",
-          mode = { "n", "v" },
-        },
-        {
-          "<Leader>a",
-          "<cmd>CodeCompanionChat Toggle<CR>",
-          desc = "Toggle a chat buffer",
-          mode = { "n", "v" },
-        },
-        {
-          "<LocalLeader>a",
-          "<cmd>CodeCompanionChat Add<CR>",
-          desc = "Add code to a chat buffer",
-          mode = { "v" },
-        },
-      },
-    },
+    config = function()
+      require("plugins.codecompanion")
+    end,
+    -- opts = {
+    --   strategies = {
+    --     -- Change the default chat adapter
+    --     chat = {
+    --       adapter = "google",
+    --       model = "gemini-3.1-pro",
+    --     },
+    --     inline = {
+    --       adapter = "google",
+    --       -- model = "gemini-2.5-pro",
+    --     },
+    --     roles = {
+    --       user = "favilo",
+    --     },
+    --     keymaps = {
+    --       send = {
+    --         modes = {
+    --           i = { "<C-CR>", "<C-s>" },
+    --         },
+    --       },
+    --       completion = {
+    --         modes = {
+    --           i = "<C-x>",
+    --         },
+    --       },
+    --     },
+    --   },
+    --   adapters = {
+    --     -- copilot = function()
+    --     --   return require("codecompanion.adapters").extend("copilot", {
+    --     --     schema = {
+    --     --       model = {
+    --     --         default = "gemini-2.5-flash-preview",
+    --     --       },
+    --     --     },
+    --     --     env = {
+    --     --       api_key = "cmd:op read op://Private/GeminiAPI/credential --no-newline",
+    --     --     },
+    --     --   })
+    --     -- end,
+    --   },
+    --   extensions = {
+    --     history = {
+    --       enabled = true,
+    --       opts = {
+    --         keymap = "gh",
+    --         save_chat_keymap = "sc",
+    --         auto_save = false,
+    --         auto_generate_title = true,
+    --         continue_last_chat = false,
+    --         delete_on_clearing_chat = false,
+    --         picker = "snacks",
+    --         enable_logging = false,
+    --         dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
+    --       },
+    --     },
+    --     mcphub = {
+    --       callback = "mcphub.extensions.codecompanion",
+    --       opts = {
+    --         make_vars = true,
+    --         make_slash_commands = true,
+    --         show_result_in_chat = true,
+    --       },
+    --     },
+    --   },
+    --   opts = {
+    --     -- Set debug logging
+    --     log_level = "DEBUG",
+    --   },
+    --   keys = {
+    --     {
+    --       "<C-a>",
+    --       "<cmd>CodeCompanionActions<CR>",
+    --       desc = "Open the action palette",
+    --       mode = { "n", "v" },
+    --     },
+    --     {
+    --       "<Leader>a",
+    --       "<cmd>CodeCompanionChat Toggle<CR>",
+    --       desc = "Toggle a chat buffer",
+    --       mode = { "n", "v" },
+    --     },
+    --     {
+    --       "<LocalLeader>a",
+    --       "<cmd>CodeCompanionChat Add<CR>",
+    --       desc = "Add code to a chat buffer",
+    --       mode = { "v" },
+    --     },
+    --   },
+    -- },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
@@ -782,4 +818,40 @@ return {
       -- vim.g.zellij_navigator_no_default_mappings = 1
     end,
   },
+  {
+    'Julian/lean.nvim',
+    event = { 'BufReadPre *.lean', 'BufNewFile *.lean' },
+
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+
+      -- optional dependencies:
+
+      -- a completion engine
+      --    hrsh7th/nvim-cmp or Saghen/blink.cmp are popular choices
+
+      'nvim-telescope/telescope.nvim', -- for 2 Lean-specific pickers
+      'andymass/vim-matchup',          -- for enhanced % motion behavior
+      -- 'andrewradev/switch.vim',        -- for switch support
+      'tomtom/tcomment_vim',           -- for commenting
+    },
+
+    opts = {
+      mappings = true,
+    }
+  },
+  {
+    -- Unison
+    "unisonweb/unison",
+    branch = "trunk",
+    config = function(plugin)
+      vim.opt.rtp:append(plugin.dir .. "/editor-support/vim")
+      require("lazy.core.loader").packadd(plugin.dir .. "/editor-support/vim")
+    end,
+    init = function(plugin)
+      require("lazy.core.loader").ftdetect(plugin.dir .. "/editor-support/vim")
+    end,
+  },
+  -- { "Apeiros-46B/uiua.vim" },
+  { "sputnick1124/uiua.vim" },
 }

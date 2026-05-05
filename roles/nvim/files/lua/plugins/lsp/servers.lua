@@ -9,6 +9,11 @@ if venv_path ~= nil then
   py_path = venv_path .. '/bin/python'
 end
 
+local lsp_path = string.format(
+  "%s/.local/bin:%s/.cargo/bin:%s/.nvm/versions/node/v24.6.0/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/sbin:/bin",
+  home_path, home_path, home_path)
+-- PATH = "~/.cargo/bin:~/.nvm/versions/node/v24.6.0/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/sbin:/bin",
+
 local servers = {
   pylsp = {
     settings = {
@@ -118,35 +123,34 @@ local servers = {
     },
   },
 
-  -- rustaceanvim handles it now
   rust_analyzer = {
     -- disable for different cargo version...
-    cmd = { "ra-multiplex", "client" },
+    -- cmd = {
+    --   "lspmux",
+    --   "client",
+    --   "--server-path",
+    --   home_path .. ".cargo/bin/rust-analyzer",
+    -- },
     -- cmd = { "rust-analyzer" },
     -- cmd = vim.lsp.rpc.connect("/var/run/ra-mux/ra-mux.socket"),
+    cmd = vim.lsp.rpc.connect("127.0.0.1", 27631),
+    -- flags = lsp_flags,
 
     -- filetypes = { 'rust' },
-    -- root_markers = { 'Cargo.toml', 'Cargo.lock' },
+    root_markers = { 'Cargo.toml', 'Cargo.lock' },
     settings = {
       ['rust-analyzer'] = {
         lspMux = {
           version = "1",
           method = "connect",
           server = "rust-analyzer",
-          env = {
-            PATH = home_path .. "/.cargo/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/sbin:/bin",
-            CARGO_TARGET_DIR = home_path .. "/.cargo/target"
-          },
         },
-        -- server = {
-        -- },
-        installCargo = true,
-        installRustc = true,
         assist = {
           emitMustUse = true,
         },
         checkOnSave = {
           enable = false,
+          command = "clippy",
           -- extraArgs = { "--target-dir", "./target/check" },
         },
         check = {
@@ -255,6 +259,17 @@ local servers = {
   },
   ["jinja_lsp"] = {
     filetypes = { 'jinja', 'yaml-jinja', 'yaml.jinja', },
+  },
+  unison = {
+    filetypes = { 'unison', 'u' },
+  },
+  microcad = {
+    filetypes = { 'microcad', 'mcad', 'ucad', 'µcad', },
+    cmd = { "microcad-lsp", "--stdio", },
+    root_markers = { { 'mcad.toml', 'ucad.toml', 'µcad.toml', }, '.git' },
+    env = {
+      RUST_LOG = "debug",
+    },
   },
 }
 M.servers = servers

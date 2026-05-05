@@ -34,7 +34,7 @@ GPG_TTY="$(tty)"
 export GPG_TTY
 export EDITOR=nvim
 
-export CARGO_TARGET_DIR="$HOME/.cargo/target"
+# export CARGO_TARGET_DIR="$HOME/.cargo/target"
 
 alias ls=eza
 alias la=ls -lah
@@ -46,6 +46,7 @@ alias autorandr="autorandr --match-edid"
 alias zshconfig="nvim ~/.zshrc.local"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias jq="jq -C"
+alias dive="docker run -ti --rm  -v /var/run/docker.sock:/var/run/docker.sock docker.io/wagoodman/dive"
 
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
@@ -61,10 +62,12 @@ bindkey "^[[B" down-line-or-beginning-search # Down
 # fi
 command -v op >/dev/null && eval "$(op completion zsh)" && compdef _op op
 command -v direnv >/dev/null && eval "$(direnv hook zsh)"
-eval "$(zoxide init zsh)"
-alias cd=z
-alias cdi=zi
-export _ZO_ECHO=1
+if [ -z "$DISABLE_ZOXIDE" ]; then
+  eval "$(zoxide init --cmd cd zsh)"
+  # alias cd=z
+  alias cdi=zi
+  export _ZO_ECHO=1
+fi
 
 export JAVA_HOME=/usr/lib/jvm/default-java
 export JAVA8_HOME=/usr/lib/jvm/java-8-openjdk-amd64

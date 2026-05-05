@@ -18,6 +18,7 @@ local lsp_on_attach = function(client, event)
   if client.name == "yamlls" then
     client.server_capabilities.documentFormattingProvider = true
   end
+
   -- if client.name == "jsonls" then
   --   client.textDocument.completion.snippetSupport = true
   -- end
@@ -27,7 +28,7 @@ local lsp_on_attach = function(client, event)
   end
 
   if client:supports_method('textDocument/completion') then
-    vim.lsp.completion.enable(true, client.id, bufnr, {autotrigger = true})
+    vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
   end
 
   vim.keymap.set("n", "<leader>cd", vim.lsp.buf.definition, opts)
@@ -54,7 +55,7 @@ local lsp_on_attach = function(client, event)
     end
 
     local filter = function(local_client)
-      vim.print(vim.inspect(local_client.name))
+      -- vim.print(vim.inspect(local_client.name))
       return true
     end
 
@@ -66,6 +67,7 @@ local lsp_on_attach = function(client, event)
     })
   end, opts)
   vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
+  vim.keymap.set("n", "<leader>ci", vim.show_pos, opts)
 end
 
 
