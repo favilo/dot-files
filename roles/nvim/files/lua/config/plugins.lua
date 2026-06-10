@@ -212,18 +212,18 @@ return {
         preset = "default", -- <C-y> accept, <C-n>/<C-p> select, Tab/S-Tab snippet jump
         ["<Tab>"] = {
           function(cmp)
-            -- Accept a visible Copilot ghost-text suggestion first.
+            -- When the blink menu is open, it owns <Tab> (accept the selection).
+            if cmp.is_visible() then
+              if cmp.snippet_active() then return cmp.accept() end
+              return cmp.select_and_accept()
+            end
+            -- Otherwise accept a visible Copilot ghost-text suggestion.
             local ok, sug = pcall(require, "copilot.suggestion")
             if ok and sug.is_visible() then
               sug.accept()
               return true
             end
-            -- Otherwise mirror the old cmp <Tab>: accept the menu/snippet
-            -- selection when the menu is open (super-tab behaviour).
-            if cmp.snippet_active() then
-              return cmp.accept()
-            end
-            return cmp.select_and_accept() -- false when menu closed -> falls through
+            return false -- fall through to snippet jump / real <Tab>
           end,
           "snippet_forward",
           "fallback",
@@ -241,6 +241,9 @@ return {
         },
       },
       completion = {
+        -- Only open the menu on LSP trigger chars (., :, etc.) or manually
+        -- via <C-space>; while typing words, Copilot ghost-text shows instead.
+        trigger = { show_on_keyword = false },
         menu = { border = "rounded" },
         documentation = { auto_show = true, window = { border = "rounded" } },
       },
@@ -461,6 +464,8 @@ return {
           auto_refresh = true,
         },
         suggestion = {
+          -- Inline ghost-text is the Copilot UX; the blink menu is reserved for
+          -- LSP/path/snippets and only opens on trigger chars or <C-space>.
           enabled = true,
           auto_trigger = true,
           hide_during_completion = true,
