@@ -77,18 +77,6 @@ return {
     },
   },
 
-  -- { 'simrat39/rust-tools.nvim' },
-
-  -- When I can figure out how to actually use this crap, I'll put it back in. Until then, I'll just use the
-  -- built-in LSP, and `Mason` with rust-analyzer.
-  -- {
-  --   "mrcjkb/rustaceanvim",
-  --   version = "^6",
-  --   lazy = false,
-  --   config = function()
-  --     require("plugins.lsp.rust")
-  --   end,
-  -- },
   {
     "nextmn/vim-yaml-jinja",
     lazy = false,
