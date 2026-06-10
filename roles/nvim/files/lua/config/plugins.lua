@@ -272,14 +272,9 @@ return {
       'b0o/schemastore.nvim',
       "lukas-reineke/lsp-format.nvim",
     },
-    opts = {
-      diagnostics = {
-        underline = true,
-        update_in_insert = true,
-        virtual_text = { spacing = 4, prefix = "●" },
-        severity_sort = true,
-      },
-    },
+    -- Diagnostics are configured authoritatively in lua/plugins/lsp/config.lua
+    -- (via vim.diagnostic.config). nvim-lspconfig never consumed an `opts`
+    -- table here, so it was dead config.
     config = function()
       require('plugins.lsp.config')
       require('plugins.lsp.setup')
