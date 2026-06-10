@@ -1,4 +1,4 @@
-M = {}
+local M = {}
 
 local home_path = os.getenv('HOME')
 local venv_path = os.getenv('VIRTUAL_ENV')

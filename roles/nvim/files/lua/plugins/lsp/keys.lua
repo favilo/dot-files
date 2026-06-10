@@ -1,4 +1,4 @@
-M = {}
+local M = {}
 
 local servers = require("plugins.lsp.servers").servers
 local lsp_on_attach = function(client, event)
