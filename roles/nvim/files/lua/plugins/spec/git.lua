@@ -1,8 +1,9 @@
 -- Git / jj integration and GitHub helpers.
 return {
   {
+    -- GitHub support for fugitive's :GBrowse; only needed once you reach for it.
     'tpope/vim-rhubarb',
-    lazy = false,
+    event = "VeryLazy",
   },
   {
     'NeogitOrg/neogit',
@@ -53,6 +54,6 @@ return {
   },
   {
     'almo7aya/openingh.nvim',
-    lazy = false,
+    cmd = { "OpenInGHRepo", "OpenInGHFile", "OpenInGHFileLines" },
   },
 }

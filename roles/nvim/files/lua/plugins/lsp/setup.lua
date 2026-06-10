@@ -15,20 +15,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
-vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"}, {
-    pattern = {"*.lux", "*.luxcfg", "*.luxinc"},
-    callback = function()
-      vim.bo.filetype = "lux"
-    end,
-  })
-
-vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"}, {
-    pattern = {"*.allium"},
-    callback = function()
-      vim.bo.filetype = "allium"
-    end,
-  })
-
 require('mason').setup()
 require('mason-lspconfig').setup({
   ensure_installed = {

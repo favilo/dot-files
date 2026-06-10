@@ -4,10 +4,6 @@ vim.g.copilot_node_command = home_dir .. "/.local/bin/nodejs"
 
 return {
   {
-    'github/copilot.vim',
-    cmd = { "CopilotVim", },
-  },
-  {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = "InsertEnter",

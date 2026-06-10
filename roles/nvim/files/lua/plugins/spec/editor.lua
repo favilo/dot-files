@@ -38,11 +38,6 @@ return {
     config = function()
       require("plugins.treesitter")
       -- local configs = require('nvim-treesitter.configs')
-      vim.filetype.add({
-        extension = {
-          bean = "beancount",
-        }
-      })
       require('nvim-treesitter').setup({
         ensure_installed = { "c",
           "cpp", "lua", "python", "rust", "javascript", "typescript", "html", "css", "json",
@@ -79,39 +74,36 @@ return {
   },
   {
     'chaoren/vim-wordmotion',
-    lazy = false,
+    event = "VeryLazy",
   },
   {
     'tpope/vim-surround',
-    lazy = false,
-  },
-  {
-    'tpope/vim-commentary',
-    lazy = false,
+    event = "VeryLazy",
   },
   {
     'tpope/vim-dadbod',
-    lazy = false,
+    cmd = "DB",
   },
   {
     'tpope/vim-dispatch',
-    lazy = false,
+    cmd = { "Dispatch", "Make", "Focus", "Start", "Spawn" },
   },
   {
     'tpope/vim-endwise',
-    lazy = false,
+    event = "InsertEnter",
   },
   {
     'tpope/vim-speeddating',
-    lazy = false,
+    event = "VeryLazy",
   },
   {
+    -- vim-sensible applies baseline defaults at startup, so it must load eagerly.
     'tpope/vim-sensible',
     lazy = false,
   },
   {
     'justinmk/vim-sneak',
-    lazy = false
+    event = "VeryLazy",
   },
   { 'Townk/vim-autoclose' },
   {
