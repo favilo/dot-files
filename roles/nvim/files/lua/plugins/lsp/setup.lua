@@ -1,6 +1,6 @@
 local servers = require("plugins.lsp.servers").servers
 
--- Completion is handled by blink.cmp (see lua/config/plugins.lua).
+-- Completion is handled by blink.cmp (see lua/plugins/spec/lsp.lua).
 local capabilities = require("plugins.lsp.servers").capabilities
 local lsp_on_attach = require("plugins.lsp.keys").lsp_on_attach
 

@@ -19,8 +19,8 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   defaults = { lazy = true },
   spec = {
-    -- import your plugins
-    { import = "config.plugins" },
+    -- import your plugins (grouped spec files under lua/plugins/spec/)
+    { import = "plugins.spec" },
   },
   local_spec = true,
   -- Configure any other settings here. See the documentation for more details.
