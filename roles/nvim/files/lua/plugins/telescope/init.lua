@@ -1,5 +1,5 @@
 local telescope = require('telescope')
--- local actions = require('telescope.actions')
+local actions = require('telescope.actions')
 -- local previewers = require('telescope.previewers')
 local builtin = require('telescope.builtin')
 local icons = require('utils.icons')
@@ -96,6 +96,18 @@ vim.keymap.set('v', '<leader>pf', function() builtin.find_files({ default_text =
 vim.keymap.set('n', '<leader>pp', function() builtin.find_files({ hidden = true, no_ignore = true }) end,
   { desc = "Telescope find hidden files" })
 vim.keymap.set('n', '<leader>pb', builtin.buffers, { desc = "Telescope buffers" })
+vim.keymap.set('n', '<leader>pd', function()
+  builtin.buffers({
+    attach_mappings = function(prompt_bufnr, map)
+      -- <Tab> multi-selects; this deletes the selection (or the entry under the cursor)
+      local delete = function() actions.delete_buffer(prompt_bufnr) end
+      map('i', '<C-d>', delete)
+      map('n', '<C-d>', delete)
+      map('n', 'd', delete)
+      return true
+    end,
+  })
+end, { desc = "Telescope delete buffers" })
 vim.keymap.set('n', '<leader>po', builtin.oldfiles, { desc = "Telescope oldfiles" })
 vim.keymap.set('n', '<leader>pe', require 'telescope'.extensions.projects.projects, { desc = "Telescope projects" })
 vim.keymap.set('n', '<leader>p.', function() builtin.find_files({ cwd = vim.fn.expand('%:p:h') }) end,
