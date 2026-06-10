@@ -1,65 +1,6 @@
 local servers = require("plugins.lsp.servers").servers
 
-local has_words_before = function()
-  unpack = unpack or table.unpack
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and
-      vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") ==
-      nil
-end
-
-
-local cmp = require('cmp')
-local cmp_select = { behavior = cmp.SelectBehavior.Select }
-local luasnip = require("luasnip")
-
-local cmp_mappings = cmp.mapping.preset.insert({
-  ['<Tab>'] = nil,
-  ['<S-Tab>'] = nil,
-  ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-  ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-  ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-  ['<C-space>'] = cmp.mapping.complete(),
-  ['<C-e>'] = cmp.mapping.abort(),
-  ['<TAB>'] = cmp.mapping(function(fallback)
-    -- Supermaven stuff
-    -- local suggestion = require('supermaven-nvim.completion_preview')
-    -- if suggestion.has_suggestion() then
-    --   suggestion.on_accept_suggestion()
-    -- Copilot stuff
-    local copilot_installed, suggestion = pcall(require, "copilot.suggestion")
-    if copilot_installed and suggestion.is_visible() then
-      require("copilot.suggestion").accept()
-    elseif cmp.visible() then
-      cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })
-    elseif luasnip.expand_or_locally_jumpable() then
-      luasnip.expand_or_jump()
-    elseif has_words_before() then
-      cmp.complete()
-    else
-      fallback()
-    end
-  end),
-})
-
-cmp.setup({
-  window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
-  },
-  sources = {
-    { name = 'copilot' },
-    { name = 'nvim_lsp' },
-    { name = 'digraphs' },
-  },
-  mapping = cmp_mappings,
-  snippet = {
-    expand = function(args)
-      vim.snippet.expand(args.body)
-    end,
-  },
-})
-
+-- Completion is handled by blink.cmp (see lua/config/plugins.lua).
 local capabilities = require("plugins.lsp.servers").capabilities
 local lsp_on_attach = require("plugins.lsp.keys").lsp_on_attach
 

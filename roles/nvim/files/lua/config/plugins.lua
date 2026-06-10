@@ -190,18 +190,67 @@ return {
     },
   },
 
-  -- Autocompletion
+  -- Completion: blink.cmp (single engine)
   {
-    'hrsh7th/nvim-cmp',
-    event = 'InsertEnter',
-  },
-
-  -- LSP
-  {
-    'saghen/blink.cmp',
+    "saghen/blink.cmp",
+    version = "*", -- release tags; prebuilt fuzzy binary
+    event = "InsertEnter",
     dependencies = {
-      'saghen/blink.lib',
+      "saghen/blink.lib",
+      "rafamadriz/friendly-snippets",
+      {
+        "L3MON4D3/LuaSnip",
+        version = "v2.*",
+        build = "make install_jsregexp",
+      },
+      "saghen/blink.compat", -- bridge for legacy cmp sources (digraphs)
+      "dmitmel/cmp-digraphs",
     },
+    opts = {
+      snippets = { preset = "luasnip" },
+      keymap = {
+        preset = "default", -- <C-y> accept, <C-n>/<C-p> select, Tab/S-Tab snippet jump
+        ["<Tab>"] = {
+          function(cmp)
+            -- Accept a visible Copilot ghost-text suggestion first.
+            local ok, sug = pcall(require, "copilot.suggestion")
+            if ok and sug.is_visible() then
+              sug.accept()
+              return true
+            end
+            -- Otherwise mirror the old cmp <Tab>: accept the menu/snippet
+            -- selection when the menu is open (super-tab behaviour).
+            if cmp.snippet_active() then
+              return cmp.accept()
+            end
+            return cmp.select_and_accept() -- false when menu closed -> falls through
+          end,
+          "snippet_forward",
+          "fallback",
+        },
+      },
+      sources = {
+        default = { "lsp", "path", "snippets", "buffer", "digraphs" },
+        providers = {
+          digraphs = {
+            name = "digraphs",
+            module = "blink.compat.source",
+            score_offset = -3, -- rank below native sources
+            opts = { cache_digraphs_on_start = true },
+          },
+        },
+      },
+      completion = {
+        menu = { border = "rounded" },
+        documentation = { auto_show = true, window = { border = "rounded" } },
+      },
+    },
+  },
+  {
+    "saghen/blink.compat",
+    version = "2.*", -- pairs with blink.cmp v1.x
+    lazy = true,
+    opts = {},
   },
   {
     'neovim/nvim-lspconfig',
@@ -209,7 +258,6 @@ return {
     cmd = { 'LspInfo', 'LspInstall', 'LspStart', 'LspRestart', 'LspStop' },
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-      'hrsh7th/cmp-nvim-lsp',
       'williamboman/mason.nvim',
       {
         'williamboman/mason-lspconfig.nvim',
@@ -217,20 +265,9 @@ return {
         -- build = ':PylspInstall python-lsp-black pyls-isort pylsp-rope pylsp-mypy pylint',
       },
       'folke/neodev.nvim',
-      {
-        'saghen/blink.cmp',
-      },
       -- 'mrcjkb/rustaceanvim',
       'b0o/schemastore.nvim',
       "lukas-reineke/lsp-format.nvim",
-      'saadparwaiz1/cmp_luasnip',
-      -- Snippets
-      {
-        'L3MON4D3/LuaSnip',
-        version = "v2.*",
-        build = "make install_jsregexp",
-      },
-      'rafamadriz/friendly-snippets',
     },
     opts = {
       diagnostics = {
@@ -417,7 +454,6 @@ return {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = "InsertEnter",
-    dependencies = { "hrsh7th/nvim-cmp" },
     config = function()
       require("copilot").setup({
         panel = {
@@ -429,7 +465,8 @@ return {
           auto_trigger = true,
           hide_during_completion = true,
           keymap = {
-            accept = "<TAB>",
+            -- <Tab> is owned by blink.cmp's keymap (accepts visible Copilot first).
+            accept = false,
             accept_word = false,
             accept_line = false,
             next = "<M-]>",
@@ -504,7 +541,7 @@ return {
   { 'lambdalisue/suda.vim' },
 
   {
-    "epwalsh/obsidian.nvim",
+    "obsidian-nvim/obsidian.nvim",
     version = "*", -- recommended, use latest release instead of latest commit
     dependencies = {
       -- Required.
@@ -513,9 +550,11 @@ return {
       -- see below for full list of optional dependencies 👇
     },
     lazy = true,
+    -- NOTE: autocmd patterns do not expand `~`, so the home dir must be
+    -- spelled out or the event never matches and the plugin never loads.
     event = {
-      "BufReadPre ~/Obsidian/Main Vault/*.md",
-      "BufNewFile ~/Obsidian/Main Vault/*.md",
+      "BufReadPre " .. home_dir .. "/Obsidian/Main Vault/*.md",
+      "BufNewFile " .. home_dir .. "/Obsidian/Main Vault/*.md",
     },
     opts = {
       workspaces = {
@@ -526,6 +565,7 @@ return {
       },
       -- see below for full list of options 👇
       notes_subdir = "_Resources/Inbox",
+      legacy_commands = false, -- disable if you don't use Obsidian's in-process LSP or want to implement your own keymaps
       log_level = vim.log.levels.INFO,
       daily_notes = {
         folder = "_Archive/tracking/dailies",
@@ -533,25 +573,19 @@ return {
         template = "_Resources/templates/daily-update",
         default_tags = { "#daily" },
       },
+      -- Completion flows through blink's `lsp` source via obsidian's in-process LSP.
       completion = {
-        nvim_cmp = true,
         min_chars = 2,
       },
-      mappings = {
-        -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
-        ["gf"] = {
-          action = function()
-            return require("obsidian").util.gf_passthrough()
-          end,
-          opts = { noremap = false, expr = true, buffer = true },
-        },
-        -- Toggle check-boxes.
-        ["<leader>ch"] = {
-          action = function()
-            return require("obsidian").util.toggle_checkbox()
-          end,
-          opts = { buffer = true },
-        },
+      -- The `mappings` opt was removed in the obsidian-nvim fork. Native `gf`
+      -- already follows wiki-links via the buffer's includeexpr (the old
+      -- gf_passthrough behavior, with go-to-file fallback); <CR> is the default
+      -- smart_action. Only the custom checkbox toggle needs a per-note keymap.
+      callbacks = {
+        enter_note = function()
+          vim.keymap.set("n", "<leader>ch", "<cmd>Obsidian toggle_checkbox<cr>",
+            { buffer = true, desc = "Obsidian toggle checkbox" })
+        end,
       },
     },
   },
