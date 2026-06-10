@@ -33,7 +33,9 @@ local lsp_on_attach = function(client, event)
 
   vim.keymap.set("n", "<leader>cd", vim.lsp.buf.definition, opts)
   vim.keymap.set("n", "<leader>cD", vim.lsp.buf.declaration, opts)
-  vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+  vim.keymap.set("n", "K", function()
+    vim.lsp.buf.hover({ border = "rounded" })
+  end, opts)
   vim.keymap.set("n", "<leader>cl",
     function()
       vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
@@ -66,7 +68,9 @@ local lsp_on_attach = function(client, event)
       formatting_options = formatting_options,
     })
   end, opts)
-  vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
+  vim.keymap.set("i", "<C-h>", function()
+    vim.lsp.buf.signature_help({ border = "rounded" })
+  end, opts)
   vim.keymap.set("n", "<leader>ci", vim.show_pos, opts)
 end
 
