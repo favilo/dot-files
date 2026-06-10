@@ -139,3 +139,7 @@ fi
 
 [ -f $HOME/.zshrc.local ] && source $HOME/.zshrc.local
 
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/favilo/.local/bin:$PATH"

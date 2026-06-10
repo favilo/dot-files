@@ -81,6 +81,13 @@ vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"}, {
     end,
   })
 
+vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"}, {
+    pattern = {"*.allium"},
+    callback = function()
+      vim.bo.filetype = "allium"
+    end,
+  })
+
 require('mason').setup()
 require('mason-lspconfig').setup({
   ensure_installed = {
@@ -113,9 +120,10 @@ for server_name, config in pairs(servers) do
   -- vim.notify("Setting up " .. server_name, vim.log.levels.DEBUG)
   -- vim.notify(vim.inspect(config))
   vim.lsp.config(server_name, config)
+  vim.lsp.enable(server_name)
 end
 
-vim.lsp.enable(vim.tbl_keys(servers))
+-- vim.lsp.enable(vim.tbl_keys(servers))
 
 
 require("actions-preview").setup {
@@ -124,6 +132,10 @@ require("actions-preview").setup {
   },
 
   backend = { "telescope" },
+  diff = {
+    algorithm = "patience",
+    ignore_whitespace = true,
+  },
   telescope = vim.tbl_extend(
     "force",
     -- telescope theme: https://github.com/nvim-telescope/telescope.nvim#themes

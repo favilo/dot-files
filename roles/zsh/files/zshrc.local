@@ -19,9 +19,9 @@ fpath=($fpath $HOME/.zsh/completion)
 
 export PATH="$HOME/bin:/usr/local/bin:$PATH"
 export PATH="$PATH:$HOME/.cabal/bin"
-export PATH="$PATH:$HOME/.cargo/bin"
+export PATH="$HOME/go/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$PATH:$HOME/go/bin"
 export PATH="$PATH:/snap/bin"
 export PATH="$PATH:$HOME/.emacs.d/bin"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
@@ -40,12 +40,28 @@ alias ls=eza
 alias la=ls -lah
 alias vim="nvim"
 alias ta="tmux attach"
-alias cat="bat -p"
-alias jq="jaq"
+# Use bat for colored output on a TTY; plain cat when piped/redirected.
+unalias cat 2>/dev/null
+cat() {
+  if [[ -t 1 ]]; then
+    command bat -pp "$@"
+  else
+    command cat "$@"
+  fi
+}
+# alias jq="jaq"  # disabled: an alias named jq would shadow the jq() function below
 alias autorandr="autorandr --match-edid"
 alias zshconfig="nvim ~/.zshrc.local"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
-alias jq="jq -C"
+# Color jq output only when stdout is a TTY; plain JSON when piped/redirected.
+unalias jq 2>/dev/null
+jq() {
+  if [[ -t 1 ]]; then
+    command jq -C "$@"
+  else
+    command jq "$@"
+  fi
+}
 alias dive="docker run -ti --rm  -v /var/run/docker.sock:/var/run/docker.sock docker.io/wagoodman/dive"
 
 autoload -U up-line-or-beginning-search

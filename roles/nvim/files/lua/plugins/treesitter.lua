@@ -1,6 +1,5 @@
-local configs = require('nvim-treesitter.parsers').get_parser_configs()
-
--- vim.print(configs)
+local parsers = require('nvim-treesitter.parsers')
+local configs = parsers.get_parser_configs and parsers.get_parser_configs() or {}
 configs.microcad = {
   install_info = {
     url = '~/git/utilities/tree-sitter-grammars/microcad',

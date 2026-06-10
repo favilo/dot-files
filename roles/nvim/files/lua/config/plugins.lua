@@ -31,38 +31,24 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter',
+    branch = "main",
     build = ':TSUpdate',
     dependencies = {
       'IndianBoy42/tree-sitter-just',
-      'nvim-treesitter/playground',
     },
     lazy = false,
     config = function()
       require("plugins.treesitter")
-      local configs = require('nvim-treesitter.configs')
+      -- local configs = require('nvim-treesitter.configs')
       vim.filetype.add({
         extension = {
           bean = "beancount",
         }
       })
-      configs.setup({
-        ensure_installed = { "c", "cpp", "lua", "python", "rust", "javascript", "typescript", "html", "css", "json",
-          "yaml", "toml", "bash", "markdown", "beancount" },
-        highlight = { enable = true },
-        indent = { enable = true },
-        incremental_selection = {
-          enable = true,
-          keymaps = {
-            node_incremental = 'v',
-            node_decremental = 'V',
-          },
-        },
-        playground = {
-          enable = true,
-          disable = {},
-          updatetime = 25,         -- Debounced time for highlighting nodes in the playground from source code
-          persist_queries = false, -- Whether the query persists across vim sessions
-        }
+      require('nvim-treesitter').setup({
+        ensure_installed = { "c",
+          "cpp", "lua", "python", "rust", "javascript", "typescript", "html", "css", "json",
+          "yaml", "toml", "bash", "markdown", "markdown_inline", "beancount", },
       })
     end,
   },
@@ -384,13 +370,15 @@ return {
   },
 
   { 'ray-x/lsp_signature.nvim' },
-  { 'aznhe21/actions-preview.nvim' },
-  -- use {
-  --     'weilbith/nvim-code-action-menu',
-  --     cmd = 'CodeActionMenu',
-  -- }
-  { 'mrjones2014/op.nvim',         build = 'make install' },
-  { 'averms/black-nvim',           cmd = 'UpdateRemotePlugins' },
+  {
+    'aznhe21/actions-preview.nvim',
+  },
+  {
+    'weilbith/nvim-code-action-menu',
+    cmd = 'CodeActionMenu',
+  },
+  { 'mrjones2014/op.nvim', build = 'make install' },
+  { 'averms/black-nvim',   cmd = 'UpdateRemotePlugins' },
 
   {
     "folke/todo-comments.nvim",
@@ -854,4 +842,25 @@ return {
   },
   -- { "Apeiros-46B/uiua.vim" },
   { "sputnick1124/uiua.vim" },
+  {
+    "m00qek/baleia.nvim",
+    version = "*",
+    config = function()
+      vim.g.baleia = require("baleia").setup({})
+
+      -- Command to colorize the current buffer
+      vim.api.nvim_create_user_command("BaleiaColorize", function()
+        vim.g.baleia.once(vim.api.nvim_get_current_buf())
+      end, { bang = true })
+
+      -- Command to show logs
+      vim.api.nvim_create_user_command("BaleiaLogs", vim.cmd.messages, { bang = true })
+      vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+        pattern = "*.log",
+        callback = function()
+          vim.g.baleia.automatically(vim.api.nvim_get_current_buf())
+        end,
+      })
+    end,
+  },
 }
