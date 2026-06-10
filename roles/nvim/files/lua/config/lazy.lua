@@ -29,5 +29,7 @@ require("lazy").setup({
   -- automatically check for plugin updates
   checker = { enabled = false },
   concurrency = 5,
+  -- lazy.nvim draws its own window and ignores vim.o.winborder, so set it here.
+  ui = { border = "rounded" },
 })
 vim.keymap.set("n", "<leader>/l", "<cmd>:Lazy<cr>")

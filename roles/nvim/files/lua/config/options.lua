@@ -34,6 +34,7 @@ local options = {
   termguicolors  = true,               --- Correct terminal colors
   timeoutlen     = 1000,                --- Faster completion (cannot be lower than 200 because then commenting doesn't work)
   undofile       = true,               --- Sets undo to file
+  winborder      = "rounded",          --- Rounded borders on all floating windows (hover, LspInfo, etc.)
   undodir        = vim.env.HOME .. "/.vim/undodir",
   updatetime     = 100,                --- Faster completion
   viminfo        = "'1000",            --- Increase the size of file history

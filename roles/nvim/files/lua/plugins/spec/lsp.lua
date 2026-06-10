@@ -5,6 +5,9 @@ return {
     lazy = false,
     opts = {
       PATH = "prepend",
+      ui = {
+        border = "rounded",
+      },
     },
   },
 
