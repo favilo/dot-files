@@ -45,7 +45,7 @@ local update_all_buffers_on_switch = function(_, prev_path)
     local final_path = Path:new({ cwd, local_name }):absolute()
 
     if not Path:new(final_path):exists() then
-      vim.notfiy("Path does not exist: " .. final_path)
+      vim.notify("Path does not exist: " .. final_path)
       update_cmd(win)
       return
     end

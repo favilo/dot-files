@@ -71,7 +71,7 @@ local lsp_on_attach = function(client, event)
   vim.keymap.set("i", "<C-h>", function()
     vim.lsp.buf.signature_help({ border = "rounded" })
   end, opts)
-  vim.keymap.set("n", "<leader>ci", vim.show_pos, opts)
+  vim.keymap.set("n", "<leader>cP", vim.show_pos, opts)
 end
 
 

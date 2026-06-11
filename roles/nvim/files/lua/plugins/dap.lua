@@ -161,7 +161,7 @@ require('dap-python').setup(dap_python)
 require('dap-python').test_runner = 'pytest'
 
 local continue_debug = function()
-  if vim.fn.filereadable(".vscode/launch.json") then
+  if vim.fn.filereadable(".vscode/launch.json") == 1 then
     vim.notify("Loading .vscode/launch.json")
     require('dap.ext.vscode').load_launchjs()
   end
