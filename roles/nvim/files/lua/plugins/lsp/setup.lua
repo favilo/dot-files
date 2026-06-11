@@ -40,9 +40,6 @@ require('mason-lspconfig').setup({
 -- local lspconfig = require('lspconfig')
 for server_name, config in pairs(servers) do
   config.capabilities = capabilities
-  if config.on_attach ~= nil then
-    config.on_attach = lsp_on_attach
-  end
 
   -- vim.notify("Setting up " .. server_name, vim.log.levels.DEBUG)
   -- vim.notify(vim.inspect(config))

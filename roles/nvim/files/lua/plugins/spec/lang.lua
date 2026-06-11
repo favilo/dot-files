@@ -17,17 +17,6 @@ return {
   },
   { 'averms/black-nvim', cmd = 'UpdateRemotePlugins' },
   {
-    "someone-stole-my-name/yaml-companion.nvim",
-    dependencies = {
-      { "neovim/nvim-lspconfig" },
-      { "nvim-lua/plenary.nvim" },
-      { "nvim-telescope/telescope.nvim" },
-    },
-    config = function()
-      require("plugins.telescope").load_extension("yaml_schema")
-    end,
-  },
-  {
     "obsidian-nvim/obsidian.nvim",
     version = "*", -- recommended, use latest release instead of latest commit
     dependencies = {

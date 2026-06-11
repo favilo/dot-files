@@ -59,8 +59,8 @@ return {
       vim.keymap.set({ "i", "n", "v" }, "<A-space>", function() suggestion.toggle_auto_trigger() end,
         { desc = "Toggle auto trigger" })
       vim.keymap.set("n", "<leader>cT", "<cmd>Copilot toggle<CR>", { desc = "Copilot toggle" })
-      vim.keymap.set("n", "<leader>cs", toggle_auto_trigger, { desc = "Copilot Suggestion toggle" })
-      vim.keymap.set("i", "<C-e>", toggle_auto_trigger, { desc = "Copilot Suggestion toggle" })
+      vim.keymap.set("n", "<leader>cs", toggle_auto_trigger, { desc = "Copilot suggestion toggle" })
+      vim.keymap.set("i", "<C-e>", toggle_auto_trigger, { desc = "Copilot suggestion toggle (insert mode)" })
     end,
   },
   {

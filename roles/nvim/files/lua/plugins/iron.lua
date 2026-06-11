@@ -32,29 +32,33 @@ iron.setup({
     -- See below for more information
     repl_open_cmd = view.split.vertical.rightbelow("%25"),
   },
+  -- Iron's maps live under <localleader> (comma). REPL interaction is inherently
+  -- buffer/filetype-specific, and this keeps them clear of the <leader> clusters
+  -- owned by Telescope (<leader>s*), LSP (<leader>c*), multicursors (<leader>m)
+  -- and the shell-run map (<leader>rr).
   keymaps = {
-    toggle_repl = "<leader>rr", -- toggles the repl open and closed.
+    toggle_repl = "<localleader>rr", -- toggles the repl open and closed.
     -- If repl_open_command is a table as above, then the following keymaps are
     -- available
-    -- toggle_repl_with_cmd_1 = "<leader>rv",
-    -- toggle_repl_with_cmd_2 = "<leader>rh",
-    restart_repl = "<leader>rR", -- calls `IronRestart` to restart the repl
-    send_motion = "<leader>sc",
-    visual_send = "<leader>sc",
-    send_file = "<leader>sf",
-    send_line = "<leader>sl",
-    send_paragraph = "<leader>sp",
-    send_until_cursor = "<leader>su",
-    send_mark = "<leader>sm",
-    send_code_block = "<leader>sb",
-    send_code_block_and_move = "<leader>sn",
-    mark_motion = "<leader>mc",
-    mark_visual = "<leader>mc",
-    remove_mark = "<leader>md",
-    cr = "<leader>s<cr>",
-    interrupt = "<leader>s<space>",
-    exit = "<leader>sq",
-    clear = "<leader>cl",
+    -- toggle_repl_with_cmd_1 = "<localleader>rv",
+    -- toggle_repl_with_cmd_2 = "<localleader>rh",
+    restart_repl = "<localleader>rR", -- calls `IronRestart` to restart the repl
+    send_motion = "<localleader>sc",
+    visual_send = "<localleader>sc",
+    send_file = "<localleader>sf",
+    send_line = "<localleader>sl",
+    send_paragraph = "<localleader>sp",
+    send_until_cursor = "<localleader>su",
+    send_mark = "<localleader>sm",
+    send_code_block = "<localleader>sb",
+    send_code_block_and_move = "<localleader>sn",
+    mark_motion = "<localleader>mc",
+    mark_visual = "<localleader>mc",
+    remove_mark = "<localleader>md",
+    cr = "<localleader>s<cr>",
+    interrupt = "<localleader>s<space>",
+    exit = "<localleader>sq",
+    clear = "<localleader>cl",
   },
   ignore_blank_lines = true,
 

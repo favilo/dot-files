@@ -5,6 +5,11 @@ local lsp_on_attach = function(client, event)
   -- vim.notify("Attaching to " .. client.name .. " Lsp server")
   local bufnr = event.buf
   local opts = { buffer = bufnr, remap = false }
+  -- Buffer-local map that always carries a description (for which-key / the
+  -- <leader>fk Telescope keymap picker).
+  local function map(mode, lhs, rhs, desc)
+    vim.keymap.set(mode, lhs, rhs, vim.tbl_extend("force", opts, { desc = desc }))
+  end
   if client == nil then
     return
   end
@@ -24,31 +29,31 @@ local lsp_on_attach = function(client, event)
   -- end
   --
   if client:supports_method('textDocument/implementation') then
-    vim.keymap.set("n", "<leader>ci", vim.lsp.buf.implementation, opts)
+    map("n", "<leader>ci", vim.lsp.buf.implementation, "LSP: go to implementation")
   end
 
   if client:supports_method('textDocument/completion') then
     vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
   end
 
-  vim.keymap.set("n", "<leader>cd", vim.lsp.buf.definition, opts)
-  vim.keymap.set("n", "<leader>cD", vim.lsp.buf.declaration, opts)
-  vim.keymap.set("n", "K", function()
+  map("n", "<leader>cd", vim.lsp.buf.definition, "LSP: go to definition")
+  map("n", "<leader>cD", vim.lsp.buf.declaration, "LSP: go to declaration")
+  map("n", "K", function()
     vim.lsp.buf.hover({ border = "rounded" })
-  end, opts)
-  vim.keymap.set("n", "<leader>cl",
+  end, "LSP: hover docs")
+  map("n", "<leader>cl",
     function()
       vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
     end,
-    opts)
-  vim.keymap.set({ "n", "v" }, "<leader>cws", vim.lsp.buf.workspace_symbol, opts)
-  vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-  vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-  vim.keymap.set("n", "<leader>dd", vim.diagnostic.open_float, opts)
-  vim.keymap.set({ "v", "n" }, "<leader>ca", require('actions-preview').code_actions, opts)
-  vim.keymap.set("n", "<leader>cR", vim.lsp.buf.references, opts)
-  vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, opts)
-  vim.keymap.set({ "n", "v" }, "<leader>cf", function()
+    "LSP: toggle inlay hints")
+  map({ "n", "v" }, "<leader>cws", vim.lsp.buf.workspace_symbol, "LSP: workspace symbols")
+  map("n", "]d", vim.diagnostic.goto_next, "Diagnostic: next")
+  map("n", "[d", vim.diagnostic.goto_prev, "Diagnostic: prev")
+  map("n", "<leader>dd", vim.diagnostic.open_float, "Diagnostic: show float")
+  map({ "v", "n" }, "<leader>ca", require('actions-preview').code_actions, "LSP: code actions")
+  map("n", "<leader>cR", vim.lsp.buf.references, "LSP: references")
+  map("n", "<leader>cr", vim.lsp.buf.rename, "LSP: rename symbol")
+  map({ "n", "v" }, "<leader>cf", function()
     local formatting_options = nil
     if servers[client.name] and servers[client.name].formatting_options then
       formatting_options = servers[client.name].formatting_options
@@ -67,11 +72,10 @@ local lsp_on_attach = function(client, event)
       timeout_ms = 10000,
       formatting_options = formatting_options,
     })
-  end, opts)
-  vim.keymap.set("i", "<C-h>", function()
+  end, "LSP: format buffer")
+  map("i", "<C-h>", function()
     vim.lsp.buf.signature_help({ border = "rounded" })
-  end, opts)
-  vim.keymap.set("n", "<leader>cP", vim.show_pos, opts)
+  end, "LSP: signature help (insert mode)")
 end
 
 
