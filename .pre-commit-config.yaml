@@ -1,0 +1,17 @@
+# Checks run by `jj push` / `jj check`, which invoke
+# `jj-pre-push --checker prek`, i.e. `prek run --hook-stage pre-push`.
+# Hooks therefore MUST declare `stages: [pre-push]` to run on push.
+repos:
+  - repo: local
+    hooks:
+      - id: nvim-config-tests
+        name: nvim config regression tests
+        # `just` runs recipes from the justfile's directory, so the recipe's
+        # relative paths (tests/...) resolve even when invoked from the repo root.
+        entry: just --justfile roles/nvim/files/justfile test
+        language: system
+        pass_filenames: false
+        # Only run when nvim config changed in the pushed range.
+        files: ^roles/nvim/files/
+        stages: [pre-push]
+        verbose: true
