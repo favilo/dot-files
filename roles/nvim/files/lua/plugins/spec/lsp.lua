@@ -1,7 +1,7 @@
 -- LSP, completion engine, and LSP-adjacent UI.
 return {
   {
-    'williamboman/mason.nvim',
+    "williamboman/mason.nvim",
     lazy = false,
     opts = {
       PATH = "prepend",
@@ -35,7 +35,9 @@ return {
           function(cmp)
             -- When the blink menu is open, it owns <Tab> (accept the selection).
             if cmp.is_visible() then
-              if cmp.snippet_active() then return cmp.accept() end
+              if cmp.snippet_active() then
+                return cmp.accept()
+              end
               return cmp.select_and_accept()
             end
             -- Otherwise accept a visible Copilot ghost-text suggestion.
@@ -77,28 +79,28 @@ return {
     opts = {},
   },
   {
-    'neovim/nvim-lspconfig',
+    "neovim/nvim-lspconfig",
     lazy = false,
-    cmd = { 'LspInfo', 'LspInstall', 'LspStart', 'LspRestart', 'LspStop' },
-    event = { 'BufReadPre', 'BufNewFile' },
+    cmd = { "LspInfo", "LspInstall", "LspStart", "LspRestart", "LspStop" },
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      'williamboman/mason.nvim',
+      "williamboman/mason.nvim",
       {
-        'williamboman/mason-lspconfig.nvim',
+        "williamboman/mason-lspconfig.nvim",
         lazy = false,
         -- build = ':PylspInstall python-lsp-black pyls-isort pylsp-rope pylsp-mypy pylint',
       },
-      'folke/neodev.nvim',
+      "folke/neodev.nvim",
       -- 'mrcjkb/rustaceanvim',
-      'b0o/schemastore.nvim',
+      "b0o/schemastore.nvim",
       "lukas-reineke/lsp-format.nvim",
     },
     -- Diagnostics are configured authoritatively in lua/plugins/lsp/config.lua
     -- (via vim.diagnostic.config). nvim-lspconfig never consumed an `opts`
     -- table here, so it was dead config.
     config = function()
-      require('plugins.lsp.config')
-      require('plugins.lsp.setup')
+      require("plugins.lsp.config")
+      require("plugins.lsp.setup")
     end,
   },
   {
@@ -113,23 +115,25 @@ return {
     lazy = false,
     opts = {
       progress = {
-        poll_rate = 0,                -- How and when to poll for progress messages
-        suppress_on_insert = false,   -- Suppress new messages while in insert mode
-        ignore_done_already = false,  -- Ignore new tasks that are already complete
+        poll_rate = 0, -- How and when to poll for progress messages
+        suppress_on_insert = false, -- Suppress new messages while in insert mode
+        ignore_done_already = false, -- Ignore new tasks that are already complete
         ignore_empty_message = false, -- Ignore new tasks that don't contain a message
-        clear_on_detach =             -- Clear notification group when LSP server detaches
-            function(client_id)
-              local client = vim.lsp.get_client_by_id(client_id)
-              return client and client.name or nil
-            end,
-        notification_group = -- How to get a progress message's notification group key
-            function(msg) return msg.lsp_client.name end,
-        ignore = {},         -- List of LSP servers to ignore
+        -- Clear notification group when LSP server detaches
+        clear_on_detach = function(client_id)
+          local client = vim.lsp.get_client_by_id(client_id)
+          return client and client.name or nil
+        end,
+        -- How to get a progress message's notification group key
+        notification_group = function(msg)
+          return msg.lsp_client.name
+        end,
+        ignore = {}, -- List of LSP servers to ignore
 
         -- Options related to Neovim's built-in LSP client
         lsp = {
           progress_ringbuf_size = 0, -- Configure the nvim's LSP progress ring buffer size
-          log_handler = false,       -- Log `$/progress` handler invocations (for debugging)
+          log_handler = false, -- Log `$/progress` handler invocations (for debugging)
         },
       },
 
@@ -146,20 +150,20 @@ return {
       -- Options related to logging
       logger = {
         level = vim.log.levels.WARN, -- Minimum logging level
-        max_size = 10000,            -- Maximum log file size, in KB
-        float_precision = 0.01,      -- Limit the number of decimals displayed for floats
-        path =                       -- Where Fidget writes its logs to
-            string.format("%s/fidget.nvim.log", vim.fn.stdpath("cache")),
+        max_size = 10000, -- Maximum log file size, in KB
+        float_precision = 0.01, -- Limit the number of decimals displayed for floats
+        -- Where Fidget writes its logs to
+        path = string.format("%s/fidget.nvim.log", vim.fn.stdpath("cache")),
       },
     },
   },
 
-  { 'ray-x/lsp_signature.nvim' },
+  { "ray-x/lsp_signature.nvim" },
   {
-    'aznhe21/actions-preview.nvim',
+    "aznhe21/actions-preview.nvim",
   },
   {
-    'weilbith/nvim-code-action-menu',
-    cmd = 'CodeActionMenu',
+    "weilbith/nvim-code-action-menu",
+    cmd = "CodeActionMenu",
   },
 }

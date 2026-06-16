@@ -17,24 +17,24 @@
 - name: Install apt packages
   apt:
     name:
-    - aptitude
-    - qemu
-    - qemu-system
-    - nodejs
-    - npm
-    - sddm
-    - flameshot
-    - runc
-    - podman
-    - autorandr
-    - arandr
-    - steam-installer
-    - pavucontrol
-    - gnome-screensaver
-    - silversearcher-ag
-    - openjdk-8-jdk
-    - net-tools
-    - nemo
+      - aptitude
+      - qemu
+      - qemu-system
+      - nodejs
+      - npm
+      - sddm
+      - flameshot
+      - runc
+      - podman
+      - autorandr
+      - arandr
+      - steam-installer
+      - pavucontrol
+      - gnome-screensaver
+      - silversearcher-ag
+      - openjdk-8-jdk
+      - net-tools
+      - nemo
     state: present
     update_cache: true
   become_method: sudo
@@ -43,15 +43,13 @@
 - name: Install snap packages (classic confinement)
   snap:
     name:
-    - slack
-    - helm
-    - kubectl
+      - slack
+      - helm
+      - kubectl
     state: present
     classic: true
   become: true
   become_method: sudo
-
-
 
 - name: check if multimc is installed
   command: dpkg-query -W multimc

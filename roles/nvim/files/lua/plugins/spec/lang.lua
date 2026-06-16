@@ -1,21 +1,21 @@
 -- Language-specific plugins (filetypes, formatters, language servers, etc.).
-local home_dir = os.getenv('HOME')
+local home_dir = os.getenv("HOME")
 
 return {
   {
     "davidmh/mdx.nvim",
     config = true,
-    dependencies = { "nvim-treesitter/nvim-treesitter" }
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
   {
-    'saecki/crates.nvim',
+    "saecki/crates.nvim",
     event = { "BufRead Cargo.toml" },
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
-      require('crates').setup()
+      require("crates").setup()
     end,
   },
-  { 'averms/black-nvim', cmd = 'UpdateRemotePlugins' },
+  { "averms/black-nvim", cmd = "UpdateRemotePlugins" },
   {
     "obsidian-nvim/obsidian.nvim",
     version = "*", -- recommended, use latest release instead of latest commit
@@ -59,8 +59,12 @@ return {
       -- smart_action. Only the custom checkbox toggle needs a per-note keymap.
       callbacks = {
         enter_note = function()
-          vim.keymap.set("n", "<leader>ch", "<cmd>Obsidian toggle_checkbox<cr>",
-            { buffer = true, desc = "Obsidian toggle checkbox" })
+          vim.keymap.set(
+            "n",
+            "<leader>ch",
+            "<cmd>Obsidian toggle_checkbox<cr>",
+            { buffer = true, desc = "Obsidian toggle checkbox" }
+          )
         end,
       },
     },
@@ -71,26 +75,26 @@ return {
     lazy = false,
   },
   {
-    'Julian/lean.nvim',
-    event = { 'BufReadPre *.lean', 'BufNewFile *.lean' },
+    "Julian/lean.nvim",
+    event = { "BufReadPre *.lean", "BufNewFile *.lean" },
 
     dependencies = {
-      'nvim-lua/plenary.nvim',
+      "nvim-lua/plenary.nvim",
 
       -- optional dependencies:
 
       -- a completion engine
       --    hrsh7th/nvim-cmp or Saghen/blink.cmp are popular choices
 
-      'nvim-telescope/telescope.nvim', -- for 2 Lean-specific pickers
-      'andymass/vim-matchup',          -- for enhanced % motion behavior
+      "nvim-telescope/telescope.nvim", -- for 2 Lean-specific pickers
+      "andymass/vim-matchup", -- for enhanced % motion behavior
       -- 'andrewradev/switch.vim',        -- for switch support
-      'tomtom/tcomment_vim',           -- for commenting
+      "tomtom/tcomment_vim", -- for commenting
     },
 
     opts = {
       mappings = true,
-    }
+    },
   },
   {
     -- Unison

@@ -22,7 +22,7 @@ require("codecompanion").setup({
     },
     cmd = {
       adapter = "google_op",
-    }
+    },
   },
   opts = {
     -- Set debug logging

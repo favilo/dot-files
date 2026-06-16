@@ -29,5 +29,5 @@
     state: hard
     force: true
   with_items:
-  - name: config
-  - name: style.css
+    - name: config
+    - name: style.css

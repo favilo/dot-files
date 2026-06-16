@@ -2,12 +2,12 @@
 set -e
 
 if ! [ -x "$(command -v ansible)" ]; then
-    sudo apt install ansible
+  sudo apt install ansible
 fi
 
 # ansible-galaxy install gantsign.antigen --ignore-certs
 if ! [ -x "$(ansible-galaxy collection list community.general)" ]; then
-    ansible-galaxy collection install community.general --ignore-certs
+  ansible-galaxy collection install community.general --ignore-certs
 fi
 # if ! [ -x "$(ansible-galaxy list viasite-ansible.zsh)" ]; then
 #     ansible-galaxy install viasite-ansible.zsh --force --ignore-certs
@@ -17,5 +17,5 @@ echo "Setting up local dev environment"
 ansible-playbook -i ~/git/dot-files/hosts ~/git/dot-files/dotfiles.yml --ask-become-pass -v "$@"
 
 if command -v terminal-notifier 1>/dev/null 2>&1; then
-    terminal-notifier -title "dotfiles: Bootstrap complete" -message "Successfully set up dev environment."
+  terminal-notifier -title "dotfiles: Bootstrap complete" -message "Successfully set up dev environment."
 fi

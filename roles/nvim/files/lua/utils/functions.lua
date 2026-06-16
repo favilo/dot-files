@@ -2,10 +2,10 @@
 local M = {}
 
 local is_windows = function()
-    if (string.sub(vim.loop.os_uname().sysname, 1, 3) == "Win") then
-        return true
-    end
-    return false
+  if string.sub(vim.loop.os_uname().sysname, 1, 3) == "Win" then
+    return true
+  end
+  return false
 end
 
 local ansi_colorize = function()

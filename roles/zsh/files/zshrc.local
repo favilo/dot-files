@@ -117,8 +117,8 @@ setopt prompt_subst # enable command substition in prompt
 
 autoload -U is-at-least
 autoload -Uz vcs_info
-function precmd() { 
-  vcs_info 
+function precmd() {
+  vcs_info
 }
 
 zstyle ':vcs_info:git:*' format '%b '
@@ -131,7 +131,7 @@ export PROMPT=$'%{$fg[yellow]%}[%T] %{$fg[green]%}%n@%m: %{$reset_color%}%{$fg[b
 ${ret_status} %{$reset_color%} '
 
 # shellcheck disable=SC2034
-export PROMPT3='{ ‥ } '  
+export PROMPT3='{ ‥ } '
 
 # TODO: Figure out how to make this work with atuin
 # TMOUT=1

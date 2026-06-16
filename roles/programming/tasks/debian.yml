@@ -6,17 +6,17 @@
     creates: "/etc/apt/sources.list.d/aslatter-ubuntu-ppa-impish.list"
 
 - name: Install alacritty dependencies
-  apt: 
-    name: 
-    - cmake 
-    - pkg-config 
-    - libfreetype6-dev 
-    - libfontconfig1-dev 
-    - libxcb-xfixes0-dev 
-    - python3
-    - libssl-dev
-    - alacritty
-    - lld
+  apt:
+    name:
+      - cmake
+      - pkg-config
+      - libfreetype6-dev
+      - libfontconfig1-dev
+      - libxcb-xfixes0-dev
+      - python3
+      - libssl-dev
+      - alacritty
+      - lld
     state: present
     force_apt_get: yes
   become: true

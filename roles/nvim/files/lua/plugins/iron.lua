@@ -11,7 +11,7 @@ iron.setup({
       sh = {
         -- Can be a table or a function that
         -- returns a table (see below)
-        command = { "zsh" }
+        command = { "zsh" },
       },
       python = {
         command = { "ipython", "--no-autoindent" },
@@ -61,5 +61,4 @@ iron.setup({
     clear = "<localleader>cl",
   },
   ignore_blank_lines = true,
-
 })

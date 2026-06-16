@@ -3,8 +3,8 @@
 
 - name: Update fzf
   git:
-    repo: 'https://github.com/junegunn/fzf.git'
-    dest: '{{dotfiles_user_home}}/.fzf'
+    repo: "https://github.com/junegunn/fzf.git"
+    dest: "{{dotfiles_user_home}}/.fzf"
 
 - name: Check if fzf installed
   shell: "command -v fzf"
