@@ -1,4 +1,4 @@
-require('telescope').load_extension('git_worktree')
+require("telescope").load_extension("git_worktree")
 local Hooks = require("git-worktree.hooks")
 local config = require("git-worktree.config")
 
@@ -11,7 +11,6 @@ local update_all_buffers_on_switch = function(_, prev_path)
       vim.cmd(config.update_on_change_command)
     end)
   end
-
 
   local cwd = vim.loop.cwd()
   vim.tbl_map(function(win)
@@ -45,7 +44,7 @@ local update_all_buffers_on_switch = function(_, prev_path)
     local final_path = Path:new({ cwd, local_name }):absolute()
 
     if not Path:new(final_path):exists() then
-      vim.notfiy("Path does not exist: " .. final_path)
+      vim.notify("Path does not exist: " .. final_path)
       update_cmd(win)
       return
     end
@@ -55,7 +54,6 @@ local update_all_buffers_on_switch = function(_, prev_path)
     vim.api.nvim_win_set_buf(win, bufnr)
   end, vim.api.nvim_list_wins())
 end
-
 
 Hooks.register(Hooks.type.SWITCH, function(path, prev_path)
   vim.notify("Moved from " .. prev_path .. " to " .. path)
@@ -68,7 +66,7 @@ end)
 
 vim.keymap.set("n", "<leader>gw", function()
   require("telescope").extensions.git_worktree.git_worktree()
-end, { desc = "worktree_switch" })
+end, { desc = "Git worktree: switch" })
 vim.keymap.set("n", "<leader>gW", function()
   require("telescope").extensions.git_worktree.create_git_worktree()
-end, { desc = "worktree_switch" })
+end, { desc = "Git worktree: create" })

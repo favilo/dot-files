@@ -6,57 +6,39 @@ local lsp_on_attach = require("plugins.lsp.keys").lsp_on_attach
 
 -- LspAttach is where you enable features that only work
 -- if there is a language server active in the file
-vim.api.nvim_create_autocmd('LspAttach', {
-  desc = 'LSP actions',
-  group = vim.api.nvim_create_augroup('my.lsp', {}),
+vim.api.nvim_create_autocmd("LspAttach", {
+  desc = "LSP actions",
+  group = vim.api.nvim_create_augroup("my.lsp", {}),
   callback = function(event)
     local client = vim.lsp.get_client_by_id(event.data.client_id)
     lsp_on_attach(client, event)
   end,
 })
 
-vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"}, {
-    pattern = {"*.lux", "*.luxcfg", "*.luxinc"},
-    callback = function()
-      vim.bo.filetype = "lux"
-    end,
-  })
-
-vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"}, {
-    pattern = {"*.allium"},
-    callback = function()
-      vim.bo.filetype = "allium"
-    end,
-  })
-
-require('mason').setup()
-require('mason-lspconfig').setup({
+require("mason").setup()
+require("mason-lspconfig").setup({
   ensure_installed = {
-    'ts_ls',
-    'eslint',
-    'lua_ls',
+    "ts_ls",
+    "eslint",
+    "lua_ls",
     -- rustaceanvim handles this now
     -- 'rust_analyzer',
-    'pylsp',
+    "pylsp",
     -- 'basedpyright',
-    'clangd',
-    'jsonls',
-    'yamlls',
-    'bashls',
+    "clangd",
+    "jsonls",
+    "yamlls",
+    "bashls",
     -- 'cpptools',
     -- 'codelldb',
   },
   automatic_enable = false,
 })
 
-
 -- Setup the LSP servers
 -- local lspconfig = require('lspconfig')
 for server_name, config in pairs(servers) do
   config.capabilities = capabilities
-  if config.on_attach ~= nil then
-    config.on_attach = lsp_on_attach
-  end
 
   -- vim.notify("Setting up " .. server_name, vim.log.levels.DEBUG)
   -- vim.notify(vim.inspect(config))
@@ -66,8 +48,7 @@ end
 
 -- vim.lsp.enable(vim.tbl_keys(servers))
 
-
-require("actions-preview").setup {
+require("actions-preview").setup({
   highlight_command = {
     require("actions-preview.highlight").diff_so_fancy(),
   },
@@ -92,8 +73,8 @@ require("actions-preview").setup {
       -- fun(values: { index: integer, action: Action, title: string, client_name: string }[]): function
       make_make_display = nil,
     }
-  )
-}
+  ),
+})
 
 -- This handles a bug in nvim that causes it to crash when it sends a server cancelation
 for _, method in ipairs({ "textDocument/diagnostic", "workspace/diagnostic" }) do

@@ -11,4 +11,3 @@ git_user: favilo
 git_email: favilo@gmail.com
 
 git_signing_key: "{{ lookup('env', 'GIT_SIGNING_KEY_ID') }}"
-

@@ -7,5 +7,5 @@ EXE_NAME=my-xmonad
 OUTPUT=$1
 
 stack build
-stack install :my-xmonad --local-bin-path bin/
-mv bin/my-xmonad "$1"
+stack install ":$EXE_NAME" --local-bin-path bin/
+mv "bin/$EXE_NAME" "$OUTPUT"

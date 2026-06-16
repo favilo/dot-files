@@ -22,30 +22,13 @@ require("codecompanion").setup({
     },
     cmd = {
       adapter = "google_op",
-    }
+    },
   },
   opts = {
     -- Set debug logging
     log_level = "DEBUG",
   },
-  keys = {
-    {
-      "<C-a>",
-      "<cmd>CodeCompanionActions<CR>",
-      desc = "Open the action palette",
-      mode = { "n", "v" },
-    },
-    {
-      "<Leader>a",
-      "<cmd>CodeCompanionChat Toggle<CR>",
-      desc = "Toggle a chat buffer",
-      mode = { "n", "v" },
-    },
-    {
-      "<LocalLeader>a",
-      "<cmd>CodeCompanionChat Add<CR>",
-      desc = "Add code to a chat buffer",
-      mode = { "v" },
-    },
-  },
+  -- NOTE: keymaps live in lua/config/keymaps.lua (<leader>at toggle, <leader>aa
+  -- actions, <localleader>a add). setup() has no top-level `keys` option — that
+  -- lazy-spec format was inert here, so it has been removed.
 })

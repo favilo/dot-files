@@ -1,7 +1,7 @@
-local neogit = require('neogit')
-require('gitsigns').setup()
+local neogit = require("neogit")
+require("gitsigns").setup()
 
-neogit.setup {
+neogit.setup({
   -- Hides the hints at the top of the status buffer
   disable_hint = false,
   -- Disables changing the buffer highlights based on where the cursor is.
@@ -65,7 +65,7 @@ neogit.setup {
   highlight = {
     italic = true,
     bold = true,
-    underline = true
+    underline = true,
   },
   -- Set to false if you want to be responsible for creating _ALL_ keymappings
   use_default_keymaps = true,
@@ -96,7 +96,7 @@ neogit.setup {
   },
   commit_view = {
     kind = "vsplit",
-    verify_commit = os.execute("which gpg") == 0,     -- Can be set to true or false, otherwise we try to find the binary
+    verify_commit = vim.fn.executable("gpg") == 1, -- detect gpg without spawning a shell (os.execute printed its path to stdout)
   },
   log_view = {
     kind = "tab",
@@ -266,5 +266,5 @@ neogit.setup {
       ["}"] = "GoToNextHunkHeader",
     },
   },
-}
-vim.keymap.set("n", "<leader>gg", vim.cmd.Neogit)
+})
+vim.keymap.set("n", "<leader>gg", vim.cmd.Neogit, { desc = "Open Neogit" })

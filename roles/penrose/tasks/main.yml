@@ -28,9 +28,9 @@
     path: "{{ dotfiles_user_home }}/.config/{{ item.dir }}"
     state: directory
   with_items:
-  - dir: bspwm
-  - dir: sxhkd
-  - dir: polybar
+    - dir: bspwm
+    - dir: sxhkd
+    - dir: polybar
 
 - name: bspwm config
   file:
@@ -39,10 +39,10 @@
     state: link
     force: true
   with_items:
-  - src: bspwmrc
-    dir: bspwm
-  - src: sxhkdrc
-    dir: sxhkd
+    - src: bspwmrc
+      dir: bspwm
+    - src: sxhkdrc
+      dir: sxhkd
 
 - name: polybar config
   file:
@@ -51,8 +51,8 @@
     state: link
     force: true
   with_items:
-  - src: launch.sh
-  - src: config
+    - src: launch.sh
+    - src: config
 
 - name: xmonad-log
   command: "go get github.com/xintron/xmonad-log"

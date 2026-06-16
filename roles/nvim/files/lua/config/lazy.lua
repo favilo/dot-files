@@ -32,4 +32,4 @@ require("lazy").setup({
   -- lazy.nvim draws its own window and ignores vim.o.winborder, so set it here.
   ui = { border = "rounded" },
 })
-vim.keymap.set("n", "<leader>/l", "<cmd>:Lazy<cr>")
+vim.keymap.set("n", "<leader>/l", "<cmd>:Lazy<cr>", { desc = "Open Lazy plugin manager" })

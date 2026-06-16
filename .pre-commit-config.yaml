@@ -1,0 +1,97 @@
+# Hooks run by:
+#   - `jj pre-commit`      -> `prek run --files <changed>`     (pre-commit stage)
+#   - `jj push`/`jj check` -> `prek run --hook-stage pre-push`
+#
+# Default hooks only CHECK and report errors; they never modify files.
+# Formatting is opt-in: `just fmt` (= `prek run --hook-stage manual --all-files`)
+# runs the write-mode hooks and the whitespace fixers.
+#
+# Checkers run from prek-managed toolchains or Docker images (not the host's
+# installed tools); pin versions with `prek autoupdate`. The only local hook is
+# the nvim suite, which must boot a real nvim.
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      # Pure checks — never modify files.
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+        exclude: \.j2$
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      # Fix-only tools: opt-in (no check-only mode exists for these).
+      - id: trailing-whitespace
+        stages: [manual]
+      - id: end-of-file-fixer
+        stages: [manual]
+
+  # Lua (downloads the pinned stylua release binary; no host install).
+  - repo: https://github.com/JohnnyMorganz/StyLua
+    rev: v2.5.2
+    hooks:
+      - id: stylua-github
+        name: stylua (check Lua)
+        args: [--check]
+        stages: [pre-commit, pre-push]
+      - id: stylua-github
+        name: stylua (format Lua)
+        stages: [manual]
+
+  # Shell lint (official koalaman/shellcheck Docker image).
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.11.0
+    hooks:
+      - id: shellcheck
+        exclude: ^roles/(penrose|sway)/
+        stages: [pre-commit, pre-push]
+
+  # Shell format (mvdan/sh Docker image).
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.13.1-1
+    hooks:
+      - id: shfmt-docker
+        name: shfmt (check shell)
+        args: [-d, -i, "2", -ci]
+        exclude: ^roles/(penrose|sway)/
+        stages: [pre-commit, pre-push]
+      - id: shfmt-docker
+        name: shfmt (format shell)
+        args: [-w, -i, "2", -ci]
+        exclude: ^roles/(penrose|sway)/
+        stages: [manual]
+
+  - repo: local
+    hooks:
+      # Prettier via prek-managed Node (prettier installed as a hook dependency,
+      # NOT from the host). Local so we control the entry: the rbubley mirror
+      # bakes `--write` into its entry, which args can't override to check-only.
+      - id: prettier-check
+        name: prettier (check yaml/json/css/md)
+        entry: prettier --check
+        language: node
+        additional_dependencies: ["prettier@3.8.4"]
+        types_or: [yaml, json, css, markdown]
+        exclude: \.j2$|lazy-lock.json$
+        stages: [pre-commit, pre-push]
+      - id: prettier-format
+        name: prettier (format yaml/json/css/md)
+        entry: prettier --write --ignore-unknown
+        language: node
+        additional_dependencies: ["prettier@3.8.4"]
+        types_or: [yaml, json, css, markdown]
+        exclude: \.j2$|lazy-lock.json$
+        stages: [manual]
+
+      # Heavy and inherently local: boots a real nvim. Push-only, and only when
+      # nvim config changed.
+      - id: nvim-config-tests
+        name: nvim config regression tests
+        # `just` runs recipes from the justfile's directory, so the recipe's
+        # relative paths (tests/...) resolve even when invoked from the repo root.
+        entry: just --justfile roles/nvim/files/justfile test
+        language: system
+        pass_filenames: false
+        files: ^roles/nvim/files/
+        stages: [pre-push]
+        verbose: true

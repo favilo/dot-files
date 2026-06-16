@@ -1,10 +1,10 @@
 -- Standalone utilities and libraries that don't fit a larger group.
 return {
-  { 'mrjones2014/op.nvim', build = 'make install' },
-  { 'nvim-lua/plenary.nvim' },
-  { 'lambdalisue/suda.vim' },
+  { "mrjones2014/op.nvim", build = "make install" },
+  { "nvim-lua/plenary.nvim" },
+  { "lambdalisue/suda.vim" },
   {
-    'wakatime/vim-wakatime',
+    "wakatime/vim-wakatime",
     lazy = false,
   },
   {
@@ -20,8 +20,8 @@ return {
       })
     end,
   },
-  { 'sk1418/HowMuch' },
-  { 'diepm/vim-rest-console' },
+  { "sk1418/HowMuch" },
+  { "diepm/vim-rest-console" },
 
   -- use { 'airblade/vim-rooter' }
   {
@@ -33,14 +33,16 @@ return {
     -- },
     config = function()
       -- Example mapping to toggle outline
-      vim.keymap.set("n", "<leader>o",
-        function() require("outline").toggle({ placement = "topleft", focus_outline = false }) end,
-        { desc = "Toggle Outline" })
-      vim.keymap.set("n", "<leader>O", function() require("outline").focus_toggle() end, { desc = "Focus Outline" })
+      vim.keymap.set("n", "<leader>o", function()
+        require("outline").toggle({ placement = "topleft", focus_outline = false })
+      end, { desc = "Toggle Outline" })
+      vim.keymap.set("n", "<leader>O", function()
+        require("outline").focus_toggle()
+      end, { desc = "Focus Outline" })
 
-      require("outline").setup {
+      require("outline").setup({
         -- Your setup opts here (leave empty to use defaults)
-      }
+      })
     end,
   },
 

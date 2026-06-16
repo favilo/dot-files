@@ -1,0 +1,17 @@
+# nvim config test runner. Run from roles/nvim/files/.
+
+# Run the full spec suite headless; non-zero exit on failure.
+# init=/minimal=false makes plenary spawn child processes WITHOUT --noplugin,
+# so each spec boots the real config with its start plugins loaded.
+test:
+    nvim --headless -u tests/minimal_init.lua \
+        -c "PlenaryBustedDirectory tests/spec/ {init = 'tests/minimal_init.lua', minimal = false, sequential = true}"
+
+# Run a single spec file, e.g. `just test-file tests/spec/motions_spec.lua`.
+# PlenaryBustedFile.test_file() ignores opts and always spawns the child with
+# --noplugin/no -u, so it can't boot the real config. PlenaryBustedDirectory
+# accepts opts and `find <file> -name '*_spec.lua'` resolves a single file,
+# so use it here with the same init=/minimal=false as the full suite.
+test-file FILE:
+    nvim --headless -u tests/minimal_init.lua \
+        -c "PlenaryBustedDirectory {{FILE}} {init = 'tests/minimal_init.lua', minimal = false, sequential = true}"
