@@ -24,20 +24,30 @@ local function visual_len()
   return math.abs(b[3] - a[3]) + 1
 end
 
+-- A parser binary on the runtimepath is the reliable signal that a tree can be
+-- built (Neovim bundles `lua`; nvim-treesitter installs others).
+-- `vim.treesitter.language.add` is not a dependable availability check.
+local function has_lua_parser()
+  return #vim.api.nvim_get_runtime_file("parser/lua.*", false) > 0
+end
+
 local function open_lua_buffer()
   vim.cmd("enew!")
   vim.bo.filetype = "lua" -- fires FileType -> treesitter-modules attaches v/V
   vim.api.nvim_buf_set_lines(0, 0, -1, false, { "local foobar = 1" })
-  -- ensure the lua parser produced a tree
-  vim.treesitter.get_parser(0, "lua"):parse()
-end
-
-local function has_lua_parser()
-  return pcall(vim.treesitter.language.add, "lua")
+  -- Best-effort parse; tolerate a missing parser so this never errors the
+  -- mapping test. The behavioral test gates on has_lua_parser() instead.
+  pcall(function()
+    vim.treesitter.get_parser(0, "lua"):parse()
+  end)
 end
 
 describe("treesitter incremental selection", function()
   it("maps v/V in visual mode to treesitter-modules", function()
+    if not has_lua_parser() then
+      pending("lua treesitter parser not installed")
+      return
+    end
     open_lua_buffer()
     local v = vim.fn.maparg("v", "x", false, true)
     local V = vim.fn.maparg("V", "x", false, true)
