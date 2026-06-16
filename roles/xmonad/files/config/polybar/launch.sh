@@ -16,8 +16,11 @@ if ! pgrep -x "blueman-applet" >/dev/null; then
 fi
 
 if type "xrandr"; then
+  # Loop-invariant: compute the primary monitor once, before iterating.
+  declare PRIMARY
+  PRIMARY=$(polybar --list-monitors | grep primary | cut -d":" -f1)
+  readonly PRIMARY
   for m in $(polybar --list-monitors | cut -d":" -f1); do
-    declare PRIMARY=$(polybar --list-monitors | grep primary | cut -d":" -f1)
     if [[ "$m" == "$PRIMARY" ]]; then
       TRAY_POS=right MONITOR=$m polybar --reload desktop &
     else

@@ -12,16 +12,14 @@ fi
 echo "Found touchpad device ID: $TOUCHPAD_ID"
 
 # Enable natural scrolling
-xinput set-prop "$TOUCHPAD_ID" "libinput Natural Scrolling Enabled" 1
-if [ $? -eq 0 ]; then
+if xinput set-prop "$TOUCHPAD_ID" "libinput Natural Scrolling Enabled" 1; then
   echo "Natural scrolling enabled"
 else
   echo "Warning: Could not enable natural scrolling"
 fi
 
 # Enable tapping
-xinput set-prop "$TOUCHPAD_ID" "libinput Tapping Enabled" 1
-if [ $? -eq 0 ]; then
+if xinput set-prop "$TOUCHPAD_ID" "libinput Tapping Enabled" 1; then
   echo "Tapping enabled"
 else
   echo "Warning: Could not enable tapping"
