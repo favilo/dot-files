@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   checks:
-    name: Lint & format checks
+    name: Format & syntax checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,3 +23,48 @@ jobs:
           key: prek-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
       - name: Run check hooks
         run: prek run --all-files --hook-stage pre-commit --show-diff-on-failure --color always
+
+  lint:
+    name: Lint (YAML, Ansible, Lua)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # yamllint + ansible-lint run via uvx (see the justfile lint recipes).
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install just
+        uses: extractions/setup-just@v2
+
+      - name: Install Neovim
+        uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+
+      - name: Install lua-language-server
+        run: |
+          ver=$(curl -fsSL https://api.github.com/repos/LuaLS/lua-language-server/releases/latest | jq -r .tag_name)
+          mkdir -p "$HOME/lua-ls"
+          curl -fsSL "https://github.com/LuaLS/lua-language-server/releases/download/${ver}/lua-language-server-${ver}-linux-x64.tar.gz" \
+            | tar -xz -C "$HOME/lua-ls"
+          echo "$HOME/lua-ls/bin" >> "$GITHUB_PATH"
+
+      - name: Install cargo-binstall
+        uses: cargo-bins/cargo-binstall@main
+
+      - name: Install selene
+        run: cargo binstall --no-confirm selene
+
+      # The Lua type check is static, but .luarc.json points its library at the
+      # installed plenary/flash plugins, so make those paths exist. (No full
+      # plugin bootstrap needed — lua-language-server never runs the config.)
+      - name: Provide Lua libraries for the type check
+        run: |
+          libs="$HOME/.local/share/nvim/lazy"
+          mkdir -p "$libs"
+          git clone --depth 1 https://github.com/nvim-lua/plenary.nvim "$libs/plenary.nvim"
+          git clone --depth 1 https://github.com/folke/flash.nvim "$libs/flash.nvim"
+
+      - name: Run linters
+        run: just lint

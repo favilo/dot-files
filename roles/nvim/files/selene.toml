@@ -1,0 +1,9 @@
+std = "neovim"
+
+# lazy.nvim's generated lockfile is not hand-written Lua.
+exclude = ["lazy-lock.json"]
+
+[lints]
+# Neovim/plugin APIs are loosely typed; mixed-table literals (list + map) are
+# idiomatic in lazy.nvim plugin specs and keymap tables.
+mixed_table = "allow"

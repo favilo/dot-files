@@ -45,8 +45,12 @@ local lsp_on_attach = function(client, event)
     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
   end, "LSP: toggle inlay hints")
   map({ "n", "v" }, "<leader>cws", vim.lsp.buf.workspace_symbol, "LSP: workspace symbols")
-  map("n", "]d", vim.diagnostic.goto_next, "Diagnostic: next")
-  map("n", "[d", vim.diagnostic.goto_prev, "Diagnostic: prev")
+  map("n", "]d", function()
+    vim.diagnostic.jump({ count = 1, float = true })
+  end, "Diagnostic: next")
+  map("n", "[d", function()
+    vim.diagnostic.jump({ count = -1, float = true })
+  end, "Diagnostic: prev")
   map("n", "<leader>dd", vim.diagnostic.open_float, "Diagnostic: show float")
   map({ "v", "n" }, "<leader>ca", require("actions-preview").code_actions, "LSP: code actions")
   map("n", "<leader>cR", vim.lsp.buf.references, "LSP: references")
@@ -59,7 +63,7 @@ local lsp_on_attach = function(client, event)
       formatting_options = {}
     end
 
-    local filter = function(local_client)
+    local filter = function(_local_client)
       -- vim.print(vim.inspect(local_client.name))
       return true
     end

@@ -1,0 +1,12 @@
+---@meta
+
+-- Plenary bundles its own LuaCATS meta for luassert
+-- (lua/plenary/_meta/_luassert.lua), which lua_ls loads as a workspace library.
+-- That meta defines the `are`/`is`/`has`/`no`/`does` chains but omits a few
+-- aliases the specs use, so re-open the class here to add them and stop lua_ls
+-- reporting them as undefined-field. These all exist at runtime (luassert builds
+-- assertion chains dynamically via metatables).
+---@class Luassert
+---@field is_not Luassert
+---@field has_no Luassert
+---@field is_not_nil LuassertFunction

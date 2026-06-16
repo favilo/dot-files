@@ -1,0 +1,27 @@
+---
+# Relaxed for Ansible / hand-written config-file idioms, while still catching
+# real problems (syntax errors, duplicate keys, trailing whitespace, tabs).
+extends: relaxed
+
+rules:
+  line-length: disable
+  document-start: disable
+  comments:
+    require-starting-space: false
+    min-spaces-from-content: 1
+  truthy:
+    # `on:` in GitHub Actions parses as a boolean key; allow yes/no for Ansible.
+    check-keys: false
+    allowed-values: ["true", "false", "yes", "no"]
+  # The following match ansible-lint's embedded-yamllint requirements so it
+  # doesn't warn about an incompatible config (it loads .yamllint even though we
+  # run yamllint separately). `max-spaces-inside: 1` still passes our YAML.
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
+
+ignore: |
+  lazy-lock.json

@@ -1,5 +1,28 @@
 # nvim config test runner. Run from roles/nvim/files/.
 
+# Lint the Lua config (lua-language-server diagnostics + selene).
+lint: lint-lua lint-selene
+
+# Type/diagnostic check of the Lua config via lua-language-server.
+lint-lua:
+    #!/usr/bin/env bash
+    echo "Running lua-language-server diagnostics (config: .luarc.json)"
+    set -euo pipefail
+    # lua-language-server needs $VIMRUNTIME (the bundled vim API library that
+    # .luarc.json points at) and the actual binary nvim uses; resolve both from
+    # nvim so this works even though the on-PATH lua-language-server may be a
+    # broken install. In CI (no mason) it falls back to lua-language-server on PATH.
+    # -u NONE: VIMRUNTIME/stdpath are built-ins, so skip loading the config
+    # (which would fail without plugins installed, e.g. in CI).
+    export VIMRUNTIME="$(nvim --headless -u NONE -c 'lua io.write(vim.env.VIMRUNTIME)' -c 'qa')"
+    lls="$(nvim --headless -u NONE -c 'lua io.write(vim.fn.stdpath("data"))' -c 'qa')/mason/bin/lua-language-server"
+    [ -x "$lls" ] || lls=lua-language-server
+    "$lls" --check . --configpath .luarc.json --checklevel Warning --logpath "$(mktemp -d)"
+
+# Lua linting via selene.
+lint-selene:
+    selene .
+
 # Run the full spec suite headless; non-zero exit on failure.
 # init=/minimal=false makes plenary spawn child processes WITHOUT --noplugin,
 # so each spec boots the real config with its start plugins loaded.

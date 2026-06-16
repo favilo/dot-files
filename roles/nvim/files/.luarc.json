@@ -1,0 +1,11 @@
+{
+  "runtime.version": "LuaJIT",
+  "workspace.library": [
+    "$VIMRUNTIME/lua",
+    "$HOME/.local/share/nvim/lazy/plenary.nvim/lua",
+    "$HOME/.local/share/nvim/lazy/flash.nvim/lua",
+    "tests/types"
+  ],
+  "workspace.checkThirdParty": "Disable",
+  "diagnostics.disable": ["different-requires"]
+}

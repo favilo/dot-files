@@ -38,13 +38,6 @@
     - role: tmux
       tags:
         - "tmux"
-    - role: emacs
-      tags:
-        - "emacs"
-        - "doom-emacs"
-    - role: vim
-      tags:
-        - "vim"
     - role: nvim
       tags:
         - "nvim"
