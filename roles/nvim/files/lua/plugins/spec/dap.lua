@@ -1,10 +1,10 @@
 -- Debug Adapter Protocol: nvim-dap and adapters.
 return {
   {
-    'mfussenegger/nvim-dap',
+    "mfussenegger/nvim-dap",
     lazy = false,
     config = function()
-      require('plugins.dap')
+      require("plugins.dap")
     end,
   },
   -- use {
@@ -16,7 +16,7 @@ return {
     dependencies = {
       "mfussenegger/nvim-dap",
       "nvim-neotest/nvim-nio",
-    }
+    },
   },
   {
     "jay-babu/mason-nvim-dap.nvim",
@@ -26,9 +26,9 @@ return {
     },
   },
 
-  { 'mfussenegger/nvim-dap-python', dependencies = { "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui" } },
+  { "mfussenegger/nvim-dap-python", dependencies = { "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui" } },
   {
-    'julianolf/nvim-dap-lldb',
+    "julianolf/nvim-dap-lldb",
     dependencies = {
       "mfussenegger/nvim-dap",
     },

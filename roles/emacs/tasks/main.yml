@@ -4,7 +4,6 @@
 - import_tasks: arch.yml
   when: ansible_os_family == "Archlinux"
 
-
 - import_tasks: mac.yml
   when: ansible_os_family == "Darwin"
 
@@ -32,9 +31,9 @@
     state: link
     force: yes
   with_items:
-  - src: config.el
-  - src: init.el
-  - src: packages.el
+    - src: config.el
+    - src: init.el
+    - src: packages.el
 
 - name: check if installed
   stat:
@@ -53,7 +52,7 @@
   file:
     path: "{{ dotfiles_user_home }}/.emacs.d/.installed"
     state: touch
-  
+
 - name: doom sync
   command: "{{ dotfiles_user_home }}/.emacs.d/bin/doom sync"
 

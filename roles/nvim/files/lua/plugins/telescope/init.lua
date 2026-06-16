@@ -1,9 +1,9 @@
-local telescope = require('telescope')
-local actions = require('telescope.actions')
-local lga_actions = require('telescope-live-grep-args.actions')
+local telescope = require("telescope")
+local actions = require("telescope.actions")
+local lga_actions = require("telescope-live-grep-args.actions")
 -- local previewers = require('telescope.previewers')
-local builtin = require('telescope.builtin')
-local icons = require('utils.icons')
+local builtin = require("telescope.builtin")
+local icons = require("utils.icons")
 
 local git_icons = {
   added = icons.gitAdd,
@@ -16,34 +16,34 @@ local git_icons = {
 }
 
 -- telescope.setup({})
-telescope.setup {
+telescope.setup({
   defaults = {
-    border            = true,
-    hl_result_eol     = true,
-    multi_icon        = '',
+    border = true,
+    hl_result_eol = true,
+    multi_icon = "",
     vimgrep_arguments = {
-      'rg',
-      '--color=never',
-      '--no-heading',
-      '--with-filename',
-      '--line-number',
-      '--column',
-      '--smart-case'
+      "rg",
+      "--color=never",
+      "--no-heading",
+      "--with-filename",
+      "--line-number",
+      "--column",
+      "--smart-case",
     },
-    layout_config     = {
+    layout_config = {
       horizontal = {
         preview_cutoff = 120,
       },
       prompt_position = "top",
     },
-    file_sorter       = require('telescope.sorters').get_fzy_sorter,
+    file_sorter = require("telescope.sorters").get_fzy_sorter,
     -- prompt_prefix     = '  ',
-    color_devicons    = true,
-    git_icons         = git_icons,
-    sorting_strategy  = "ascending",
-    file_previewer    = require('telescope.previewers').vim_buffer_cat.new,
-    grep_previewer    = require('telescope.previewers').vim_buffer_vimgrep.new,
-    qflist_previewer  = require('telescope.previewers').vim_buffer_qflist.new,
+    color_devicons = true,
+    git_icons = git_icons,
+    sorting_strategy = "ascending",
+    file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+    grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+    qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
     -- mappings          = {
     --   i = {
     --     ["<C-x>"] = false,
@@ -80,88 +80,94 @@ telescope.setup {
         },
       },
     },
-    ['ssh-config'] = {
-      client = 'oil',
-      ssh_config_path = '~/.ssh/config',
+    ["ssh-config"] = {
+      client = "oil",
+      ssh_config_path = "~/.ssh/config",
     },
-  }
-}
+  },
+})
 
 -- Extensions must load AFTER setup(): each extension captures its config (the
 -- `extensions.<name>` block above — e.g. live_grep_args mappings) at load time.
-telescope.load_extension('projects')
-telescope.load_extension('fzf')
-telescope.load_extension('live_grep_args')
-telescope.load_extension('repo')
-telescope.load_extension('ssh-config')
+telescope.load_extension("projects")
+telescope.load_extension("fzf")
+telescope.load_extension("live_grep_args")
+telescope.load_extension("repo")
+telescope.load_extension("ssh-config")
 -- telescope.load_extension("git_worktree")
 -- telescope.load_extension('dap')
 
-
 function vim.getVisualSelection()
   vim.cmd('noau normal! "vy"')
-  local text = vim.fn.getreg('v')
-  vim.fn.setreg('v', {})
+  local text = vim.fn.getreg("v")
+  vim.fn.setreg("v", {})
 
   text = string.gsub(text, "\n", "")
   if #text > 0 then
     return text
   else
-    return ''
+    return ""
   end
 end
 
-vim.keymap.set('n', '<leader>pf', builtin.find_files, { desc = "Telescope find files" })
-vim.keymap.set('v', '<leader>pf', function() builtin.find_files({ default_text = vim.getVisualSelection() }) end,
-  { desc = "Telescope find files (selected text)" })
-vim.keymap.set('n', '<leader>pp', function() builtin.find_files({ hidden = true, no_ignore = true }) end,
-  { desc = "Telescope find hidden files" })
-vim.keymap.set('n', '<leader>pb', builtin.buffers, { desc = "Telescope buffers" })
-vim.keymap.set('n', '<leader>pd', function()
+vim.keymap.set("n", "<leader>pf", builtin.find_files, { desc = "Telescope find files" })
+vim.keymap.set("v", "<leader>pf", function()
+  builtin.find_files({ default_text = vim.getVisualSelection() })
+end, { desc = "Telescope find files (selected text)" })
+vim.keymap.set("n", "<leader>pp", function()
+  builtin.find_files({ hidden = true, no_ignore = true })
+end, { desc = "Telescope find hidden files" })
+vim.keymap.set("n", "<leader>pb", builtin.buffers, { desc = "Telescope buffers" })
+vim.keymap.set("n", "<leader>pd", function()
   builtin.buffers({
     attach_mappings = function(prompt_bufnr, map)
       -- <Tab> multi-selects; this deletes the selection (or the entry under the cursor)
-      local delete = function() actions.delete_buffer(prompt_bufnr) end
-      map('i', '<C-d>', delete)
-      map('n', '<C-d>', delete)
-      map('n', 'd', delete)
+      local delete = function()
+        actions.delete_buffer(prompt_bufnr)
+      end
+      map("i", "<C-d>", delete)
+      map("n", "<C-d>", delete)
+      map("n", "d", delete)
       return true
     end,
   })
 end, { desc = "Telescope delete buffers" })
-vim.keymap.set('n', '<leader>po', builtin.oldfiles, { desc = "Telescope oldfiles" })
-vim.keymap.set('n', '<leader>pe', require 'telescope'.extensions.projects.projects, { desc = "Telescope projects" })
-vim.keymap.set('n', '<leader>p.', function() builtin.find_files({ cwd = vim.fn.expand('%:p:h') }) end,
-  { desc = "Telescope find sibling files" })
+vim.keymap.set("n", "<leader>po", builtin.oldfiles, { desc = "Telescope oldfiles" })
+vim.keymap.set("n", "<leader>pe", require("telescope").extensions.projects.projects, { desc = "Telescope projects" })
+vim.keymap.set("n", "<leader>p.", function()
+  builtin.find_files({ cwd = vim.fn.expand("%:p:h") })
+end, { desc = "Telescope find sibling files" })
 
-vim.keymap.set('n', '<C-p>', builtin.git_files, { desc = "Telescope git files" })
+vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = "Telescope git files" })
 
-
-vim.keymap.set('n', '<leader>sp', builtin.live_grep, { desc = "Telescope live grep" })
-vim.keymap.set('v', '<leader>sp', function() builtin.live_grep({ default_text = vim.getVisualSelection() }) end,
-  { desc = "Telescope live grep (starting w/ selected text)" })
-
+vim.keymap.set("n", "<leader>sp", builtin.live_grep, { desc = "Telescope live grep" })
+vim.keymap.set("v", "<leader>sp", function()
+  builtin.live_grep({ default_text = vim.getVisualSelection() })
+end, { desc = "Telescope live grep (starting w/ selected text)" })
 
 -- --hidden also descends into dotfile directories; --no-ignore* defeats
 -- .gitignore/.ignore. Together: grep absolutely everything.
-local hidden_args = { '--no-ignore', '--no-ignore-vcs', '--hidden', }
-vim.keymap.set('n', '<leader>so',
-  function() builtin.live_grep({ additional_args = hidden_args }) end,
-  { desc = "Telescope live grep (incl. hidden dirs & ignored)" })
-vim.keymap.set('v', '<leader>so',
-  function() builtin.live_grep({ default_text = vim.getVisualSelection(), additional_args = hidden_args }) end,
-  { desc = "Telescope live grep incl. hidden (selected text)" })
-vim.keymap.set('n', '<leader>sa',
+local hidden_args = { "--no-ignore", "--no-ignore-vcs", "--hidden" }
+vim.keymap.set("n", "<leader>so", function()
+  builtin.live_grep({ additional_args = hidden_args })
+end, { desc = "Telescope live grep (incl. hidden dirs & ignored)" })
+vim.keymap.set("v", "<leader>so", function()
+  builtin.live_grep({ default_text = vim.getVisualSelection(), additional_args = hidden_args })
+end, { desc = "Telescope live grep incl. hidden (selected text)" })
+vim.keymap.set(
+  "n",
+  "<leader>sa",
   telescope.extensions.live_grep_args.live_grep_args,
-  { desc = "Telescope live grep args (globs / folder scope)" })
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = "Telescope live grep through nvim help tags" })
-vim.keymap.set('v', '<leader>fh', function() builtin.help_tags({ default_text = vim.getVisualSelection() }) end,
-  { desc = "Telescope nvim help tags (selected text)" })
-vim.keymap.set('n', '<leader>fc', builtin.command_history,
-  { desc = "Telescope live grep through command history" })
-vim.keymap.set('v', '<leader>fc', function() builtin.command_history({ default_text = vim.getVisualSelection() }) end,
-  { desc = "Telescope command history (selected text)" })
-vim.keymap.set('n', '<leader>ff', builtin.treesitter, { desc = "Telescope grep through variables in scope" })
-vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = "Telescope find keymaps" })
-vim.keymap.set({'n', 'v'}, '<leader>fs', '<cmd>Telescope ssh-config<CR>',
-  { desc = "Telescope SSH config hosts" })
+  { desc = "Telescope live grep args (globs / folder scope)" }
+)
+vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope live grep through nvim help tags" })
+vim.keymap.set("v", "<leader>fh", function()
+  builtin.help_tags({ default_text = vim.getVisualSelection() })
+end, { desc = "Telescope nvim help tags (selected text)" })
+vim.keymap.set("n", "<leader>fc", builtin.command_history, { desc = "Telescope live grep through command history" })
+vim.keymap.set("v", "<leader>fc", function()
+  builtin.command_history({ default_text = vim.getVisualSelection() })
+end, { desc = "Telescope command history (selected text)" })
+vim.keymap.set("n", "<leader>ff", builtin.treesitter, { desc = "Telescope grep through variables in scope" })
+vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "Telescope find keymaps" })
+vim.keymap.set({ "n", "v" }, "<leader>fs", "<cmd>Telescope ssh-config<CR>", { desc = "Telescope SSH config hosts" })

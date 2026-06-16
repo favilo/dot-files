@@ -40,9 +40,18 @@ vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Terminal: exit to normal m
 vim.keymap.set("n", "<leader>rr", "yyp!!sh<CR>", { desc = "Run current line through sh" })
 vim.keymap.set("v", "<leader>rr", "!sh<CR>", { desc = "Run selection through sh" })
 
-vim.keymap.set("c", "w!!", "execute 'silent! write !sudo tee % >/dev/null' <bar> edit!",
-  { desc = "Write current file with sudo" })
+vim.keymap.set(
+  "c",
+  "w!!",
+  "execute 'silent! write !sudo tee % >/dev/null' <bar> edit!",
+  { desc = "Write current file with sudo" }
+)
 vim.keymap.set({ "n", "v" }, "<leader>at", "<cmd>CodeCompanionChat Toggle<CR>", { desc = "CodeCompanion chat toggle" })
 vim.keymap.set({ "n", "v" }, "<leader>aa", "<cmd>CodeCompanionActions<CR>", { desc = "CodeCompanion action palette" })
-vim.keymap.set("v", "<localleader>a", "<cmd>CodeCompanionChat Add<CR>", { desc = "CodeCompanion add selection to chat" })
+vim.keymap.set(
+  "v",
+  "<localleader>a",
+  "<cmd>CodeCompanionChat Add<CR>",
+  { desc = "CodeCompanion add selection to chat" }
+)
 vim.keymap.set("n", "<leader>cP", vim.show_pos, { desc = "Inspect: position highlights" })

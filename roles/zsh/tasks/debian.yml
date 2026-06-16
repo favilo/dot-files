@@ -1,6 +1,6 @@
 - name: Install zsh
   apt:
     name:
-    - zsh
+      - zsh
   become_method: sudo
   become: true

@@ -1,56 +1,56 @@
 require("neodev").setup({
   library = { plugins = { "nvim-dap-ui" }, types = true },
 })
-local dap = require('dap')
-local dapui = require('dapui')
+local dap = require("dap")
+local dapui = require("dapui")
 dap.adapters.python = function(cb, config)
-  if config.request == 'attach' then
+  if config.request == "attach" then
     ---@diagnostic disable-next-line: undefined-field
     local port = (config.connect or config).port
     ---@diagnostic disable-next-line: undefined-field
-    local host = (config.connect or config).host or '127.0.0.1'
+    local host = (config.connect or config).host or "127.0.0.1"
     cb({
-      type = 'server',
-      port = assert(port, '`connect.port` is required for a python `attach` configuration'),
+      type = "server",
+      port = assert(port, "`connect.port` is required for a python `attach` configuration"),
       host = host,
       options = {
-        source_filetype = 'python',
+        source_filetype = "python",
       },
     })
   else
     cb({
-      type = 'executable',
-      command = 'debugpy',
+      type = "executable",
+      command = "debugpy",
       args = {},
       options = {
-        source_filetype = 'python',
+        source_filetype = "python",
       },
     })
   end
 end
 
 dap.adapters.gdb = {
-  type = 'executable',
-  command = 'gdb',
-  args = { '--interpreter=dap', '--eval-command', 'set print pretty on', },
+  type = "executable",
+  command = "gdb",
+  args = { "--interpreter=dap", "--eval-command", "set print pretty on" },
 }
 
-dap.adapters['rust-gdb'] = {
-  type = 'executable',
-  command = 'rust-gdb',
-  args = { '--interpreter=dap', '--eval-command', 'set print pretty on', },
+dap.adapters["rust-gdb"] = {
+  type = "executable",
+  command = "rust-gdb",
+  args = { "--interpreter=dap", "--eval-command", "set print pretty on" },
 }
 
 dap.adapters.codelldb = {
-  type = 'executable',
+  type = "executable",
   command = "codelldb",
 }
 
 dap.configurations.python = {
   {
     -- The first three options are required by nvim-dap
-    type = 'python', -- the type here established the link to the adapter definition: `dap.adapters.python`
-    request = 'launch',
+    type = "python", -- the type here established the link to the adapter definition: `dap.adapters.python`
+    request = "launch",
     name = "Launch file",
 
     -- Options below are for debugpy, see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings
@@ -62,12 +62,12 @@ dap.configurations.python = {
       -- The code below looks for a `venv` or `.venv` folder in the current directly and uses the python within.
       -- You could adapt this - to for example use the `VIRTUAL_ENV` environment variable.
       local cwd = vim.fn.getcwd()
-      if vim.fn.executable(cwd .. '/venv/bin/python') == 1 then
-        return cwd .. '/venv/bin/python'
-      elseif vim.fn.executable(cwd .. '/.venv/bin/python') == 1 then
-        return cwd .. '/.venv/bin/python'
+      if vim.fn.executable(cwd .. "/venv/bin/python") == 1 then
+        return cwd .. "/venv/bin/python"
+      elseif vim.fn.executable(cwd .. "/.venv/bin/python") == 1 then
+        return cwd .. "/.venv/bin/python"
       else
-        return '/usr/bin/python'
+        return "/usr/bin/python"
       end
     end,
   },
@@ -79,9 +79,9 @@ dap.configurations.cpp = {
     type = "gdb",
     request = "launch",
     program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+      return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
     end,
-    cwd = '${workspaceFolder}',
+    cwd = "${workspaceFolder}",
     stopAtBeginningOfMainSubprogram = false,
   },
   {
@@ -89,24 +89,24 @@ dap.configurations.cpp = {
     type = "gdb",
     request = "attach",
     program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+      return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
     end,
     pid = function()
-      local name = vim.fn.input('Executable name (filter): ')
+      local name = vim.fn.input("Executable name (filter): ")
       return require("dap.utils").pick_process({ filter = name })
     end,
-    cwd = '${workspaceFolder}'
+    cwd = "${workspaceFolder}",
   },
   {
-    name = 'Attach to gdbserver :1234',
-    type = 'gdb',
-    request = 'attach',
-    target = 'localhost:1234',
+    name = "Attach to gdbserver :1234",
+    type = "gdb",
+    request = "attach",
+    target = "localhost:1234",
     program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+      return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
     end,
-    cwd = '${workspaceFolder}'
-  }
+    cwd = "${workspaceFolder}",
+  },
 }
 dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = {
@@ -115,9 +115,9 @@ dap.configurations.rust = {
     type = "rust-gdb",
     request = "launch",
     program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+      return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
     end,
-    cwd = '${workspaceFolder}',
+    cwd = "${workspaceFolder}",
     stopAtBeginningOfMainSubprogram = false,
   },
   {
@@ -125,75 +125,89 @@ dap.configurations.rust = {
     type = "rust-gdb",
     request = "attach",
     program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+      return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
     end,
     pid = function()
-      local name = vim.fn.input('Executable name (filter): ')
+      local name = vim.fn.input("Executable name (filter): ")
       return require("dap.utils").pick_process({ filter = name })
     end,
-    cwd = '${workspaceFolder}'
+    cwd = "${workspaceFolder}",
   },
   {
-    name = 'Attach to gdbserver :1234',
-    type = 'rust-gdb',
-    request = 'attach',
-    target = 'localhost:1234',
+    name = "Attach to gdbserver :1234",
+    type = "rust-gdb",
+    request = "attach",
+    target = "localhost:1234",
     program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+      return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
     end,
-    cwd = '${workspaceFolder}'
-  }
+    cwd = "${workspaceFolder}",
+  },
 }
 
 dapui.setup()
-dap.listeners.after.event_initialized['dapui_config'] = function()
+dap.listeners.after.event_initialized["dapui_config"] = function()
   dapui.open()
 end
-dap.listeners.before.event_terminated['dapui_config'] = function()
+dap.listeners.before.event_terminated["dapui_config"] = function()
   dapui.close()
 end
-dap.listeners.before.event_exited['dapui_config'] = function()
+dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
 
 local dap_python = ".venv/bin/python"
-require('dap-python').setup(dap_python)
-require('dap-python').test_runner = 'pytest'
+require("dap-python").setup(dap_python)
+require("dap-python").test_runner = "pytest"
 
 local continue_debug = function()
   if vim.fn.filereadable(".vscode/launch.json") == 1 then
     vim.notify("Loading .vscode/launch.json")
-    require('dap.ext.vscode').load_launchjs()
+    require("dap.ext.vscode").load_launchjs()
   end
-  require('dap').continue()
+  require("dap").continue()
 end
 
 -- DAP mappings
-vim.keymap.set('n', '<leader>dc', continue_debug, { desc = "Debug: continue / start" })
-vim.keymap.set('n', '<leader>do', function() require('dap').step_over() end, { desc = "Debug: step over" })
-vim.keymap.set('n', '<leader>di', function() require('dap').step_into() end, { desc = "Debug: step into" })
-vim.keymap.set('n', '<leader>du', function() require('dap').step_out() end, { desc = "Debug: step out" })
-vim.keymap.set('n', '<leader>db', function() require('dap').toggle_breakpoint() end, { desc = "Debug: toggle breakpoint" })
-vim.keymap.set('n', '<leader>dB', function() require('dap').set_breakpoint() end, { desc = "Debug: set breakpoint" })
-vim.keymap.set('n', '<leader>dt', function() require('dap-lldb').debug_test() end, { desc = "Debug: run nearest test (lldb)" })
-vim.keymap.set('n', '<leader>dm',
-  function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end,
-  { desc = "Debug: set log point" })
-vim.keymap.set('n', '<leader>dr', function() require('dap').repl.open() end, { desc = "Debug: open REPL" })
+vim.keymap.set("n", "<leader>dc", continue_debug, { desc = "Debug: continue / start" })
+vim.keymap.set("n", "<leader>do", function()
+  require("dap").step_over()
+end, { desc = "Debug: step over" })
+vim.keymap.set("n", "<leader>di", function()
+  require("dap").step_into()
+end, { desc = "Debug: step into" })
+vim.keymap.set("n", "<leader>du", function()
+  require("dap").step_out()
+end, { desc = "Debug: step out" })
+vim.keymap.set("n", "<leader>db", function()
+  require("dap").toggle_breakpoint()
+end, { desc = "Debug: toggle breakpoint" })
+vim.keymap.set("n", "<leader>dB", function()
+  require("dap").set_breakpoint()
+end, { desc = "Debug: set breakpoint" })
+vim.keymap.set("n", "<leader>dt", function()
+  require("dap-lldb").debug_test()
+end, { desc = "Debug: run nearest test (lldb)" })
+vim.keymap.set("n", "<leader>dm", function()
+  require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
+end, { desc = "Debug: set log point" })
+vim.keymap.set("n", "<leader>dr", function()
+  require("dap").repl.open()
+end, { desc = "Debug: open REPL" })
 
 -- See neotest.lua for neotest mappings
-vim.keymap.set({ 'n', 'v' }, '<leader>dh', function()
-  require('dap.ui.widgets').hover()
+vim.keymap.set({ "n", "v" }, "<leader>dh", function()
+  require("dap.ui.widgets").hover()
 end, { desc = "Debug: hover value" })
-vim.keymap.set({ 'n', 'v' }, '<leader>dp', function()
-  require('dap.ui.widgets').preview()
+vim.keymap.set({ "n", "v" }, "<leader>dp", function()
+  require("dap.ui.widgets").preview()
 end, { desc = "Debug: preview value" })
-vim.keymap.set('n', '<leader>dF', function()
-  local widgets = require('dap.ui.widgets')
+vim.keymap.set("n", "<leader>dF", function()
+  local widgets = require("dap.ui.widgets")
   widgets.centered_float(widgets.frames)
 end, { desc = "Debug: float frames" })
-vim.keymap.set('n', '<leader>DS', function()
-  local widgets = require('dap.ui.widgets')
+vim.keymap.set("n", "<leader>DS", function()
+  local widgets = require("dap.ui.widgets")
   widgets.centered_float(widgets.scopes)
 end, { desc = "Debug: float scopes" })
 

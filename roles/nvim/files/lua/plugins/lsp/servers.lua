@@ -1,17 +1,20 @@
 local M = {}
 
-local home_path = os.getenv('HOME')
-local venv_path = os.getenv('VIRTUAL_ENV')
+local home_path = os.getenv("HOME")
+local venv_path = os.getenv("VIRTUAL_ENV")
 local py_path = nil
 
 if venv_path ~= nil then
   vim.notify("Found venv at " .. venv_path)
-  py_path = venv_path .. '/bin/python'
+  py_path = venv_path .. "/bin/python"
 end
 
 local lsp_path = string.format(
   "%s/.local/bin:%s/.cargo/bin:%s/.nvm/versions/node/v24.6.0/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/sbin:/bin",
-  home_path, home_path, home_path)
+  home_path,
+  home_path,
+  home_path
+)
 -- PATH = "~/.cargo/bin:~/.nvm/versions/node/v24.6.0/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/sbin:/bin",
 
 local servers = {
@@ -47,7 +50,7 @@ local servers = {
               -- reportUnnecessaryComparison = 'none',
               -- reportUnnecessaryIsInstance = 'none',
               -- reportUnnecessaryCast = 'none',
-              reportExplicitAny = 'none',
+              reportExplicitAny = "none",
             },
           },
           mypy = {
@@ -57,7 +60,7 @@ local servers = {
           },
           isort = {
             enabled = true,
-            profile = 'black'
+            profile = "black",
           },
           autopep8 = { enabled = false },
           yapf = { enabled = false },
@@ -78,7 +81,7 @@ local servers = {
           mccabe = { enabled = false },
           flake8 = {
             enabled = false,
-            ignore = { 'E501' },
+            ignore = { "E501" },
             maxLineLength = 140,
           },
         },
@@ -117,7 +120,7 @@ local servers = {
     settings = {
       Lua = {
         diagnostics = {
-          globals = { 'vim' },
+          globals = { "vim" },
         },
       },
     },
@@ -137,9 +140,9 @@ local servers = {
     -- flags = lsp_flags,
 
     -- filetypes = { 'rust' },
-    root_markers = { 'Cargo.toml', 'Cargo.lock' },
+    root_markers = { "Cargo.toml", "Cargo.lock" },
     settings = {
-      ['rust-analyzer'] = {
+      ["rust-analyzer"] = {
         lspMux = {
           version = "1",
           method = "connect",
@@ -173,8 +176,8 @@ local servers = {
           -- },
         },
         files = {
-          exclude = { ".direnv", "target" }
-        }
+          exclude = { ".direnv", "target" },
+        },
       },
     },
   },
@@ -199,14 +202,14 @@ local servers = {
           enable = true,
         },
         schemas = require("schemastore").json.schemas(
-        -- {
-        --     select = {
-        --         "package.json",
-        --         ".eslintrc",
-        --         "tsconfig.json",
-        --         "*.docnav.vson",
-        --     },
-        -- }
+          -- {
+          --     select = {
+          --         "package.json",
+          --         ".eslintrc",
+          --         "tsconfig.json",
+          --         "*.docnav.vson",
+          --     },
+          -- }
         ),
       },
     },
@@ -224,29 +227,36 @@ local servers = {
           enable = false,
           url = "",
         },
-        schemas = require("schemastore").yaml.schemas()
+        schemas = require("schemastore").yaml.schemas(),
       },
     },
   },
 
   clangd = {
-    filetypes = { 'cpp', 'h', 'c', },
-    settings = {
-    },
+    filetypes = { "cpp", "h", "c" },
+    settings = {},
   },
 
   glslls = {},
 
   ts_ls = {
-    filetypes = { 'typescript', 'typescriptreact', 'typescript.tsx', 'javascript', 'javascriptreact', 'javascript.jsx', 'svelte' },
+    filetypes = {
+      "typescript",
+      "typescriptreact",
+      "typescript.tsx",
+      "javascript",
+      "javascriptreact",
+      "javascript.jsx",
+      "svelte",
+    },
   },
 
   bashls = {
-    filetypes = { 'sh', 'zsh', 'bash', },
+    filetypes = { "sh", "zsh", "bash" },
   },
 
   beancount = {
-    filetypes = { 'beancount', 'bean' },
+    filetypes = { "beancount", "bean" },
     init_options = {
       journal_file = "~/git/finance/oberlies-family/main.bean",
     },
@@ -255,18 +265,18 @@ local servers = {
     },
   },
   graphql = {
-    filetypes = { 'graphql', 'gql' },
+    filetypes = { "graphql", "gql" },
   },
   ["jinja_lsp"] = {
-    filetypes = { 'jinja', 'yaml-jinja', 'yaml.jinja', },
+    filetypes = { "jinja", "yaml-jinja", "yaml.jinja" },
   },
   unison = {
-    filetypes = { 'unison', 'u' },
+    filetypes = { "unison", "u" },
   },
   microcad = {
-    filetypes = { 'microcad', 'mcad', 'ucad', 'µcad', },
-    cmd = { "microcad-lsp", "--stdio", },
-    root_markers = { { 'mcad.toml', 'ucad.toml', 'µcad.toml', }, '.git' },
+    filetypes = { "microcad", "mcad", "ucad", "µcad" },
+    cmd = { "microcad-lsp", "--stdio" },
+    root_markers = { { "mcad.toml", "ucad.toml", "µcad.toml" }, ".git" },
     env = {
       RUST_LOG = "debug",
     },
@@ -274,13 +284,13 @@ local servers = {
 }
 M.servers = servers
 
-local capabilities = require('blink.cmp').get_lsp_capabilities()
+local capabilities = require("blink.cmp").get_lsp_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
+    "documentation",
+    "detail",
+    "additionalTextEdits",
   },
 }
 M.capabilities = capabilities

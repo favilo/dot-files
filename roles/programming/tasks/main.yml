@@ -18,28 +18,28 @@
   args:
     creates: "{{ dotfiles_user_home }}/.cargo/bin/{{ item.exe }}"
   with_items:
-  - name: cargo-binstall
-    exe: cargo-binstall
-  - name: cargo-edit
-    exe: cargo-add
-  - name: sccache
-    exe: sccache
+    - name: cargo-binstall
+      exe: cargo-binstall
+    - name: cargo-edit
+      exe: cargo-add
+    - name: sccache
+      exe: sccache
 
 - name: Install fun crates
   command: "{{ dotfiles_user_home }}/.cargo/bin/cargo binstall {{ item.name }}"
   args:
     creates: "{{ dotfiles_user_home }}/.cargo/bin/{{ item.exe }}"
   with_items:
-  - name: eza
-    exe: eza
-  - name: bat
-    exe: bat
-  - name: ripgrep
-    exe: rg
-  - name: zoxide
-    exe: zoxide
-  - name: zellij
-    exe: zellij
+    - name: eza
+      exe: eza
+    - name: bat
+      exe: bat
+    - name: ripgrep
+      exe: rg
+    - name: zoxide
+      exe: zoxide
+    - name: zellij
+      exe: zellij
 
 - name: Alacritty config dir
   file:
@@ -57,7 +57,6 @@
   file:
     dest: "{{ dotfiles_user_home }}/.cargo/bin/rls"
     state: absent
-
 # - name: Checkout rust-analyzer
 #   git:
 #     repo: https://github.com/rust-analyzer/rust-analyzer.git

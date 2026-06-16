@@ -1,5 +1,5 @@
 -- AI assistants: Copilot and CodeCompanion.
-local home_dir = os.getenv('HOME')
+local home_dir = os.getenv("HOME")
 vim.g.copilot_node_command = home_dir .. "/.local/bin/nodejs"
 
 return {
@@ -56,8 +56,9 @@ return {
         suggestion.toggle_auto_trigger()
       end
 
-      vim.keymap.set({ "i", "n", "v" }, "<A-space>", function() suggestion.toggle_auto_trigger() end,
-        { desc = "Toggle auto trigger" })
+      vim.keymap.set({ "i", "n", "v" }, "<A-space>", function()
+        suggestion.toggle_auto_trigger()
+      end, { desc = "Toggle auto trigger" })
       vim.keymap.set("n", "<leader>cT", "<cmd>Copilot toggle<CR>", { desc = "Copilot toggle" })
       vim.keymap.set("n", "<leader>cs", toggle_auto_trigger, { desc = "Copilot suggestion toggle" })
       vim.keymap.set("i", "<C-e>", toggle_auto_trigger, { desc = "Copilot suggestion toggle (insert mode)" })
@@ -72,10 +73,10 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "j-hui/fidget.nvim",                    -- Display status
+      "j-hui/fidget.nvim", -- Display status
       "ravitemer/codecompanion-history.nvim", -- Save and load conversation history
       {
-        "ravitemer/mcphub.nvim",              -- Manage MCP servers
+        "ravitemer/mcphub.nvim", -- Manage MCP servers
         cmd = "MCPHub",
         build = "npm install -g mcp-hub@latest",
         config = true,

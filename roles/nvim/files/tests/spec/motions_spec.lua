@@ -11,7 +11,9 @@ describe("flash + surround coexistence", function()
       local m = maparg("s", mode)
       assert.is_truthy(
         m.callback or m.rhs,
-        "flash s should be mapped in mode '" .. mode .. "'; lazy registers the "
+        "flash s should be mapped in mode '"
+          .. mode
+          .. "'; lazy registers the "
           .. "flash keys-spec stub for s in mode = { 'n', 'x', 'o' } before flash loads."
       )
     end
@@ -51,7 +53,9 @@ describe("flash + surround coexistence", function()
     assert.is_truthy(
       m.rhs:match("Surround"),
       "vim-surround's visual-mode S should target a Surround <Plug> (expected <Plug>VSurround); "
-        .. "got rhs = '" .. tostring(m.rhs) .. "', which is not a surround mapping."
+        .. "got rhs = '"
+        .. tostring(m.rhs)
+        .. "', which is not a surround mapping."
     )
   end)
 end)

@@ -1,6 +1,6 @@
 - name: Install emacs
-  community.general.homebrew: 
-    name: 
-    - emacs
-    - fd
+  community.general.homebrew:
+    name:
+      - emacs
+      - fd
     state: present

@@ -4,17 +4,14 @@ killall -q polybar
 
 while pgrep -x polybar >/dev/null; do sleep 1; done
 
-if ! pgrep -x "nm-applet" >/dev/null
-then
-    nm-applet &
+if ! pgrep -x "nm-applet" >/dev/null; then
+  nm-applet &
 fi
 
-if ! pgrep -x "flameshot" >/dev/null
-then
+if ! pgrep -x "flameshot" >/dev/null; then
   flameshot &
 fi
-if ! pgrep -x "blueman-applet" >/dev/null
-then
+if ! pgrep -x "blueman-applet" >/dev/null; then
   blueman-applet &
 fi
 

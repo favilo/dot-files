@@ -1,7 +1,9 @@
 -- tests/spec/config_spec.lua
 local function plugin_loaded(name)
   local ok, cfg = pcall(require, "lazy.core.config")
-  if not ok then return false end
+  if not ok then
+    return false
+  end
   local p = cfg.plugins[name]
   return p ~= nil and p._.loaded ~= nil
 end

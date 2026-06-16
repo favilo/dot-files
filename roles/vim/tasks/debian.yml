@@ -1,7 +1,7 @@
 - name: Install vim
   apt:
     name:
-    - vim
+      - vim
     state: present
   become: true
   become_method: sudo
