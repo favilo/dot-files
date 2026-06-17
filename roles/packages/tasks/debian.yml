@@ -14,48 +14,71 @@
   become_method: sudo
   when: ansible_distribution_version == "20.04"
 
+- name: Download 1Password GPG key
+  get_url:
+    url: https://downloads.1password.com/linux/keys/1password.asc
+    dest: /usr/share/keyrings/1password-archive-keyring.asc
+    mode: "0644"
+  become: true
+  become_method: sudo
+  when: not ansible_check_mode
+
+- name: Add 1Password apt repository
+  apt_repository:
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.asc] https://downloads.1password.com/linux/debian/amd64 stable main"
+    state: present
+    filename: 1password
+  become: true
+  become_method: sudo
+  when: not ansible_check_mode
+
+- name: Check which apt packages are missing (Check Mode Only)
+  command: "dpkg-query -W -f='${Package} installed\\n' {{ packages_debian_list | join(' ') }}"
+  register: dpkg_check
+  ignore_errors: true
+  changed_when: false
+  become: false
+  check_mode: no
+  when: ansible_check_mode
+
+- name: Check which snap packages are missing (Check Mode Only)
+  command: "snap list {{ packages_snap_list | join(' ') }}"
+  register: snap_check
+  ignore_errors: true
+  changed_when: false
+  become: false
+  check_mode: no
+  when: ansible_check_mode
+
+- name: Report package differences (Check Mode Only)
+  debug:
+    msg:
+      - "Missing APT packages (would be installed): {{ missing_apt_packages }}"
+      - "Missing Snap packages (would be installed): {{ missing_snap_packages }}"
+  when: ansible_check_mode
+  vars:
+    installed_apt: "{{ (dpkg_check.stdout_lines | default([])) | map('regex_replace', ' installed$', '') | list }}"
+    missing_apt_packages: "{{ packages_debian_list | difference(installed_apt) }}"
+    installed_snaps: "{{ snap_check.stdout_lines | default([]) | map('regex_replace', '^(\\S+)\\s+.*$', '\\1') | list }}"
+    missing_snap_packages: "{{ packages_snap_list | difference(installed_snaps) }}"
+
 - name: Install apt packages
   apt:
-    name:
-      - aptitude
-      - qemu
-      - qemu-system
-      - nodejs
-      - npm
-      - sddm
-      - flameshot
-      - runc
-      - podman
-      - autorandr
-      - arandr
-      - steam-installer
-      - pavucontrol
-      - openjdk-8-jdk
-      - net-tools
-      - pcmanfm
-      - imagemagick
+    name: "{{ packages_debian_list }}"
     state: present
     update_cache: true
   become_method: sudo
   become: true
+  when: not ansible_check_mode
 
 - name: Install snap packages (classic confinement)
   snap:
-    name:
-      - slack
-      - helm
-      - kubectl
+    name: "{{ packages_snap_list }}"
     state: present
     classic: true
   become: true
   become_method: sudo
-
-- name: Remove multimc
-  apt:
-    name: multimc
-    state: absent
-  become: true
-  become_method: sudo
+  when: not ansible_check_mode
 
 - name: Install Prism Launcher via Flatpak
   community.general.flatpak:

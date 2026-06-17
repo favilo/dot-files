@@ -7,7 +7,7 @@
   community.general.npm:
     name: "bash-language-server"
     global: true
-  become: true
+  become: "{{ not ansible_check_mode }}"
   become_method: sudo
   when: ansible_os_family != "Archlinux"
 
@@ -15,7 +15,7 @@
   community.general.npm:
     name: "prettier"
     global: true
-  become: true
+  become: "{{ not ansible_check_mode }}"
   become_method: sudo
 
 # Provides `mmdc`, used by diagram.nvim to render mermaid code blocks inline.
@@ -23,6 +23,4 @@
   community.general.npm:
     name: "@mermaid-js/mermaid-cli"
     global: true
-  become: true
-  become_method: sudo
   when: ansible_os_family != "Archlinux"

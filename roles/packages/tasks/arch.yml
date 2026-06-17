@@ -10,3 +10,12 @@
       - bash-language-server
   become: true
   become_method: sudo
+
+- name: Install 1Password and CLI with yay
+  yay:
+    name:
+      - 1password
+      - 1password-cli
+    state: present
+  become: true
+  become_method: sudo

@@ -1,0 +1,26 @@
+---
+packages_debian_list:
+  - aptitude
+  - qemu
+  - qemu-system
+  - nodejs
+  - npm
+  - sddm
+  - flameshot
+  - runc
+  - podman
+  - autorandr
+  - arandr
+  - steam-installer
+  - pavucontrol
+  - openjdk-8-jdk
+  - net-tools
+  - pcmanfm
+  - imagemagick
+  - 1password
+  - 1password-cli
+
+packages_snap_list:
+  - slack
+  - helm
+  - kubectl

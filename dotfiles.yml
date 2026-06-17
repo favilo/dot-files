@@ -13,11 +13,8 @@
         - "fzf"
         - "zsh"
         - "zellij"
-        # - "emacs"
-        # - "doom-emacs"
         - "nvim"
         - "rust"
-        # - "wm"
         - "packages"
         - "xinput"
 
