@@ -1,11 +1,4 @@
-- name: add alacritty ppa
-  command: "add-apt-repository ppa:aslatter/ppa -y"
-  become: true
-  become_method: sudo
-  args:
-    creates: "/etc/apt/sources.list.d/aslatter-ubuntu-ppa-impish.list"
-
-- name: Install alacritty dependencies
+- name: Install compilation dependencies
   apt:
     name:
       - cmake
@@ -15,7 +8,6 @@
       - libxcb-xfixes0-dev
       - python3
       - libssl-dev
-      - alacritty
       - lld
     state: present
     force_apt_get: yes

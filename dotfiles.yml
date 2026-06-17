@@ -28,6 +28,16 @@
       tags:
         - "git"
     # - {role: fish, tags: ['fish']}
+    - role: programming
+      tags:
+        - "rustup"
+        - "cargo"
+        - "rust"
+        - "go"
+        - "programming"
+    - role: jj
+      tags:
+        - "jj"
     - role: fzf
       tags:
         - "fzf"
@@ -40,16 +50,6 @@
     - role: nvim
       tags:
         - "nvim"
-    # - role: haskell
-    #   tags:
-    #     - "stack"
-    - role: programming
-      tags:
-        - "rustup"
-        - "cargo"
-        - "rust"
-        - "go"
-        - "programming"
     - role: penrose
       tags:
         - "wm"
@@ -60,9 +60,6 @@
     - role: packages
       tags:
         - "packages"
-    - role: jj
-      tags:
-        - "jj"
     - role: xinput
       tags:
         - "xinput"

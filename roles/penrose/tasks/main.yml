@@ -24,13 +24,13 @@
 
 - name: Create polybar config directory
   file:
-    path: "{{ dotfiles_user_home }}/.config/polybar"
+    path: "{{ xdg_config_home }}/polybar"
     state: directory
 
 - name: polybar config
   file:
     src: "{{ dotfiles_home }}/roles/penrose/files/config/polybar/{{ item.src }}"
-    dest: "{{ dotfiles_user_home }}/.config/polybar/{{ item.src }}"
+    dest: "{{ xdg_config_home }}/polybar/{{ item.src }}"
     state: link
     force: true
   with_items:

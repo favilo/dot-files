@@ -7,7 +7,7 @@
       - libasound2-dev
       - libgirepository1.0-dev
       - libxcb-randr0-dev
-      - libwebkit2gtk-4.0-dev
+      - libwebkit2gtk-4.1-dev
       - libgtksourceview-3.0-dev
       - libtinfo-dev
       - libdbusmenu-glib-dev
