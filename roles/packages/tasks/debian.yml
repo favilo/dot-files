@@ -30,11 +30,10 @@
       - arandr
       - steam-installer
       - pavucontrol
-      - gnome-screensaver
-      - silversearcher-ag
       - openjdk-8-jdk
       - net-tools
-      - nemo
+      - pcmanfm
+      - imagemagick
     state: present
     update_cache: true
   become_method: sudo
@@ -51,21 +50,14 @@
   become: true
   become_method: sudo
 
-- name: check if multimc is installed
-  command: dpkg-query -W multimc
-  register: multimc_check_deb
-  failed_when: multimc_check_deb.rc > 1
-  changed_when: multimc_check_deb.rc == 1
-
-- name: download multimc
-  get_url:
-    url: "https://files.multimc.org/downloads/multimc_1.4-1.deb"
-    dest: "{{ dotfiles_user_home }}/Downloads/multimc_1.4-1.deb"
-  when: multimc_check_deb.rc == 1
-
-- name: Install multimc
+- name: Remove multimc
   apt:
-    deb: "{{ dotfiles_user_home }}/Downloads/multimc_1.4-1.deb"
-  when: multimc_check_deb.rc == 1
+    name: multimc
+    state: absent
   become: true
   become_method: sudo
+
+- name: Install Prism Launcher via Flatpak
+  community.general.flatpak:
+    name: org.prismlauncher.PrismLauncher
+    state: present

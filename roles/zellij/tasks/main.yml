@@ -1,0 +1,16 @@
+- name: Install zellij with cargo binstall
+  command: "{{ dotfiles_user_home }}/.cargo/bin/cargo binstall -y zellij"
+  args:
+    creates: "{{ dotfiles_user_home }}/.cargo/bin/zellij"
+
+- name: Create zellij config directory
+  file:
+    path: "{{ dotfiles_user_home }}/.config/zellij"
+    state: directory
+
+- name: Link zellij config.kdl
+  file:
+    src: "{{ dotfiles_home }}/roles/zellij/files/config.kdl"
+    dest: "{{ dotfiles_user_home }}/.config/zellij/config.kdl"
+    state: link
+    force: true

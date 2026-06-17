@@ -92,11 +92,7 @@ modules-left = xworkspaces xwindow
 modules-center = date
 modules-right = volume battery backlight powermenu
 
-[module/xmonad]
-type = custom/script
-exec = ~/go/bin/xmonad-log
 
-tail = true
 
 [module/xworkspaces]
 type = internal/xworkspaces

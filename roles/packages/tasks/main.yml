@@ -17,3 +17,12 @@
     global: true
   become: true
   become_method: sudo
+
+# Provides `mmdc`, used by diagram.nvim to render mermaid code blocks inline.
+- name: install mermaid-cli
+  community.general.npm:
+    name: "@mermaid-js/mermaid-cli"
+    global: true
+  become: true
+  become_method: sudo
+  when: ansible_os_family != "Archlinux"

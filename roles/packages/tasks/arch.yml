@@ -3,11 +3,10 @@
     name:
       - qemu
       - virt-manager
-      - nemo
+      - pcmanfm
       - npm
       - autorandr
       - arandr
       - bash-language-server
-      - the_silver_searcher
   become: true
   become_method: sudo

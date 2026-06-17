@@ -38,8 +38,6 @@
       exe: rg
     - name: zoxide
       exe: zoxide
-    - name: zellij
-      exe: zellij
 
 - name: Alacritty config dir
   file:

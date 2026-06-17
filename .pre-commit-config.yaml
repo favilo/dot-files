@@ -43,7 +43,7 @@ repos:
     rev: v0.11.0
     hooks:
       - id: shellcheck
-        exclude: ^roles/(penrose|sway)/
+        exclude: ^roles/penrose/
         stages: [pre-commit, pre-push]
 
   # Shell format (mvdan/sh Docker image).
@@ -53,12 +53,12 @@ repos:
       - id: shfmt-docker
         name: shfmt (check shell)
         args: [-d, -i, "2", -ci]
-        exclude: ^roles/(penrose|sway)/
+        exclude: ^roles/penrose/
         stages: [pre-commit, pre-push]
       - id: shfmt-docker
         name: shfmt (format shell)
         args: [-w, -i, "2", -ci]
-        exclude: ^roles/(penrose|sway)/
+        exclude: ^roles/penrose/
         stages: [manual]
 
   - repo: local

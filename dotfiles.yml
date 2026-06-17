@@ -12,12 +12,11 @@
         - "git"
         - "fzf"
         - "zsh"
-        - "tmux"
+        - "zellij"
         # - "emacs"
         # - "doom-emacs"
         - "nvim"
         - "rust"
-        # - "sway"
         # - "wm"
         - "packages"
         - "xinput"
@@ -35,9 +34,9 @@
     - role: zsh
       tags:
         - "zsh"
-    - role: tmux
+    - role: zellij
       tags:
-        - "tmux"
+        - "zellij"
     - role: nvim
       tags:
         - "nvim"
@@ -51,18 +50,10 @@
         - "rust"
         - "go"
         - "programming"
-    # - role: sway
-    #   tags:
-    #     - "sway"
-    #     - "wm"
-    # - role: penrose
-    #   tags:
-    #     - "wm"
-    #     - "penrose"
-    #     - "bspwm"
-    # - role: xmonad
-    #   tags:
-    #     - "xmonad"
+    - role: penrose
+      tags:
+        - "wm"
+        - "penrose"
     - role: firefox
       tags:
         - firefox

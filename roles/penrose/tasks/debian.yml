@@ -1,4 +1,4 @@
-- name: Install bspwm dependencies
+- name: Install penrose dependencies
   apt:
     name:
       - libglib2.0-dev
@@ -18,9 +18,7 @@
       - polybar
       - blueman
       - nitrogen
-      - sxhkd
       - picom
-      - bspwm
       - rofi
       - dunst
       - jq
