@@ -1,0 +1,22 @@
+---
+# `min` only flags things that would actually break (e.g. missing roles, bad
+# syntax) — a sane floor for this repo. Raise to `basic`/`safety`/etc. later to
+# enforce more style. Use yamllint (.yamllint) for YAML formatting concerns.
+profile: min
+
+exclude_paths:
+  - roles/nvim/files/ # deployed nvim config (lua/yaml), not Ansible content
+  - .github/
+
+# yamllint runs separately via `just lint-yaml`.
+skip_list:
+  - yaml
+
+# Modules the lint env can't resolve: `yay` is this repo's custom module
+# (library/yay); the rest live in the community.general collection, which we
+# don't install just to lint. Mock them so syntax-check passes.
+mock_modules:
+  - yay
+  - snap
+  - community.general.npm
+  - community.general.pacman

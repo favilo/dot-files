@@ -23,7 +23,7 @@ iron.setup({
     -- set the file type of the newly created repl to ft
     -- bufnr is the buffer id of the REPL and ft is the filetype of the
     -- language being used for the REPL.
-    repl_filetype = function(bufnr, ft)
+    repl_filetype = function(_bufnr, ft)
       return ft
       -- or return a string name such as the following
       -- return "iron"

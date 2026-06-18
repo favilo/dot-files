@@ -72,7 +72,7 @@ repos:
         language: node
         additional_dependencies: ["prettier@3.8.4"]
         types_or: [yaml, json, css, markdown]
-        exclude: \.j2$|lazy-lock.json$
+        exclude: \.j2$|lazy-lock.json$|\.yamllint$|\.ansible-lint$
         stages: [pre-commit, pre-push]
       - id: prettier-format
         name: prettier (format yaml/json/css/md)
@@ -80,7 +80,7 @@ repos:
         language: node
         additional_dependencies: ["prettier@3.8.4"]
         types_or: [yaml, json, css, markdown]
-        exclude: \.j2$|lazy-lock.json$
+        exclude: \.j2$|lazy-lock.json$|\.yamllint$|\.ansible-lint$
         stages: [manual]
 
       # Heavy and inherently local: boots a real nvim. Push-only, and only when

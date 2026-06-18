@@ -7,3 +7,7 @@ tmp/
 .stack-work
 *.lock
 roles/nvim/files/plugin/packer_compiled.lua
+
+# ansible-lint writes mocked modules here (mock_modules in .ansible-lint), and
+# ansible uses it for local galaxy installs / tmp — all generated, not source.
+.ansible/

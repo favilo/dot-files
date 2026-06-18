@@ -1,0 +1,44 @@
+# Minimal selene standard library for this Neovim config.
+# Extends Lua 5.1 with the `vim` global and the plenary/busted test globals so
+# selene doesn't report them as undefined. Field-level typing is left to
+# lua-language-server (see .luarc.json); selene only needs the names to exist.
+---
+base: lua51
+
+globals:
+  vim:
+    any: true
+
+  # luassert replaces the stdlib `assert` global with a callable table
+  # (assert.are.equal, assert.is_true, ...); treat it as `any` so selene's
+  # standard-library field checks don't fire on the assertion chains.
+  assert:
+    any: true
+
+  # interactive dev-helper globals defined in lua/utils/globals.lua
+  P:
+    any: true
+  R:
+    any: true
+  RELOAD:
+    any: true
+  GIT_CWD:
+    any: true
+
+  # plenary busted test runner globals (tests/spec/*_spec.lua)
+  describe:
+    any: true
+  it:
+    any: true
+  before_each:
+    any: true
+  after_each:
+    any: true
+  pending:
+    any: true
+  spy:
+    any: true
+  stub:
+    any: true
+  mock:
+    any: true

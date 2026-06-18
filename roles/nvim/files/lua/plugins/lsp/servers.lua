@@ -1,6 +1,5 @@
 local M = {}
 
-local home_path = os.getenv("HOME")
 local venv_path = os.getenv("VIRTUAL_ENV")
 local py_path = nil
 
@@ -9,13 +8,13 @@ if venv_path ~= nil then
   py_path = venv_path .. "/bin/python"
 end
 
-local lsp_path = string.format(
-  "%s/.local/bin:%s/.cargo/bin:%s/.nvm/versions/node/v24.6.0/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/sbin:/bin",
-  home_path,
-  home_path,
-  home_path
-)
--- PATH = "~/.cargo/bin:~/.nvm/versions/node/v24.6.0/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/sbin:/bin",
+-- local _home_path = os.getenv("HOME")
+-- local _lsp_path = string.format(
+--   "%s/.local/bin:%s/.cargo/bin:%s/.nvm/versions/node/v24.6.0/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/sbin:/bin",
+--   home_path,
+--   home_path,
+--   home_path
+-- )
 
 local servers = {
   pylsp = {
@@ -116,15 +115,10 @@ local servers = {
   --   },
   -- },
 
-  lua_ls = {
-    settings = {
-      Lua = {
-        diagnostics = {
-          globals = { "vim" },
-        },
-      },
-    },
-  },
+  -- Kept generic so this server works the same in every project. Project-specific
+  -- type setup (the nvim `vim` runtime library, plenary/busted test globals, the
+  -- luassert meta) lives in this config's own .luarc.json instead of here.
+  lua_ls = {},
 
   rust_analyzer = {
     -- disable for different cargo version...
@@ -276,7 +270,7 @@ local servers = {
   microcad = {
     filetypes = { "microcad", "mcad", "ucad", "µcad" },
     cmd = { "microcad-lsp", "--stdio" },
-    root_markers = { { "mcad.toml", "ucad.toml", "µcad.toml" }, ".git" },
+    root_markers = { { "mcad.toml", "ucad.toml", "µcad.toml" }, ".git", ".jj" },
     env = {
       RUST_LOG = "debug",
     },
