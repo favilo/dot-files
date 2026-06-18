@@ -85,3 +85,6 @@
   community.general.flatpak:
     name: org.prismlauncher.PrismLauncher
     state: present
+  become: true
+  become_method: sudo
+  when: not ansible_check_mode

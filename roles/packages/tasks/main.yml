@@ -3,24 +3,25 @@
 - import_tasks: arch.yml
   when: ansible_os_family == "Archlinux"
 
-- name: install bash-language-server
-  community.general.npm:
-    name: "bash-language-server"
-    global: true
-  become: "{{ not ansible_check_mode }}"
-  become_method: sudo
-  when: ansible_os_family != "Archlinux"
+- name: Install global npm packages to user local bin
+  block:
+    - name: install bash-language-server
+      community.general.npm:
+        name: "bash-language-server"
+        global: true
+      when: ansible_os_family != "Archlinux"
 
-- name: install prettier
-  community.general.npm:
-    name: "prettier"
-    global: true
-  become: "{{ not ansible_check_mode }}"
-  become_method: sudo
+    - name: install prettier
+      community.general.npm:
+        name: "prettier"
+        global: true
 
-# Provides `mmdc`, used by diagram.nvim to render mermaid code blocks inline.
-- name: install mermaid-cli
-  community.general.npm:
-    name: "@mermaid-js/mermaid-cli"
-    global: true
-  when: ansible_os_family != "Archlinux"
+    # Provides `mmdc`, used by diagram.nvim to render mermaid code blocks inline.
+    - name: install mermaid-cli
+      community.general.npm:
+        name: "@mermaid-js/mermaid-cli"
+        global: true
+      when: ansible_os_family != "Archlinux"
+  environment:
+    NPM_CONFIG_PREFIX: "{{ dotfiles_user_home }}/.local"
+  when: not ansible_check_mode
