@@ -32,11 +32,7 @@ return {
           mermaid = {
             theme = "dark",
             -- mmdc drives Chromium via puppeteer; on Ubuntu 23.10+ AppArmor
-            -- blocks unprivileged user namespaces, so Chromium can't build its
-            -- sandbox. Launch it with --no-sandbox (safe for trusted local
-            -- diagram source) via this puppeteer config rather than disabling
-            -- the restriction system-wide.
-            cli_args = { "--puppeteerConfigFile", vim.fn.stdpath("config") .. "/puppeteer-config.json" },
+            cli_args = vim.env.DOTFILES_TRUSTED_MERMAID == "1" and { "--puppeteerConfigFile", vim.fn.stdpath("config") .. "/puppeteer-config.json" } or {},
           },
         },
       }

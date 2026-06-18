@@ -1,11 +1,11 @@
 - import_tasks: debian.yml
   when: ansible_os_family == "Debian"
 
-- name: Install bob-nvim with cargo binstall
-  command: "{{ dotfiles_user_home }}/.cargo/bin/cargo binstall -y {{ '--dry-run' if ansible_check_mode else '' }} bob-nvim"
+- name: Install bob-nvim with cargo-binstall
+  command: "{{ dotfiles_user_home }}/.cargo/bin/cargo-binstall -y bob-nvim"
   args:
     creates: "{{ dotfiles_user_home }}/.cargo/bin/bob"
-  check_mode: no
+  when: not ansible_check_mode
 
 - name: Install Neovim version via bob
   command: "{{ dotfiles_user_home }}/.cargo/bin/bob use v0.12.2"
