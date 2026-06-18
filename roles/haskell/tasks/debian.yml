@@ -1,3 +1,16 @@
+- name: Check if haskell-stack is installed
+  command: dpkg-query -W -f='${Status}' haskell-stack
+  register: haskell_check
+  ignore_errors: true
+  changed_when: false
+  become: false
+  check_mode: no
+
+- name: Report haskell-stack status (Check Mode Only)
+  debug:
+    msg: "haskell-stack is missing and would be installed"
+  when: ansible_check_mode and haskell_check.rc is defined and haskell_check.rc != 0
+
 - name: Install haskell-stack
   apt:
     name:
@@ -6,3 +19,4 @@
     force_apt_get: yes
   become: true
   become_method: sudo
+  when: not ansible_check_mode and haskell_check.rc is defined and haskell_check.rc != 0

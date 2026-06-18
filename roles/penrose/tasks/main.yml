@@ -5,12 +5,14 @@
   git:
     repo: https://github.com/favilo/favilrose
     dest: "{{ dotfiles_user_home }}/git/utilities/favilrose"
+  when: not ansible_check_mode
 
 - name: Build favilrose (release)
   command: make build
   args:
     chdir: "{{ dotfiles_user_home }}/git/utilities/favilrose"
     creates: "{{ dotfiles_user_home }}/git/utilities/favilrose/target/release/favilo-penrose"
+  when: not ansible_check_mode
 
 # `make install` copies the binary, bin/ + scripts/ helpers, systemd units, and
 # the repo's own penrose.desktop into /usr/local and /usr — all need root.
@@ -21,6 +23,7 @@
     creates: "/usr/local/bin/favilo-penrose"
   become: true
   become_method: sudo
+  when: not ansible_check_mode
 
 - name: Create polybar config directory
   file:
