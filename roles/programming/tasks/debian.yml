@@ -1,13 +1,12 @@
-- name: add alacritty ppa
-  command: "add-apt-repository ppa:aslatter/ppa -y"
-  become: true
-  become_method: sudo
-  args:
-    creates: "/etc/apt/sources.list.d/aslatter-ubuntu-ppa-impish.list"
-
-- name: Install alacritty dependencies
-  apt:
-    name:
+- name: Check which compilation packages are missing
+  command: "dpkg-query -W -f='${Package} installed\\n' {{ comp_packages | join(' ') }}"
+  register: comp_check
+  ignore_errors: true
+  changed_when: false
+  become: false
+  check_mode: no
+  vars:
+    comp_packages: &comp_pkgs
       - cmake
       - pkg-config
       - libfreetype6-dev
@@ -15,12 +14,41 @@
       - libxcb-xfixes0-dev
       - python3
       - libssl-dev
-      - alacritty
       - lld
+
+- name: Set missing compilation packages fact
+  set_fact:
+    missing_comp_packages: "{{ comp_packages | difference((comp_check.stdout_lines | default([])) | map('regex_replace', ' installed$', '') | list) }}"
+  vars:
+    comp_packages: *comp_pkgs
+
+- name: Check if go snap is missing
+  command: "snap list go"
+  register: go_snap_check
+  ignore_errors: true
+  changed_when: false
+  become: false
+  check_mode: no
+
+- name: Set missing go snap fact
+  set_fact:
+    go_snap_missing: "{{ go_snap_check.rc is defined and go_snap_check.rc != 0 }}"
+
+- name: Report missing programming components (Check Mode Only)
+  debug:
+    msg:
+      - "Missing compilation packages (would be installed): {{ missing_comp_packages }}"
+      - "go snap is {{ 'missing and would be installed' if go_snap_missing else 'already installed' }}"
+  when: ansible_check_mode
+
+- name: Install compilation dependencies
+  apt:
+    name: "{{ missing_comp_packages }}"
     state: present
     force_apt_get: yes
   become: true
   become_method: sudo
+  when: not ansible_check_mode and missing_comp_packages | length > 0
 
 - name: Install go
   snap:
@@ -30,3 +58,4 @@
     classic: true
   become: true
   become_method: sudo
+  when: not ansible_check_mode and go_snap_missing

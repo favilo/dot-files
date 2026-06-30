@@ -1,0 +1,4 @@
+- name: noop
+  debug:
+    msg: "noop"
+  when: false

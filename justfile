@@ -27,3 +27,11 @@ lint-yaml DIR=".":
 # Lint the Ansible playbook and roles with ansible-lint (config: .ansible-lint).
 lint-ansible:
     uvx ansible-lint
+
+# Run a dry run of the Ansible playbook to see what changes would be made
+dry-run *ARGS:
+    ansible-playbook -i hosts dotfiles.yml -v --check --diff {{ ARGS }}
+
+# Apply the dotfiles configuration to the local system
+apply *ARGS:
+    ansible-playbook -i hosts dotfiles.yml --ask-become-pass -v {{ ARGS }}

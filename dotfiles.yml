@@ -12,13 +12,9 @@
         - "git"
         - "fzf"
         - "zsh"
-        - "tmux"
-        # - "emacs"
-        # - "doom-emacs"
+        - "zellij"
         - "nvim"
         - "rust"
-        # - "sway"
-        # - "wm"
         - "packages"
         - "xinput"
 
@@ -29,21 +25,6 @@
       tags:
         - "git"
     # - {role: fish, tags: ['fish']}
-    - role: fzf
-      tags:
-        - "fzf"
-    - role: zsh
-      tags:
-        - "zsh"
-    - role: tmux
-      tags:
-        - "tmux"
-    - role: nvim
-      tags:
-        - "nvim"
-    # - role: haskell
-    #   tags:
-    #     - "stack"
     - role: programming
       tags:
         - "rustup"
@@ -51,27 +32,31 @@
         - "rust"
         - "go"
         - "programming"
-    # - role: sway
-    #   tags:
-    #     - "sway"
-    #     - "wm"
-    # - role: penrose
-    #   tags:
-    #     - "wm"
-    #     - "penrose"
-    #     - "bspwm"
-    # - role: xmonad
-    #   tags:
-    #     - "xmonad"
+    - role: jj
+      tags:
+        - "jj"
+    - role: fzf
+      tags:
+        - "fzf"
+    - role: zsh
+      tags:
+        - "zsh"
+    - role: zellij
+      tags:
+        - "zellij"
+    - role: nvim
+      tags:
+        - "nvim"
+    - role: penrose
+      tags:
+        - "wm"
+        - "penrose"
     - role: firefox
       tags:
         - firefox
     - role: packages
       tags:
         - "packages"
-    - role: jj
-      tags:
-        - "jj"
     - role: xinput
       tags:
         - "xinput"

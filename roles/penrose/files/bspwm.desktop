@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=BSPwm
-Comment=Lightweight tiling window manager
-Exec=/usr/bin/bspwm
-Type=XSession

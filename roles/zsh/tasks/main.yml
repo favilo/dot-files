@@ -27,7 +27,7 @@
 
 - name: check if ~/.config/zsh exists
   stat:
-    path: "{{ dotfiles_user_home }}/.config/zsh"
+    path: "{{ xdg_config_home }}/zsh"
   register: zsh_config
 
 - name: link .zshrc
@@ -40,7 +40,7 @@
 - name: link backup .zshrc
   file:
     src: "{{ dotfiles_home }}/roles/zsh/files/zshrc"
-    dest: "{{ dotfiles_user_home }}/.config/zsh/.zshrc"
+    dest: "{{ xdg_config_home }}/zsh/.zshrc"
     state: link
     force: true
   when: zsh_config.stat.exists

@@ -13,23 +13,23 @@
   args:
     creates: "{{ dotfiles_user_home }}/.cargo/bin/rustup"
 
-- name: Install fun crates
+- name: Install cargo-binstall
   command: "{{ dotfiles_user_home }}/.cargo/bin/cargo install {{ item.name }}"
   args:
     creates: "{{ dotfiles_user_home }}/.cargo/bin/{{ item.exe }}"
   with_items:
     - name: cargo-binstall
       exe: cargo-binstall
+
+- name: Install fun crates
+  command: "{{ dotfiles_user_home }}/.cargo/bin/cargo-binstall -y {{ item.name }}"
+  args:
+    creates: "{{ dotfiles_user_home }}/.cargo/bin/{{ item.exe }}"
+  with_items:
     - name: cargo-edit
       exe: cargo-add
     - name: sccache
       exe: sccache
-
-- name: Install fun crates
-  command: "{{ dotfiles_user_home }}/.cargo/bin/cargo binstall {{ item.name }}"
-  args:
-    creates: "{{ dotfiles_user_home }}/.cargo/bin/{{ item.exe }}"
-  with_items:
     - name: eza
       exe: eza
     - name: bat
@@ -38,18 +38,17 @@
       exe: rg
     - name: zoxide
       exe: zoxide
-    - name: zellij
-      exe: zellij
+  when: not ansible_check_mode
 
-- name: Alacritty config dir
+- name: Kitty config dir
   file:
-    path: "{{ dotfiles_user_home }}/.config/alacritty"
+    path: "{{ xdg_config_home }}/kitty"
     state: directory
 
-- name: Alacritty config
+- name: Kitty config
   file:
-    src: "{{ dotfiles_home }}/roles/programming/files/alacritty.toml"
-    dest: "{{ dotfiles_user_home }}/.config/alacritty/alacritty.toml"
+    src: "{{ dotfiles_home }}/roles/programming/files/kitty.conf"
+    dest: "{{ xdg_config_home }}/kitty/kitty.conf"
     state: link
     force: true
 

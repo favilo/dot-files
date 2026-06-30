@@ -20,3 +20,4 @@ mock_modules:
   - snap
   - community.general.npm
   - community.general.pacman
+  - community.general.flatpak

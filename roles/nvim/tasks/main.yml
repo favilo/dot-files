@@ -1,9 +1,20 @@
 - import_tasks: debian.yml
   when: ansible_os_family == "Debian"
 
+- name: Install bob-nvim with cargo-binstall
+  command: "{{ dotfiles_user_home }}/.cargo/bin/cargo-binstall -y bob-nvim"
+  args:
+    creates: "{{ dotfiles_user_home }}/.cargo/bin/bob"
+  when: not ansible_check_mode
+
+- name: Install Neovim version via bob
+  command: "{{ dotfiles_user_home }}/.cargo/bin/bob use v0.12.2"
+  args:
+    creates: "{{ dotfiles_user_home }}/.local/share/bob/v0.12.2"
+
 - name: Link nvim config directory
   file:
     src: "{{ dotfiles_home }}/roles/nvim/files/"
-    dest: "{{ dotfiles_user_home }}/.config/nvim"
+    dest: "{{ xdg_config_home }}/nvim"
     state: link
     force: true

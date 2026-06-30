@@ -1,21 +1,77 @@
 #!/usr/bin/env bash
 set -e
 
-if ! [ -x "$(command -v ansible)" ]; then
-  sudo apt install ansible
-fi
+detect_os() {
+  if [ -f /etc/os-release ]; then
+    # shellcheck source=/dev/null
+    . /etc/os-release
+    echo "$ID"
+  else
+    uname -s | tr '[:upper:]' '[:lower:]'
+  fi
+}
 
-# ansible-galaxy install gantsign.antigen --ignore-certs
-if ! [ -x "$(ansible-galaxy collection list community.general)" ]; then
-  ansible-galaxy collection install community.general --ignore-certs
-fi
-# if ! [ -x "$(ansible-galaxy list viasite-ansible.zsh)" ]; then
-#     ansible-galaxy install viasite-ansible.zsh --force --ignore-certs
-# fi
+install_prereqs() {
+  local os="$1"
+  local pkgs=(ansible just git curl)
 
-echo "Setting up local dev environment"
-ansible-playbook -i ~/git/dot-files/hosts ~/git/dot-files/dotfiles.yml --ask-become-pass -v "$@"
+  # Check if all packages are already installed
+  local install_needed=false
+  for pkg in "${pkgs[@]}"; do
+    if ! command -v "$pkg" &>/dev/null; then
+      install_needed=true
+      break
+    fi
+  done
 
-if command -v terminal-notifier 1>/dev/null 2>&1; then
-  terminal-notifier -title "dotfiles: Bootstrap complete" -message "Successfully set up dev environment."
-fi
+  if [ "$install_needed" = false ]; then
+    return 0
+  fi
+
+  case "$os" in
+    ubuntu | debian | pop | mint)
+      echo "Installing Debian/Ubuntu prerequisites..."
+      sudo apt-get update
+      sudo apt-get install -y ansible just git curl
+      ;;
+    arch | manjaro)
+      echo "Installing Arch Linux prerequisites..."
+      sudo pacman -Sy --needed --noconfirm ansible just git curl
+      ;;
+    *)
+      echo "Unsupported OS: $os"
+      echo "Please ensure ansible, just, git, and curl are installed manually."
+      exit 1
+      ;;
+  esac
+}
+
+install_collections() {
+  if ! ansible-galaxy collection list community.general >/dev/null 2>&1; then
+    echo "Installing community.general collection..."
+    ansible-galaxy collection install community.general --ignore-certs
+  fi
+}
+
+run_playbook() {
+  if [[ "$1" == "--check" ]] || [[ "$1" == "dry-run" ]]; then
+    echo "Running dry-run..."
+    shift
+    just dry-run "$@"
+  else
+    echo "Applying dotfiles configuration..."
+    just apply "$@"
+  fi
+}
+
+main() {
+  local os
+  os=$(detect_os)
+  echo "Detected OS: $os"
+
+  install_prereqs "$os"
+  install_collections
+  run_playbook "$@"
+}
+
+main "$@"
