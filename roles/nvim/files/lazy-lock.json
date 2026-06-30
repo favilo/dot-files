@@ -3,6 +3,7 @@
   "HowMuch": { "branch": "master", "commit": "787ead49e6311dc77b8e07a3aca79cbd6feab34c" },
   "LuaSnip": { "branch": "master", "commit": "642b0c595e11608b4c18219e93b88d7637af27bc" },
   "actions-preview.nvim": { "branch": "master", "commit": "0ac9c2aa3cfc8c885321c0862b50b6b1c3392405" },
+  "ansi.nvim": { "branch": "main", "commit": "95de464c315ecbe9d7ca3d9a203ef85def0cf6aa" },
   "baleia.nvim": { "branch": "main", "commit": "710537ff5cd669c5a76c5f5b6a9169fd9b913d18" },
   "black-nvim": { "branch": "master", "commit": "8fb3efc562b67269e6f31f8653297f826534fa4b" },
   "blink.cmp": { "branch": "main", "commit": "78336bc89ee5365633bcf754d93df01678b5c08f" },
