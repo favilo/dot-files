@@ -4,6 +4,9 @@
 # enforce more style. Use yamllint (.yamllint) for YAML formatting concerns.
 profile: min
 
+enable_list:
+  - use-include-tasks
+
 rulesdir:
   - .ansible-rules/
 
