@@ -51,9 +51,18 @@ install_collections() {
     echo "Installing community.general collection..."
     ansible-galaxy collection install community.general --ignore-certs
   fi
+
+  if ! ansible-galaxy collection list kewlfft.aur >/dev/null 2>&1; then
+    echo "Installing kewlfft.aur collection..."
+    ansible-galaxy collection install kewlfft.aur --ignore-certs
+  fi
 }
 
 run_playbook() {
+  if [[ "$1" == "--no-playbook" ]] || [[ "$1" == "--only-prereqs" ]]; then
+    echo "Skipping playbook execution."
+    return 0
+  fi
   if [[ "$1" == "--check" ]] || [[ "$1" == "dry-run" ]]; then
     echo "Running dry-run..."
     shift

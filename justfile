@@ -2,6 +2,10 @@
 
 mod nvim 'roles/nvim/files'
 
+# Install bootstrap prerequisites and Ansible Galaxy collections without running the playbook
+bootstrap:
+    bin/dot-bootstrap --no-playbook
+
 # Auto-format in place. Pass a hook id to run just that one, e.g. `just fmt stylua-github`.
 fmt HOOK="":
     prek run --hook-stage manual {{ HOOK }} --all-files

@@ -1,6 +1,6 @@
-- import_tasks: debian.yml
+- include_tasks: debian.yml
   when: ansible_os_family == "Debian"
-- import_tasks: arch.yml
+- include_tasks: arch.yml
   when: ansible_os_family == "Archlinux"
 
 - name: download rustup
@@ -13,15 +13,21 @@
   args:
     creates: "{{ dotfiles_user_home }}/.cargo/bin/rustup"
 
-- name: Install cargo-binstall
+- name: Install rust-analyzer component
+  command: "{{ dotfiles_user_home }}/.cargo/bin/rustup component add rust-analyzer"
+  changed_when: false
+
+- name: Install cargo-binstall and lspmux
   command: "{{ dotfiles_user_home }}/.cargo/bin/cargo install {{ item.name }}"
   args:
     creates: "{{ dotfiles_user_home }}/.cargo/bin/{{ item.exe }}"
   with_items:
     - name: cargo-binstall
       exe: cargo-binstall
+    - name: lspmux
+      exe: lspmux
 
-- name: Install fun crates
+- name: Install useful crates
   command: "{{ dotfiles_user_home }}/.cargo/bin/cargo-binstall -y {{ item.name }}"
   args:
     creates: "{{ dotfiles_user_home }}/.cargo/bin/{{ item.exe }}"
@@ -56,6 +62,7 @@
   file:
     dest: "{{ dotfiles_user_home }}/.cargo/bin/rls"
     state: absent
+
 # - name: Checkout rust-analyzer
 #   git:
 #     repo: https://github.com/rust-analyzer/rust-analyzer.git
@@ -66,3 +73,22 @@
 #   command: "cargo xtask install --server"
 #   args:
 #     chdir: "{{ dotfiles_user_home }}/git/utilities/rust-analyzer"
+
+- name: Ensure systemd user directory exists
+  file:
+    path: "{{ dotfiles_user_home }}/.config/systemd/user"
+    state: directory
+
+- name: Install lspmux systemd user service unit
+  template:
+    src: lspmux.service.j2
+    dest: "{{ dotfiles_user_home }}/.config/systemd/user/lspmux.service"
+
+- name: Enable and start lspmux service
+  systemd:
+    name: lspmux
+    scope: user
+    enabled: yes
+    masked: no
+    state: started
+    daemon_reload: yes

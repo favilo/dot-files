@@ -1,0 +1,10 @@
+[Unit]
+Description=Rust analyzer multiplex server
+
+[Service]
+Type=simple
+ExecStart={{ dotfiles_user_home }}/.cargo/bin/lspmux server
+Environment="PATH={{ dotfiles_user_home }}/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+[Install]
+WantedBy=default.target
