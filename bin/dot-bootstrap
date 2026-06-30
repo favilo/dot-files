@@ -13,7 +13,7 @@ detect_os() {
 
 install_prereqs() {
   local os="$1"
-  local pkgs=(ansible just git curl)
+  local pkgs=(ansible just git curl selene lua-language-server uv)
 
   # Check if all packages are already installed
   local install_needed=false
@@ -32,15 +32,25 @@ install_prereqs() {
     ubuntu | debian | pop | mint)
       echo "Installing Debian/Ubuntu prerequisites..."
       sudo apt-get update
-      sudo apt-get install -y ansible just git curl
+      sudo apt-get install -y ansible just git curl lua-language-server || true
+      if ! command -v uv &>/dev/null; then
+        echo "Installing uv..."
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+      fi
+      if ! command -v selene &>/dev/null; then
+        echo "Installing selene via cargo..."
+        if command -v cargo &>/dev/null; then
+          cargo install selene
+        fi
+      fi
       ;;
     arch | manjaro)
       echo "Installing Arch Linux prerequisites..."
-      sudo pacman -Sy --needed --noconfirm ansible just git curl
+      sudo pacman -Sy --needed --noconfirm ansible just git curl selene lua-language-server uv
       ;;
     *)
       echo "Unsupported OS: $os"
-      echo "Please ensure ansible, just, git, and curl are installed manually."
+      echo "Please ensure ansible, just, git, curl, selene, lua-language-server, and uv are installed manually."
       exit 1
       ;;
   esac

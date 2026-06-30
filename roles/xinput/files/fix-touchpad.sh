@@ -2,7 +2,7 @@
 # Script to configure touchpad with natural scrolling and tapping enabled
 
 # Find touchpad device ID (looking for common touchpad names)
-TOUCHPAD_ID=$(xinput list | grep -i 'touchpad\|synaptics\|elan' | grep -v 'Virtual' | head -1 | grep -oP 'id=\K\d+')
+TOUCHPAD_ID=$(xinput list | grep -i 'touchpad\|synaptics\|elan' | grep -vi 'trackpoint\|tpps' | grep -v 'Virtual' | head -1 | grep -oP 'id=\K\d+')
 
 if [ -z "$TOUCHPAD_ID" ]; then
   echo "Error: Could not find touchpad device"

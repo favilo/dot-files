@@ -17,3 +17,6 @@
       - 1password
       - 1password-cli
     state: present
+    use: yay
+  become: true
+  become_user: "{{ dotfiles_user }}"
