@@ -1,4 +1,7 @@
-- name: noop
-  debug:
-    msg: "noop"
-  when: false
+- name: Install GitHub CLI
+  community.general.pacman:
+    name: github-cli
+    state: present
+  become: true
+  become_method: sudo
+  when: not ansible_check_mode
