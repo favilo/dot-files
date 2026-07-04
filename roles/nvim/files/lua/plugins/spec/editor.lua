@@ -91,7 +91,7 @@ return {
         -- order matters: if one is not detected, the other is used as fallback. You
         -- can also delete or rearangne the detection methods.
         detection_methods = { "pattern", "lsp" },
-        patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn" },
+        patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", ".jj" },
         exclude_dirs = { "~/.cargo/*" },
 
         show_hidden = true,
