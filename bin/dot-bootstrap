@@ -13,7 +13,7 @@ detect_os() {
 
 install_prereqs() {
   local os="$1"
-  local pkgs=(ansible just git curl selene lua-language-server uv)
+  local pkgs=(ansible just git curl selene lua-language-server uv prek)
 
   # Check if all packages are already installed
   local install_needed=false
@@ -50,10 +50,23 @@ install_prereqs() {
       ;;
     *)
       echo "Unsupported OS: $os"
-      echo "Please ensure ansible, just, git, curl, selene, lua-language-server, and uv are installed manually."
+      echo "Please ensure ansible, just, git, curl, selene, lua-language-server, uv, and prek are installed manually."
       exit 1
       ;;
   esac
+
+  if ! command -v prek &>/dev/null; then
+    echo "Installing prek via uv..."
+    local uv_path="uv"
+    if ! command -v uv &>/dev/null; then
+      if [ -f "$HOME/.local/bin/uv" ]; then
+        uv_path="$HOME/.local/bin/uv"
+      elif [ -f "$HOME/.cargo/bin/uv" ]; then
+        uv_path="$HOME/.cargo/bin/uv"
+      fi
+    fi
+    "$uv_path" tool install prek
+  fi
 }
 
 install_collections() {

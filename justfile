@@ -9,6 +9,8 @@ bootstrap *ARGS:
 fmt HOOK="":
     prek run --hook-stage manual {{ HOOK }} --all-files
 
+format: fmt
+
 # Run check-only hooks (no changes). Pass a hook id to run just that one, e.g. `just check shellcheck`.
 check HOOK="":
     prek run {{ HOOK }} --all-files

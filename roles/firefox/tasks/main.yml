@@ -64,6 +64,6 @@
     path: "{{profiles_dir}}/{{ item }}/user.js"
     line: 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);'
     create: yes
-    mode: '0644'
+    mode: "0644"
   with_items: "{{ profiles.stdout_lines }}"
   when: profiles_ini_stat.stat.exists
