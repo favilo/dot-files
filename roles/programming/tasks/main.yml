@@ -58,6 +58,18 @@
     state: link
     force: true
 
+- name: Lspmux config dir
+  file:
+    path: "{{ xdg_config_home }}/lspmux"
+    state: directory
+
+- name: Hard link lspmux config
+  file:
+    src: "{{ dotfiles_home }}/roles/programming/files/lspmux.toml"
+    dest: "{{ xdg_config_home }}/lspmux/config.toml"
+    state: hard
+    force: true
+
 - name: Remove rls
   file:
     dest: "{{ dotfiles_user_home }}/.cargo/bin/rls"
