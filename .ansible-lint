@@ -20,9 +20,9 @@ skip_list:
 
 # Modules the lint env can't resolve; we mock them so syntax-check passes.
 mock_modules:
-  - kewlfft.aur.aur
   - snap
   - community.general.snap
   - community.general.npm
   - community.general.pacman
   - community.general.flatpak
+  - kewlfft.aur.aur

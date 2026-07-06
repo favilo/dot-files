@@ -10,3 +10,4 @@
     dest: "{{ dotfiles_user_home }}/.local/bin/fix-touchpad"
     state: link
     force: true
+    mode: "0755"

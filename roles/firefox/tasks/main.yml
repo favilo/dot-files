@@ -1,17 +1,33 @@
-- set_fact:
-    firefox_dir: "{{dotfiles_user_home}}/snap/firefox/common/.mozilla/firefox"
-    profiles_dir: "{{dotfiles_user_home}}/snap/firefox/common/.mozilla/firefox"
-  when: ansible_os_family != "Darwin"
-
-- set_fact:
-    firefox_dir: "{{dotfiles_user_home}}/Library/Application Support/Firefox/"
-    profiles_dir: "{{dotfiles_user_home}}/Library/Application Support/Firefox/Profiles"
-  when: ansible_os_family == "Darwin"
-
-- name: Check if profiles.ini exists
+- name: Find candidate profiles.ini files
   stat:
-    path: "{{ firefox_dir }}/profiles.ini"
-  register: profiles_ini_stat
+    path: "{{ item }}"
+  register: profiles_ini_candidates
+  with_items:
+    - "{{dotfiles_user_home}}/Library/Application Support/Firefox/profiles.ini"
+    - "{{dotfiles_user_home}}/.mozilla/firefox/profiles.ini"
+    - "{{dotfiles_user_home}}/snap/firefox/common/.mozilla/firefox/profiles.ini"
+    - "{{dotfiles_user_home}}/.var/app/org.mozilla.firefox/.mozilla/firefox/profiles.ini"
+
+- name: Determine if any profiles.ini exists
+  set_fact:
+    found_profiles_ini: "{{ (profiles_ini_candidates.results | selectattr('stat.exists') | map(attribute='item') | first) | default('') }}"
+
+- name: Set Firefox facts if profiles.ini is found
+  set_fact:
+    firefox_dir: "{{ found_profiles_ini | dirname }}"
+    profiles_dir: >-
+      {{
+        (found_profiles_ini | dirname ~ '/Profiles')
+        if (ansible_os_family == 'Darwin')
+        else (found_profiles_ini | dirname)
+      }}
+  when: found_profiles_ini != ""
+
+- name: Set profiles_ini_stat fact
+  set_fact:
+    profiles_ini_stat:
+      stat:
+        exists: "{{ found_profiles_ini != '' }}"
 
 - name: Read Firefox profiles
   shell: |
@@ -26,6 +42,7 @@
   register: profiles
   when: profiles_ini_stat.stat.exists
   changed_when: false
+  check_mode: false
 
 - name: Create chrome directories
   file:
@@ -39,5 +56,14 @@
     src: "{{ dotfiles_home }}/roles/firefox/files/userChrome.css"
     dest: "{{profiles_dir}}/{{ item }}/chrome/userChrome.css"
     state: hard
+  with_items: "{{ profiles.stdout_lines }}"
+  when: profiles_ini_stat.stat.exists
+
+- name: Enable userChrome.css in user.js
+  lineinfile:
+    path: "{{profiles_dir}}/{{ item }}/user.js"
+    line: 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);'
+    create: yes
+    mode: "0644"
   with_items: "{{ profiles.stdout_lines }}"
   when: profiles_ini_stat.stat.exists
