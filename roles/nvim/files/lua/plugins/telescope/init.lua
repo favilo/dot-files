@@ -117,8 +117,7 @@ end, { desc = "Telescope find files (selected text)" })
 vim.keymap.set("n", "<leader>pp", function()
   builtin.find_files({ hidden = true, no_ignore = true })
 end, { desc = "Telescope find hidden files" })
-vim.keymap.set("n", "<leader>pb", builtin.buffers, { desc = "Telescope buffers" })
-vim.keymap.set("n", "<leader>pd", function()
+vim.keymap.set("n", "<leader>pb", function()
   builtin.buffers({
     attach_mappings = function(prompt_bufnr, map)
       -- <Tab> multi-selects; this deletes the selection (or the entry under the cursor)
@@ -131,7 +130,7 @@ vim.keymap.set("n", "<leader>pd", function()
       return true
     end,
   })
-end, { desc = "Telescope delete buffers" })
+end, { desc = "Telescope buffers" })
 vim.keymap.set("n", "<leader>po", builtin.oldfiles, { desc = "Telescope oldfiles" })
 vim.keymap.set("n", "<leader>pe", require("telescope").extensions.projects.projects, { desc = "Telescope projects" })
 vim.keymap.set("n", "<leader>p.", function()

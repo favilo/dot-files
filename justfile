@@ -22,8 +22,7 @@ test:
 # Run the code linters: YAML (yamllint) + Ansible (ansible-lint) + Lua
 # (lua-language-server + selene). Orthogonal to `check` (prek format/syntax
 # hooks); CI runs both.
-lint: lint-yaml lint-ansible
-    just nvim lint
+lint: lint-yaml lint-ansible lint-vim
 
 # Lint YAML with yamllint (config: .yamllint).
 lint-yaml DIR=".":
@@ -32,6 +31,9 @@ lint-yaml DIR=".":
 # Lint the Ansible playbook and roles with ansible-lint (config: .ansible-lint).
 lint-ansible:
     uvx ansible-lint
+
+lint-vim:
+    just nvim lint
 
 # Run a dry run of the Ansible playbook to see what changes would be made
 dry-run *ARGS:
