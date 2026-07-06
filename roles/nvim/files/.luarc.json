@@ -7,5 +7,8 @@
     "tests/types"
   ],
   "workspace.checkThirdParty": "Disable",
+  "workspace.ignoreDir": [
+    "plugin/packer_compiled.lua"
+  ],
   "diagnostics.disable": ["different-requires"]
 }

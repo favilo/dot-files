@@ -1,5 +1,5 @@
 - include_tasks: debian.yml
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 - name: Install bob-nvim with cargo-binstall
   command: "{{ dotfiles_user_home }}/.cargo/bin/cargo-binstall -y bob-nvim"

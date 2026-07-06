@@ -1,7 +1,7 @@
 - include_tasks: debian.yml
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 - include_tasks: arch.yml
-  when: ansible_os_family == "Archlinux"
+  when: ansible_facts.os_family == "Archlinux"
 
 - name: Install global npm packages to user local bin
   block:
@@ -9,7 +9,7 @@
       community.general.npm:
         name: "bash-language-server"
         global: true
-      when: ansible_os_family != "Archlinux"
+      when: ansible_facts.os_family != "Archlinux"
 
     - name: install prettier
       community.general.npm:
@@ -21,7 +21,7 @@
       community.general.npm:
         name: "@mermaid-js/mermaid-cli"
         global: true
-      when: ansible_os_family != "Archlinux"
+      when: ansible_facts.os_family != "Archlinux"
   environment:
     NPM_CONFIG_PREFIX: "{{ dotfiles_user_home }}/.local"
   when: not ansible_check_mode
