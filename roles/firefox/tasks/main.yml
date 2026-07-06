@@ -18,7 +18,7 @@
     profiles_dir: >-
       {{
         (found_profiles_ini | dirname ~ '/Profiles')
-        if (ansible_os_family == 'Darwin')
+        if (ansible_facts.os_family == 'Darwin')
         else (found_profiles_ini | dirname)
       }}
   when: found_profiles_ini != ""

@@ -4,15 +4,15 @@
     dest: "/etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list"
   become: true
   become_method: sudo
-  when: ansible_distribution_version == "20.04"
+  when: ansible_facts.distribution_version == "20.04"
 
 - name: Install podman apt-key
   apt_key:
-    url: "https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_{{ ansible_distribution_version }}/Release.key"
+    url: "https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_{{ ansible_facts.distribution_version }}/Release.key"
     state: present
   become: true
   become_method: sudo
-  when: ansible_distribution_version == "20.04"
+  when: ansible_facts.distribution_version == "20.04"
 
 - name: Download 1Password GPG key
   get_url:
