@@ -2,7 +2,9 @@ vim.wo.conceallevel = (vim.bo.readonly or vim.bo.buftype == "nofile") and 2 or 0
 
 local diagram_backend = require("config.diagram_backend")
 
-if vim.env.ZELLIJ == nil or diagram_backend.get() ~= nil or vim.b.mermaid_external_viewer_configured then return end
+if vim.env.ZELLIJ == nil or diagram_backend.get() ~= nil or vim.b.mermaid_external_viewer_configured then
+  return
+end
 
 vim.b.mermaid_external_viewer_configured = true
 
@@ -22,12 +24,16 @@ local function mermaid_source_at_cursor()
     end
   end
 
-  if not opening_row then return nil end
+  if not opening_row then
+    return nil
+  end
 
   local source = {}
   for row = opening_row + 1, #lines do
     local line = lines[row]
-    if line:match("^%s*```%s*$") then return table.concat(source, "\n") end
+    if line:match("^%s*```%s*$") then
+      return table.concat(source, "\n")
+    end
     table.insert(source, line)
   end
 end

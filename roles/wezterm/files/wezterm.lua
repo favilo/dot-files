@@ -1,10 +1,10 @@
-local wezterm = require 'wezterm'
+local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
 config.keys = {
   {
-    key = 'r',
-    mods = 'CTRL|SHIFT',
+    key = "r",
+    mods = "CTRL|SHIFT",
     action = wezterm.action.ReloadConfiguration,
   },
 }

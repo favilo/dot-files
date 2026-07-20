@@ -35,5 +35,4 @@ describe("Zellij Mermaid fallback", function()
 
     assert.equals(0, vim.fn.exists(":MermaidOpen"))
   end)
-
 end)
