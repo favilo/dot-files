@@ -1,6 +1,8 @@
 vim.wo.conceallevel = (vim.bo.readonly or vim.bo.buftype == "nofile") and 2 or 0
 
-if vim.env.ZELLIJ == nil or vim.b.mermaid_external_viewer_configured then return end
+local diagram_backend = require("config.diagram_backend")
+
+if vim.env.ZELLIJ == nil or diagram_backend.get() ~= nil or vim.b.mermaid_external_viewer_configured then return end
 
 vim.b.mermaid_external_viewer_configured = true
 
