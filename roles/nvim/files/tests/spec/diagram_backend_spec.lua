@@ -40,4 +40,16 @@ describe("Markdown diagram backends", function()
 		assert.is_false(plugins[2].cond())
 	end)
 
+	it("rerenders a focused Markdown split after its image was cleared", function()
+		local integration_module = "diagram.integrations.markdown"
+		local original_integration = package.loaded[integration_module]
+		package.loaded[integration_module] = {}
+
+		local plugins = require("plugins.spec.diagram")
+		local options = plugins[2].opts()
+
+		package.loaded[integration_module] = original_integration
+		assert.same({ "InsertLeave", "BufWinEnter", "TextChanged", "WinEnter" }, options.events.render_buffer)
+	end)
+
 end)

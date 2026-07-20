@@ -33,6 +33,12 @@ return {
     -- plugin is on the runtimepath.
     opts = function()
       return {
+        events = {
+          -- diagram.nvim clears diagrams on BufLeave. A buffer already shown
+          -- in another split does not emit BufWinEnter when focus returns, so
+          -- redraw it explicitly for the Sixel backend.
+          render_buffer = { "InsertLeave", "BufWinEnter", "TextChanged", "WinEnter" },
+        },
         integrations = {
           require("diagram.integrations.markdown"),
         },
