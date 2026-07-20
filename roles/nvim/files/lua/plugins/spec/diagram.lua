@@ -1,11 +1,13 @@
--- Inline rendering of mermaid (and other) diagrams directly in the buffer via
--- the kitty graphics protocol. Requires a graphics-capable terminal (kitty),
--- the `mmdc` CLI (@mermaid-js/mermaid-cli) to render mermaid, and ImageMagick
--- (`magick`) to process the images -- both installed by the packages role.
+-- Inline diagram rendering relies on the Kitty graphics protocol. Zellij does
+-- not forward that protocol, and Ueberzug++ overlays cannot track its panes or
+-- tabs, so Markdown uses its external-viewer fallback there instead.
 return {
   {
     "3rd/image.nvim",
     event = "VeryLazy",
+    cond = function()
+      return vim.env.ZELLIJ == nil
+    end,
     opts = {
       backend = "kitty",
       -- Use the ImageMagick CLI rather than the `magick` luarock, so there is
@@ -21,6 +23,9 @@ return {
     "3rd/diagram.nvim",
     dependencies = { "3rd/image.nvim" },
     ft = { "markdown" },
+    cond = function()
+      return vim.env.ZELLIJ == nil
+    end,
     -- opts is a function so the integration module is required only after the
     -- plugin is on the runtimepath.
     opts = function()
@@ -32,9 +37,7 @@ return {
           mermaid = {
             theme = "dark",
             -- mmdc drives Chromium via puppeteer; on Ubuntu 23.10+ AppArmor
-            cli_args = vim.env.DOTFILES_TRUSTED_MERMAID == "1"
-                and { "--puppeteerConfigFile", vim.fn.stdpath("config") .. "/puppeteer-config.json" }
-              or {},
+            cli_args = {},
           },
         },
       }
