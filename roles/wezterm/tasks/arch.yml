@@ -1,0 +1,6 @@
+- name: Install WezTerm
+  community.general.pacman:
+    name: wezterm
+    state: present
+  become: true
+  become_method: sudo

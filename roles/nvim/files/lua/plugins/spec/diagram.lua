@@ -1,30 +1,44 @@
--- Inline rendering of mermaid (and other) diagrams directly in the buffer via
--- the kitty graphics protocol. Requires a graphics-capable terminal (kitty),
--- the `mmdc` CLI (@mermaid-js/mermaid-cli) to render mermaid, and ImageMagick
--- (`magick`) to process the images -- both installed by the packages role.
+local diagram_backend = require("config.diagram_backend")
+
+-- WezTerm supports Sixel, which also survives Zellij. Kitty graphics do not,
+-- so use that backend only in direct Kitty sessions.
 return {
   {
     "3rd/image.nvim",
     event = "VeryLazy",
-    opts = {
-      backend = "kitty",
-      -- Use the ImageMagick CLI rather than the `magick` luarock, so there is
-      -- no luarocks build step to maintain.
-      processor = "magick_cli",
-      -- diagram.nvim drives the rendering; don't also auto-render markdown images.
-      integrations = {},
-      max_width_window_percentage = 80,
-      max_height_window_percentage = 80,
-    },
+    cond = function()
+      return diagram_backend.get() ~= nil
+    end,
+    opts = function()
+      return {
+        backend = diagram_backend.get(),
+        -- Use the ImageMagick CLI rather than the `magick` luarock, so there is
+        -- no luarocks build step to maintain.
+        processor = "magick_cli",
+        -- diagram.nvim drives the rendering; don't also auto-render markdown images.
+        integrations = {},
+        max_width_window_percentage = 80,
+        max_height_window_percentage = 80,
+      }
+    end,
   },
   {
     "3rd/diagram.nvim",
     dependencies = { "3rd/image.nvim" },
     ft = { "markdown" },
+    cond = function()
+      return diagram_backend.get() ~= nil
+    end,
     -- opts is a function so the integration module is required only after the
     -- plugin is on the runtimepath.
     opts = function()
       return {
+        events = {
+          -- diagram.nvim clears diagrams on BufLeave. A buffer already shown
+          -- in another split does not emit BufWinEnter when focus returns, so
+          -- redraw it explicitly for the Sixel backend.
+          render_buffer = { "InsertLeave", "BufWinEnter", "TextChanged", "WinEnter" },
+        },
         integrations = {
           require("diagram.integrations.markdown"),
         },
@@ -32,9 +46,7 @@ return {
           mermaid = {
             theme = "dark",
             -- mmdc drives Chromium via puppeteer; on Ubuntu 23.10+ AppArmor
-            cli_args = vim.env.DOTFILES_TRUSTED_MERMAID == "1"
-                and { "--puppeteerConfigFile", vim.fn.stdpath("config") .. "/puppeteer-config.json" }
-              or {},
+            cli_args = {},
           },
         },
       }
