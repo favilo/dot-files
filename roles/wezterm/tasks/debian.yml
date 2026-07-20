@@ -1,0 +1,28 @@
+- name: Download WezTerm APT repository key
+  get_url:
+    url: https://apt.fury.io/wez/gpg.key
+    dest: /usr/share/keyrings/wezterm-fury.asc
+    mode: "0644"
+  become: true
+  become_method: sudo
+
+- name: Add WezTerm APT repository
+  apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/wezterm-fury.asc] https://apt.fury.io/wez/ * *"
+    state: present
+    filename: wezterm
+  become: true
+  become_method: sudo
+
+- name: Update APT cache after adding WezTerm repository
+  apt:
+    update_cache: true
+  become: true
+  become_method: sudo
+
+- name: Install WezTerm
+  apt:
+    name: wezterm
+    state: present
+  become: true
+  become_method: sudo

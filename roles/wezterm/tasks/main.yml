@@ -1,0 +1,11 @@
+- include_tasks: debian.yml
+  when: ansible_facts.os_family == "Debian"
+- include_tasks: arch.yml
+  when: ansible_facts.os_family == "Archlinux"
+
+- name: Hard link WezTerm config
+  file:
+    src: "{{ dotfiles_home }}/roles/wezterm/files/wezterm.lua"
+    dest: "{{ dotfiles_user_home }}/.wezterm.lua"
+    state: hard
+    force: true
