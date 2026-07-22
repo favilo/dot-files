@@ -117,18 +117,33 @@ if [ -f '/home/favilo/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/home/
 setopt prompt_subst # enable command substition in prompt
 
 autoload -U is-at-least
-autoload -Uz vcs_info
-function precmd() {
-  vcs_info
+
+function jj_prompt_info() {
+  (( $+commands[jj] )) || return
+  command jj root --ignore-working-copy &>/dev/null || return
+
+  local info
+  if (( $+functions[jj_prompt_template] )); then
+    info=$(jj_prompt_template 'if(bookmarks, bookmarks.join(" "), change_id.shortest(8))' 2>/dev/null) || return
+  else
+    info=$(command jj log --ignore-working-copy --no-graph -r @ -T 'if(bookmarks, bookmarks.join(" "), change_id.shortest(8))' 2>/dev/null) || return
+    info="${info:gs/%/%%}"
+  fi
+
+  [[ -n "$info" ]] && print -r -- "jj:${info} "
 }
 
-zstyle ':vcs_info:git:*' format '%b '
+function vcs_prompt_info() {
+  jj_prompt_info || {
+    (( $+functions[git_prompt_info] )) && git_prompt_info
+  }
+}
 
 # INFO: Steal the PROMPT variable from my oh-my-zsh theme
 # shellcheck disable=SC2154
 ret_status="%(?:%{${fg_bold[green]}%}➜ :%{${fg_bold[red]}%}➜ %s)"
 # INFO: Change %T to %* to show the seconds in the prompt
-export PROMPT=$'%{$fg[yellow]%}[%T] %{$fg[green]%}%n@%m: %{$reset_color%}%{$fg[blue]%}%/ %{$reset_color%}%{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}
+export PROMPT=$'%{$fg[yellow]%}[%T] %{$fg[green]%}%n@%m: %{$reset_color%}%{$fg[blue]%}%/ %{$reset_color%}%{$fg_bold[blue]%}$(vcs_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}
 ${ret_status} %{$reset_color%} '
 
 # shellcheck disable=SC2034
@@ -192,4 +207,4 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-source <(COMPLETE=zsh jj)
+# jj completion is loaded by the oh-my-zsh jj plugin.
