@@ -9,9 +9,21 @@
     path: "{{ xdg_config_home }}/zellij"
     state: directory
 
+- name: Create zellij themes directory
+  file:
+    path: "{{ xdg_config_home }}/zellij/themes"
+    state: directory
+
 - name: Link zellij config.kdl
   file:
     src: "{{ dotfiles_home }}/roles/zellij/files/config.kdl"
     dest: "{{ xdg_config_home }}/zellij/config.kdl"
+    state: link
+    force: true
+
+- name: Link custom zellij theme
+  file:
+    src: "{{ dotfiles_home }}/roles/zellij/files/nightfox-orange.kdl"
+    dest: "{{ xdg_config_home }}/zellij/themes/nightfox-orange.kdl"
     state: link
     force: true
