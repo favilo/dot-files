@@ -141,5 +141,3 @@ fi
 
 
 
-# Added by Antigravity CLI installer
-export PATH="/home/favilo/.local/bin:$PATH"
