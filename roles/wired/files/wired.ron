@@ -7,10 +7,10 @@
 	shortcuts: ShortcutsConfig (
     notification_action1: 3,
     notification_close: 2,
-    notification_interact: 1,
-    notification_pause: 1
+    notification_interact: 1
   ),
 	history_length: 100,
+  print_to_file: Some(".local/state/wired/notifications.json"),
   replacing_enabled: true,
 	replacing_resets_timeout: true,
   focus_follows: Mouse,

@@ -142,3 +142,7 @@ fi
 
 
 
+
+# >>> Codex installer >>>
+export PATH="/home/favilo/.local/bin:$PATH"
+# <<< Codex installer <<<
