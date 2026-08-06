@@ -35,6 +35,7 @@ lint-yaml DIR=".":
 # Lint the Ansible playbook and roles with ansible-lint (config: .ansible-lint).
 lint-ansible:
     uvx ansible-lint
+    ansible-playbook -i hosts dotfiles.yml --syntax-check
 
 lint-vim:
     just nvim lint
