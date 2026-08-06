@@ -42,6 +42,8 @@
       exe: bat
     - name: ripgrep
       exe: rg
+    - name: ron-lsp
+      exe: ron-lsp
     - name: zoxide
       exe: zoxide
   when: not ansible_check_mode

@@ -22,7 +22,11 @@ test:
 # Run the code linters: YAML (yamllint) + Ansible (ansible-lint) + Lua
 # (lua-language-server + selene). Orthogonal to `check` (prek format/syntax
 # hooks); CI runs both.
-lint: lint-yaml lint-ansible lint-vim
+lint: lint-yaml lint-ansible lint-ron lint-vim
+
+# Lint RON configuration files.
+lint-ron:
+    ron-lsp check roles/wired/files
 
 # Lint YAML with yamllint (config: .yamllint).
 lint-yaml DIR=".":

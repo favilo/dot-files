@@ -13,6 +13,7 @@
         - "fzf"
         - "zsh"
         - "zellij"
+        - "wired"
         - "nvim"
         - "rust"
         - "packages"
@@ -44,6 +45,9 @@
     - role: zellij
       tags:
         - "zellij"
+    - role: wired
+      tags:
+        - "wired"
     - role: wezterm
       tags:
         - "wezterm"

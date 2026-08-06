@@ -53,8 +53,8 @@ jobs:
       - name: Install cargo-binstall
         uses: cargo-bins/cargo-binstall@main
 
-      - name: Install selene
-        run: cargo binstall --no-confirm selene
+      - name: Install lint tools
+        run: cargo binstall --no-confirm ron-lsp selene
 
       # The Lua type check is static, but .luarc.json points its library at the
       # installed plenary/flash plugins, so make those paths exist. (No full
