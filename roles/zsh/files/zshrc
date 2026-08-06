@@ -95,6 +95,7 @@ plugins=(
     docker
     dotenv
     # git
+    jj
     gitfast
     gitignore
     history

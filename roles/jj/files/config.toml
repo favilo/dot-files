@@ -102,3 +102,6 @@ concat(
   'JJ:\n',
 )
 '''
+
+[remotes.origin]
+auto-track-bookmarks = "favilo/*"
