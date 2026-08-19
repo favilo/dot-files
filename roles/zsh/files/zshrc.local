@@ -15,6 +15,10 @@ command -v kubectl >/dev/null && source <(kubectl completion zsh)
 
 fpath=($fpath $HOME/.zsh/completion)
 
+# Ignore the local system /media directory in path completions so case-insensitive
+# completion cleanly resolves to the /Media NFS mount without casing ambiguity.
+zstyle ':completion:*:(all-files|files|directories|paths|cd)*' ignored-patterns '(|/)media'
+
 [ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 
 export PATH="$HOME/bin:/usr/local/bin:$PATH"
@@ -115,6 +119,7 @@ if [ -f '/home/favilo/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/home/
 [ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
 
 setopt prompt_subst # enable command substition in prompt
+setopt ALWAYS_TO_END # always put the cursor at the end of the line when editing
 
 autoload -U is-at-least
 
@@ -141,10 +146,11 @@ function vcs_prompt_info() {
 
 # INFO: Steal the PROMPT variable from my oh-my-zsh theme
 # shellcheck disable=SC2154
-ret_status="%(?:%{${fg_bold[green]}%}➜ :%{${fg_bold[red]}%}➜ %s)"
+ret_status="%(?:%B%F{green}➜ %b%f:%B%F{red}➜ %s%b%f)"
 # INFO: Change %T to %* to show the seconds in the prompt
-export PROMPT=$'%{$fg[yellow]%}[%T] %{$fg[green]%}%n@%m: %{$reset_color%}%{$fg[blue]%}%/ %{$reset_color%}%{$fg_bold[blue]%}$(vcs_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}
-${ret_status} %{$reset_color%} '
+# export PROMPT=$'%{$fg[yellow]%}[%T] %{$fg[green]%}%n@%m: %{$reset_color%}%{$fg[blue]%}%/ %{$reset_color%}%{$fg_bold[blue]%}$(vcs_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}\n${ret_status} %{$reset_color%} '
+export PROMPT=$'%F{yellow}[%T]%f %F{green}%n@%m:%f %F{blue}%/%f %B%F{blue}$(vcs_prompt_info)%f%b
+${ret_status} %f%b'
 
 # shellcheck disable=SC2034
 export PROMPT3='{ ‥ } '
