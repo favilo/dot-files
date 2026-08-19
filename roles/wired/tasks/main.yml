@@ -1,0 +1,37 @@
+- name: Create wired config directory
+  file:
+    path: "{{ xdg_config_home }}/wired"
+    state: directory
+
+- name: Hard link wired configuration
+  file:
+    src: "{{ dotfiles_home }}/roles/wired/files/wired.ron"
+    dest: "{{ xdg_config_home }}/wired/wired.ron"
+    state: hard
+    force: true
+
+- name: Ensure wired state directory exists
+  file:
+    path: "{{ dotfiles_user_home }}/.local/state/wired"
+    state: directory
+
+- name: Ensure user systemd directory exists
+  file:
+    path: "{{ dotfiles_user_home }}/.config/systemd/user"
+    state: directory
+
+- name: Link wired systemd user service
+  file:
+    src: "{{ dotfiles_home }}/roles/wired/files/wired.service"
+    dest: "{{ dotfiles_user_home }}/.config/systemd/user/wired.service"
+    state: hard
+    force: true
+
+- name: Enable and start wired service
+  systemd:
+    name: wired
+    scope: user
+    enabled: true
+    masked: false
+    state: started
+    daemon_reload: true

@@ -66,20 +66,49 @@
   become_method: sudo
   when: not ansible_check_mode and snap_bin.stat.exists and go_snap_missing
 
+- name: Ensure APT keyrings directory exists
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+  become: true
+  become_method: sudo
+
+- name: Check for GitHub CLI GPG key
+  stat:
+    path: /etc/apt/keyrings/githubcli-archive-keyring.gpg
+  register: github_cli_key
+  changed_when: false
+
 - name: Download GitHub CLI GPG key
   get_url:
     url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
-    dest: /usr/share/keyrings/githubcli-archive-keyring.gpg
+    dest: /etc/apt/keyrings/githubcli-archive-keyring.gpg
     mode: "0644"
+  become: true
+  become_method: sudo
+  when: not ansible_check_mode and not github_cli_key.stat.exists
+
+- name: Remove obsolete GitHub CLI list repository
+  file:
+    path: /etc/apt/sources.list.d/github-cli.list
+    state: absent
   become: true
   become_method: sudo
   when: not ansible_check_mode
 
 - name: Add GitHub CLI apt repository
-  apt_repository:
-    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
+  deb822_repository:
+    name: github-cli
+    types: deb
+    uris: https://cli.github.com/packages/
+    suites: stable
+    components:
+      - main
+    architectures:
+      - amd64
+    signed_by: /etc/apt/keyrings/githubcli-archive-keyring.gpg
     state: present
-    filename: github-cli
   become: true
   become_method: sudo
   when: not ansible_check_mode
