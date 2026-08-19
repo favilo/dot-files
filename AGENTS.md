@@ -3,12 +3,15 @@
 Read `CONVENTIONS.md` before any GitHub or Jujutsu operation.
 
 <!-- BEGIN bigpowers:context-routing -->
+
 ## Context Routing
 
 No additional context files exist.
+
 <!-- END bigpowers:context-routing -->
 
 <!-- BEGIN bigpowers:learned-preferences -->
+
 ## Learned User Preferences
 
 - The user applies Ansible changes manually.
@@ -20,6 +23,7 @@ No additional context files exist.
 <!-- END bigpowers:learned-preferences -->
 
 <!-- BEGIN bigpowers:project -->
+
 ## Project
 
 Use this Ansible project to configure new computers and synchronize personal tool configurations.
@@ -27,17 +31,17 @@ Stack: Ansible YAML, Lua, KDL, shell, and tool-specific configuration formats.
 
 ## Commands
 
-| Action | Command |
-|--------|---------|
-| Preview | `just dry-run` |
-| Apply | `just apply` — human only |
-| Test | `just test` |
-| Build | N/A |
-| Lint | `just lint` |
-| Check | `just check` |
-| Format | `just fmt` |
-| Preflight | `just test && just lint` |
-| CI | `gh pr checks` when a pull request exists |
+| Action    | Command                                   |
+| --------- | ----------------------------------------- |
+| Preview   | `just dry-run`                            |
+| Apply     | `just apply` — human only                 |
+| Test      | `just test`                               |
+| Build     | N/A                                       |
+| Lint      | `just lint`                               |
+| Check     | `just check`                              |
+| Format    | `just fmt`                                |
+| Preflight | `just test && just lint`                  |
+| CI        | `gh pr checks` when a pull request exists |
 
 ## Test
 
