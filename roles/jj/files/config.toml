@@ -105,3 +105,6 @@ concat(
 
 [remotes.origin]
 auto-track-bookmarks = "favilo/*"
+
+[remotes.upstream]
+auto-track-bookmarks = "none"
