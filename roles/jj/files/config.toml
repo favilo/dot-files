@@ -4,6 +4,20 @@
 name = "Kevin Oberlies"
 email = "favilo@gmail.com"
 
+[signing]
+behavior = "own"
+backend = "ssh"
+key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJPBnhmcYGJ2FlkWKS3iRo5gNUVwODPbu39fR3cPDBY0"
+
+[[--scope]]
+--when.repositories = ["~/git/work"]
+[--scope.user]
+email = "kevin.oberlies@webai.com"
+
+[--scope.signing]
+key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA/9R4aiR8G+XfDE/0y6L21j+HbOWeySIoOYDvqnoTCx"
+
+
 [colors]
 commits = "green"
 change_id = "cyan"
@@ -17,11 +31,8 @@ diff-editor = ["nvim", "-c", "DiffEditor $left $right $output"]
 # args = ["-d", "$output", "$local", "$base", "$remote"]
 # merge-tool-edits-conflict-markers = true
 
-[signing]
-behavior = "own"
-backend = "ssh"
-key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJPBnhmcYGJ2FlkWKS3iRo5gNUVwODPbu39fR3cPDBY0"
-
+[signing.backends.ssh]
+program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 
 [revset-aliases]
 "immutable_heads()" = "builtin_immutable_heads() | (trunk().. & ~mine())"
@@ -104,4 +115,4 @@ concat(
 '''
 
 [remotes.origin]
-auto-track-bookmarks = "favilo/*"
+auto-track-bookmarks = "favilo/* | ko/*"

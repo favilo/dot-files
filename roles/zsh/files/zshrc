@@ -1,9 +1,16 @@
-typeset -U path PATH
+#!/bin/zsh
+typeset -U path PATH fpath FPATH
 # OPENSPEC:START
 # OpenSpec shell completions configuration
-fpath=("/home/favilo/.oh-my-zsh/custom/completions" $fpath)
-autoload -Uz compinit
-compinit
+fpath=("$HOME/.oh-my-zsh/custom/completions" $fpath)
+fpath=($fpath $HOME/.zsh/completion)
+
+# autoload -Uz compinit
+# if [ $(date +%j) != $(stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null) ]; then
+#   compinit
+# else
+#   compinit -C
+# fi
 # OPENSPEC:END
 
 # If you come from bash you might have to change your $PATH.
@@ -32,6 +39,7 @@ HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to automatically update without prompting.
 DISABLE_UPDATE_PROMPT="true"
+# ZSH_COMPDUMP="${ZSH_CACHE_DIR:-$HOME/.oh-my-zsh/cache}/zcompdump-${SHORT_HOST:-$HOST}-${ZSH_VERSION}"
 
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
@@ -105,10 +113,18 @@ plugins=(
     rust
     vi-mode
     fzf
+    1password
     web-search
 )
 
-source $ZSH/oh-my-zsh.sh
+zstyle ':omz:plugins:jj' ignore-working-copy true
+
+# Skip compaudit security checks on startup
+ZSH_DISABLE_COMPFIX="true"
+
+# Cache completion definitions securely
+# (Put this before sourcing oh-my-zsh)
+source "$ZSH/oh-my-zsh.sh"
 
 # User configuration
 
@@ -136,9 +152,5 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 [ -f $HOME/.zshrc.local ] && source $HOME/.zshrc.local
-
-
 

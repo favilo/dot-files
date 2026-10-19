@@ -6,16 +6,7 @@ export FZF_CTRL_T_OPTS="\
   --preview 'bat -n --color=always {}'\
   --bind 'ctrl-]:change-preview-window(down|hidden|)'"
 
-[ -f /usr/share/fzf ] && source /usr/share/fzf/key-bindings.zsh
-[ -f /usr/share/fzf ] && source /usr/share/fzf/completion.zsh
-
 # alias docker=podman
-
-command -v kubectl >/dev/null && source <(kubectl completion zsh)
-
-fpath=($fpath $HOME/.zsh/completion)
-
-[ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 
 export PATH="$HOME/bin:/usr/local/bin:$PATH"
 export PATH="$PATH:$HOME/.cabal/bin"
@@ -76,8 +67,11 @@ bindkey "^[[B" down-line-or-beginning-search # Down
 #     tag() { command tag "$@"; source ${TAG_ALIAS_FILE:-/tmp/tag_aliases} 2>/dev/null }
 #     # alias rg=tag  # replace with rg for ripgrep
 # fi
-command -v op >/dev/null && eval "$(op completion zsh)" && compdef _op op
-command -v direnv >/dev/null && eval "$(direnv hook zsh)"
+
+if command -v direnv >/dev/null; then
+  eval "$(direnv hook zsh)"
+fi
+
 if [ -z "$DISABLE_ZOXIDE" ]; then
   eval "$(zoxide init --cmd cd zsh)"
   # alias cd=z
@@ -108,10 +102,10 @@ export TELEPORT_ADD_KEYS_TO_AGENT=no
 export ELECTRON_OZONE_PLATFORM=x11
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/favilo/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/home/favilo/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f "$HOME/Downloads/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/Downloads/google-cloud-sdk/path.zsh.inc"; fi
 
 # The next line enables shell command completion for gcloud.
-[ -f '/home/favilo/Downloads/google-cloud-sdk/completion.zsh.inc' ] && source '/home/favilo/Downloads/google-cloud-sdk/completion.zsh.inc'
+[ -f "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc" ] && source "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc"
 [ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
 
 setopt prompt_subst # enable command substition in prompt
@@ -203,8 +197,21 @@ fi
 
 command -v atuin >/dev/null && eval "$(atuin init zsh --disable-up-arrow)"
 
+export PI_CURSOR_NATIVE_TOOLS=0
+export PI_CURSOR_EXPOSE_BUILTIN_TOOLS=1
+# Optional: also ignore ~/.cursor/mcp.json and Cursor disk rules
+export PI_CURSOR_SETTING_SOURCES=none
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # jj completion is loaded by the oh-my-zsh jj plugin.
+
+# Raise open file descriptor limit for test suites (e.g. cargo test)
+ulimit -n 65536
+
+# Prevent cargo-nextest from corrupting Zellij panes (disable raw-mode input handler and multi-line progress bar redraws)
+export NEXTEST_NO_INPUT_HANDLER=1
+export NEXTEST_SHOW_PROGRESS=counter
+
