@@ -1,0 +1,106 @@
+---
+- name: Ensure agent directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ pi_agent_dir }}"
+    - "{{ pi_agent_dir }}/npm"
+    - "{{ pi_agents_dir }}"
+    - "{{ dotfiles_user_home }}/.agents"
+    - "{{ dotfiles_user_home }}/.local/bin"
+
+- name: Check if Pi agent binary is installed
+  ansible.builtin.stat:
+    path: "{{ pi_agent_dir }}/bin/pi"
+  register: pi_binary_stat
+
+- name: Install Pi agent via installer script
+  ansible.builtin.shell: "curl -fsSL https://pi.dev/install.sh | sh"
+  when:
+    - not pi_binary_stat.stat.exists
+    - not ansible_check_mode
+
+- name: Symlink pi binary to ~/.local/bin/pi
+  ansible.builtin.file:
+    src: "{{ pi_agent_dir }}/bin/pi"
+    dest: "{{ dotfiles_user_home }}/.local/bin/pi"
+    state: link
+    force: true
+  when: pi_binary_stat.stat.exists or not ansible_check_mode
+
+- name: Clone agent repositories
+  ansible.builtin.git:
+    repo: "{{ item.repo }}"
+    dest: "{{ pi_agents_dir }}/{{ item.name }}"
+    update: false
+  loop: "{{ pi_agent_repositories }}"
+  when: not ansible_check_mode
+
+- name: Ensure agent repositories are jj colocated
+  ansible.builtin.command:
+    cmd: "jj git init --colocate"
+    chdir: "{{ pi_agents_dir }}/{{ item.name }}"
+  args:
+    creates: "{{ pi_agents_dir }}/{{ item.name }}/.jj"
+  loop: "{{ pi_agent_repositories }}"
+  when: not ansible_check_mode
+
+- name: Copy global agent instructions AGENTS.md
+  ansible.builtin.copy:
+    src: agents/AGENTS.md
+    dest: "{{ dotfiles_user_home }}/.agents/AGENTS.md"
+    mode: "0644"
+
+- name: Symlink ~/.pi/agent/AGENTS.md to ~/.agents/AGENTS.md
+  ansible.builtin.file:
+    src: "{{ dotfiles_user_home }}/.agents/AGENTS.md"
+    dest: "{{ pi_agent_dir }}/AGENTS.md"
+    state: link
+    force: true
+
+- name: Read existing settings.json if present
+  ansible.builtin.slurp:
+    src: "{{ pi_agent_dir }}/settings.json"
+  register: pi_existing_settings
+  failed_when: false
+  changed_when: false
+  check_mode: false
+
+- name: Configure ~/.pi/agent/settings.json
+  ansible.builtin.template:
+    src: pi/agent/settings.json.j2
+    dest: "{{ pi_agent_dir }}/settings.json"
+    mode: "0644"
+
+- name: Configure ~/.pi/agent/keybindings.json
+  ansible.builtin.copy:
+    src: pi/agent/keybindings.json
+    dest: "{{ pi_agent_dir }}/keybindings.json"
+    mode: "0644"
+
+- name: Configure ~/.pi/agent/permissions.toml
+  ansible.builtin.template:
+    src: pi/agent/permissions.toml.j2
+    dest: "{{ pi_agent_dir }}/permissions.toml"
+    mode: "0644"
+
+- name: Copy package.json for Pi extensions
+  ansible.builtin.copy:
+    src: pi/agent/npm/package.json
+    dest: "{{ pi_agent_dir }}/npm/package.json"
+    mode: "0644"
+
+- name: Copy package-lock.json for Pi extensions
+  ansible.builtin.copy:
+    src: pi/agent/npm/package-lock.json
+    dest: "{{ pi_agent_dir }}/npm/package-lock.json"
+    mode: "0644"
+
+- name: Install Pi npm extensions
+  community.general.npm:
+    path: "{{ pi_agent_dir }}/npm"
+    state: present
+    ignore_scripts: true
+  when: not ansible_check_mode

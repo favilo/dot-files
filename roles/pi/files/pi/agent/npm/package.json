@@ -1,0 +1,14 @@
+{
+  "name": "pi-extensions",
+  "private": true,
+  "dependencies": {
+    "@billjr99/pi-openai-compat": "^1.1.38",
+    "pi-anthropic-oauth": "^0.3.2",
+    "pi-antigravity": "^0.11.0",
+    "pi-context": "^2.3.0",
+    "pi-effort": "^0.0.8",
+    "pi-obsidian": "^0.2.3",
+    "pi-vim": "^0.14.2",
+    "pi-wakatime": "^1.1.3"
+  }
+}

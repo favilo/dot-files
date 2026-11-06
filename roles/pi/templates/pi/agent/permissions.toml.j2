@@ -1,0 +1,33 @@
+# Tool permissions: deny rules take precedence over allow rules.
+# read covers read, ls, grep, and find. write covers write and edit.
+# Rule keys are dot paths into tool arguments; values are JavaScript RegExp patterns.
+# Fields in one rule are ANDed. Rules in a list are ORed. An empty rule matches every call.
+[permissions]
+
+[permissions.read]
+deny = []
+
+[[permissions.read.allow]]
+path = "^{{ dotfiles_user_home | replace('.', '\\\\.') }}/\\.cargo/registry/.*$"
+
+[[permissions.read.allow]]
+path = "^{{ dotfiles_user_home | replace('.', '\\\\.') }}/\\.pi/agent/install/releases/.*/node_modules/@earendil-works/.*$"
+
+[[permissions.read.allow]]
+path = "^{{ dotfiles_user_home | replace('.', '\\\\.') }}/\\.pi/agent/npm/node_modules.*$"
+
+[[permissions.read.allow]]
+path = "^{{ dotfiles_user_home | replace('.', '\\\\.') }}/git/agents/pi-cursor-sdk$"
+
+[[permissions.read.allow]]
+path = "^{{ dotfiles_user_home | replace('.', '\\\\.') }}/git/agents/pi-cursor-sdk/.*$"
+
+[[permissions.read.allow]]
+path = "^{{ dotfiles_user_home | replace('.', '\\\\.') }}/git/agents/pi-account-switcher/.*$"
+
+[[permissions.read.allow]]
+path = "^{{ dotfiles_user_home | replace('.', '\\\\.') }}/git/agents/bigpowers/.*$"
+
+[permissions.bash]
+allow = [{command = "^sleep \\d$"}]
+deny = []

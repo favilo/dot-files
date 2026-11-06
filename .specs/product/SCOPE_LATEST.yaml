@@ -1,0 +1,39 @@
+core_value: >-
+  Manage Pi agent setup, agent extension repositories, configuration files,
+  keybindings, MCP settings, and npm extensions cleanly without secrets.
+
+summary: >-
+  Add a dedicated Ansible role `pi` to configure the Pi coding agent environment
+  closely mirroring the current local machine. The role ensures the Pi agent binary
+  is installed, clones local agent repositories in `~/git/agents/`, manages configuration
+  files in `~/.pi/agent/` (`settings.json`, `keybindings.json`, `mcp.json`, `permissions.toml`,
+  `AGENTS.md`), and provisions npm packages in `~/.pi/agent/npm`.
+
+in_scope:
+  - id: e01s01
+    title: Create roles/pi tasks, defaults, and configuration templates/files
+  - id: e01s02
+    title: Clone local agent repositories in ~/git/agents/ (bigpowers, pi-account-switcher, pi-cursor-sdk, pi-extensions)
+  - id: e01s03
+    title: Configure ~/.pi/agent settings, keybindings, mcp, permissions, and AGENTS.md
+  - id: e01s04
+    title: Manage ~/.pi/agent/npm package.json and npm install for extensions
+  - id: e01s05
+    title: Wire pi role into dotfiles.yml with tags
+
+out_of_scope:
+  - id: oos01
+    title: Secret files and credentials (auth.json, mcp-auth.json, antigravity-accounts.json, account-switcher/accounts.json)
+    reason: Secrets must not be stored in dotfiles
+  - id: oos02
+    title: Transient runtime state and logs (sessions/, tool-permissions/*.log, audit logs)
+    reason: Machine-specific and ephemeral
+
+constraints:
+  - Preserve Ansible check mode (just dry-run) without failures or mutations
+  - Maintain YAML and Ansible linting cleanliness (just lint)
+  - Manage repository exclusively using Jujutsu (jj) with Conventional Commits
+
+success_criteria:
+  - just test && just lint pass with 0 errors
+  - just dry-run completes cleanly with pi role included

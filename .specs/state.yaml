@@ -1,1 +1,9 @@
 workflow_mode: solo-git
+active_flow: build_epic
+active_epic_id: e01
+active_story_id: e01s01
+vcs:
+  kind: jj
+  branch: favilo/pi-role
+handoff:
+  next_skill: build-epic

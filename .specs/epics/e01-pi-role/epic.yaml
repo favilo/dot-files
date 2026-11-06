@@ -1,0 +1,15 @@
+id: e01
+name: pi-agent-role
+title: Pi Coding Agent Ansible Role
+status: in-progress
+stories:
+  - id: e01s01
+    title: Create roles/pi directory structure and templates
+  - id: e01s02
+    title: Clone ~/git/agents repositories
+  - id: e01s03
+    title: Configure ~/.pi/agent settings, permissions, keybindings, and mcp
+  - id: e01s04
+    title: Install npm packages for Pi extensions
+  - id: e01s05
+    title: Integrate into dotfiles.yml and verify with just dry-run

@@ -1,0 +1,18 @@
+epic_id: e01
+title: Add Ansible role for Pi agent
+tasks:
+  - id: e01s01
+    title: Create roles/pi directory structure, defaults, and templates
+    status: planned
+  - id: e01s02
+    title: Clone ~/git/agents repositories (bigpowers, pi-account-switcher, pi-cursor-sdk, pi-extensions)
+    status: planned
+  - id: e01s03
+    title: Configure ~/.pi/agent settings, permissions, keybindings, and mcp
+    status: planned
+  - id: e01s04
+    title: Install npm packages for Pi extensions
+    status: planned
+  - id: e01s05
+    title: Wire pi role into dotfiles.yml and verify dry-run and lint
+    status: planned

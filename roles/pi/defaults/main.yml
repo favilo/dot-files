@@ -1,0 +1,13 @@
+---
+pi_agent_dir: "{{ dotfiles_user_home }}/.pi/agent"
+pi_agents_dir: "{{ dotfiles_user_home }}/git/agents"
+
+pi_agent_repositories:
+  - name: bigpowers
+    repo: "git@github.com:favilo/bigpowers.git"
+  - name: pi-account-switcher
+    repo: "git@github.com:favilo/pi-account-switcher.git"
+  - name: pi-cursor-sdk
+    repo: "git@github.com:favilo/pi-cursor-sdk.git"
+  - name: pi-extensions
+    repo: "git@github.com:favilo/pi-extensions.git"
