@@ -110,4 +110,27 @@ return {
   },
   -- { "Apeiros-46B/uiua.vim" },
   { "sputnick1124/uiua.vim" },
+  {
+    "stevearc/conform.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    cmd = { "ConformInfo" },
+    keys = {
+      {
+        "<leader>cf",
+        function()
+          require("conform").format({ async = true, lsp_format = "fallback", timeout_ms = 10000 })
+        end,
+        mode = { "n", "v" },
+        desc = "Format buffer",
+      },
+    },
+    opts = {
+      formatters_by_ft = {
+        markdown = { "mdformat" },
+      },
+      default_format_opts = {
+        lsp_format = "fallback",
+      },
+    },
+  },
 }
