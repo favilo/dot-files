@@ -338,6 +338,11 @@ theme_dir "/Users/kevin.oberlies/.config/zellij/themes"
 //
 mouse_mode true
 
+// Whether Ctrl+ScrollWheel resizes panes
+// Default: true
+//
+mouse_scroll_resize false
+
 // Toggle having pane frames around the panes
 // Options:
 //   - true (default, enabled)
