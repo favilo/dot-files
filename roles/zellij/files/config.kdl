@@ -403,8 +403,11 @@ copy_clipboard "system"
 copy_on_select true
 
 // Path to the default editor to use to edit pane scrollbuffer
-// Default: $EDITOR or $VISUAL
-// scrollback_editor "/usr/bin/vim"
+//
+// Its distinct basename keeps Zellij from serializing Neovim panes as special
+// `pane edit` panes. The wrapper delegates to Neovim, so scrollback editing
+// behaves normally while resurrected Neovim panes remain ordinary commands.
+scrollback_editor "/Users/kevin.oberlies/.local/bin/zellij-editor"
 
 // A fixed name to always give the Zellij session.
 // Consider also setting `attach_to_session true,`
@@ -431,7 +434,7 @@ copy_on_select true
 //   - true (default)
 //   - false
 //
-// session_serialization false
+session_serialization true
 
 // Whether pane viewports are serialized along with the session, default is false
 // Options:

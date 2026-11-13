@@ -21,6 +21,14 @@
     state: link
     force: true
 
+- name: Link zellij editor wrapper
+  file:
+    src: "{{ dotfiles_home }}/roles/zellij/files/zellij-editor"
+    dest: "{{ dotfiles_user_home }}/.local/bin/zellij-editor"
+    state: link
+    force: true
+    mode: "0755"
+
 - name: Link custom zellij theme
   file:
     src: "{{ dotfiles_home }}/roles/zellij/files/nightfox-orange.kdl"
