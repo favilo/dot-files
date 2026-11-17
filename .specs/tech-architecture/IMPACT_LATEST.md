@@ -1,20 +1,20 @@
 ## Target
-`roles/programming` lspmux service provisioning.
+`roles/nvim` macOS installation and PATH precedence.
 
 ## Dependents (3)
-- `roles/programming/tasks/main.yml`: installs lspmux and currently provisions the systemd unit.
-- `roles/programming/templates/lspmux.service.j2`: Linux service definition.
-- `roles/nvim/files/lua/plugins/lsp/servers.lua`: configures rust-analyzer to use lspmux.
+- `roles/nvim/tasks/main.yml`: installs Bob and selects the managed Neovim version.
+- `roles/zsh/files/zshrc.local`: puts `~/.local/bin` before Homebrew on PATH.
+- `roles/zellij/files/zellij-editor`: invokes `nvim` through PATH.
 
 ## Affected Stories
-- No release-plan story owns lspmux service management.
+- No release-plan story owns Neovim installation management.
 
 ## Test Coverage
-- No automated service lifecycle tests exist.
-- `just dry-run` validates Ansible check-mode safety on macOS.
+- No automated installation tests exist.
+- `just dry-run` validates Ansible check-mode safety and previews Homebrew removal.
 
-## Risk: Medium
-The service must remain automatically started at login and restarted after failure on three operating-system families, while dry runs must not mutate the host.
+## Risk: Low
+No installed Homebrew formula depends on Neovim, and Bob's active shim runs Neovim successfully.
 
 ## Recommended action
-Move Linux service tasks to `after.linux.yml`, add `macos.yml` with a managed LaunchAgent, and verify with `just dry-run` plus the local LaunchAgent state.
+Remove the Homebrew Neovim formula only on macOS and link Bob's active shim into `~/.local/bin`.

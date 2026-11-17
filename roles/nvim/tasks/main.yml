@@ -18,3 +18,6 @@
     dest: "{{ xdg_config_home }}/nvim"
     state: link
     force: true
+
+- include_tasks: macos.yml
+  when: ansible_facts.os_family == "Darwin"
