@@ -1,9 +1,9 @@
 ## Target
-`roles/nvim` macOS installation and PATH precedence.
+`roles/nvim` cross-platform Neovim PATH precedence.
 
 ## Dependents (3)
 - `roles/nvim/tasks/main.yml`: installs Bob and selects the managed Neovim version.
-- `roles/zsh/files/zshrc.local`: puts `~/.local/bin` before Homebrew on PATH.
+- `roles/zsh/files/zshrc.local`: puts `~/.local/bin` before package-manager paths.
 - `roles/zellij/files/zellij-editor`: invokes `nvim` through PATH.
 
 ## Affected Stories
@@ -11,10 +11,10 @@
 
 ## Test Coverage
 - No automated installation tests exist.
-- `just dry-run` validates Ansible check-mode safety and previews Homebrew removal.
+- `just dry-run` validates Ansible check-mode safety.
 
 ## Risk: Low
-No installed Homebrew formula depends on Neovim, and Bob's active shim runs Neovim successfully.
+Bob's active shim supplies Neovim independently of OS package managers.
 
 ## Recommended action
-Remove the Homebrew Neovim formula only on macOS and link Bob's active shim into `~/.local/bin`.
+Link Bob's active shim into `~/.local/bin` on Linux and macOS; remove the competing Homebrew formula on macOS.
