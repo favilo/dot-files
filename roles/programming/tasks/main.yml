@@ -44,6 +44,14 @@
       exe: rg
     - name: zoxide
       exe: zoxide
+    - name: bacon
+      exe: bacon
+    - name: selene
+      exe: selene
+    - name: just
+      exe: just
+    - name: cargo-nextest
+      exe: cargo-nextest
   when: not ansible_check_mode
 
 - name: Kitty config dir

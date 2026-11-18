@@ -1,5 +1,5 @@
 {% set base = {
-  "lastChangelogVersion": "1.3.0",
+  "lastChangelogVersion": "1.5.2",
   "theme": "dark",
   "packages": [
     "npm:pi-vim",
@@ -15,10 +15,9 @@
     "npm:@billjr99/pi-openai-compat",
     "npm:pi-context",
     "npm:pi-effort",
-    "npm:pi-obsidian",
+    "../../git/agents/pi-obsidian",
     "../../git/agents/pi-cursor-sdk"
-  ],
-  "hideThinkingBlock": false
+  ]
 } -%}
 {% if pi_existing_settings.content is defined -%}
   {% set existing = (pi_existing_settings.content | b64decode | from_json) -%}
@@ -30,6 +29,9 @@
   {% endif -%}
   {% if existing.defaultModel is defined -%}
     {% set _ = base.update({'defaultModel': existing.defaultModel}) -%}
+  {% endif -%}
+  {% if existing.hideThinkingBlock is defined -%}
+    {% set _ = base.update({'hideThinkingBlock': existing.hideThinkingBlock}) -%}
   {% endif -%}
 {% endif -%}
 {{ base | to_nice_json(indent=2) }}

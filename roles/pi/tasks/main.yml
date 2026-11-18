@@ -47,11 +47,12 @@
   loop: "{{ pi_agent_repositories }}"
   when: not ansible_check_mode
 
-- name: Copy global agent instructions AGENTS.md
-  ansible.builtin.copy:
-    src: agents/AGENTS.md
+- name: Hard link global agent instructions AGENTS.md
+  ansible.builtin.file:
+    src: "{{ dotfiles_home }}/roles/pi/files/agents/AGENTS.md"
     dest: "{{ dotfiles_user_home }}/.agents/AGENTS.md"
-    mode: "0644"
+    state: hard
+    force: true
 
 - name: Symlink ~/.pi/agent/AGENTS.md to ~/.agents/AGENTS.md
   ansible.builtin.file:
@@ -74,29 +75,26 @@
     dest: "{{ pi_agent_dir }}/settings.json"
     mode: "0644"
 
-- name: Configure ~/.pi/agent/keybindings.json
-  ansible.builtin.copy:
-    src: pi/agent/keybindings.json
+- name: Hard link ~/.pi/agent/keybindings.json
+  ansible.builtin.file:
+    src: "{{ dotfiles_home }}/roles/pi/files/pi/agent/keybindings.json"
     dest: "{{ pi_agent_dir }}/keybindings.json"
-    mode: "0644"
+    state: hard
+    force: true
 
-- name: Configure ~/.pi/agent/permissions.toml
+- name: Seed ~/.pi/agent/permissions.toml if missing
   ansible.builtin.template:
     src: pi/agent/permissions.toml.j2
     dest: "{{ pi_agent_dir }}/permissions.toml"
     mode: "0644"
+    force: false
 
-- name: Copy package.json for Pi extensions
-  ansible.builtin.copy:
-    src: pi/agent/npm/package.json
+- name: Hard link package.json for Pi extensions
+  ansible.builtin.file:
+    src: "{{ dotfiles_home }}/roles/pi/files/pi/agent/npm/package.json"
     dest: "{{ pi_agent_dir }}/npm/package.json"
-    mode: "0644"
-
-- name: Copy package-lock.json for Pi extensions
-  ansible.builtin.copy:
-    src: pi/agent/npm/package-lock.json
-    dest: "{{ pi_agent_dir }}/npm/package-lock.json"
-    mode: "0644"
+    state: hard
+    force: true
 
 - name: Install Pi npm extensions
   community.general.npm:

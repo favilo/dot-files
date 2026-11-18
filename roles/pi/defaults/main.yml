@@ -11,3 +11,5 @@ pi_agent_repositories:
     repo: "git@github.com:favilo/pi-cursor-sdk.git"
   - name: pi-extensions
     repo: "git@github.com:favilo/pi-extensions.git"
+  - name: pi-obsidian
+    repo: "git@github.com:favilo/pi-obsidian.git"
