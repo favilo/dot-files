@@ -214,4 +214,3 @@ ulimit -n 65536
 # Prevent cargo-nextest from corrupting Zellij panes (disable raw-mode input handler and multi-line progress bar redraws)
 export NEXTEST_NO_INPUT_HANDLER=1
 export NEXTEST_SHOW_PROGRESS=counter
-

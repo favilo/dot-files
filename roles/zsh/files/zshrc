@@ -153,4 +153,3 @@ fi
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 [ -f $HOME/.zshrc.local ] && source $HOME/.zshrc.local
-

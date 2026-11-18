@@ -7,14 +7,14 @@ Use Conventional Commits for every commit.
 Format commit subjects as `<type>(<scope>): <description>`.
 Omit the scope only when no precise scope exists.
 
-| Type | Purpose |
-|------|---------|
-| `feat` | Add behavior or capability |
-| `fix` | Correct a defect |
+| Type       | Purpose                               |
+| ---------- | ------------------------------------- |
+| `feat`     | Add behavior or capability            |
+| `fix`      | Correct a defect                      |
 | `refactor` | Restructure without changing behavior |
-| `test` | Add or revise tests |
-| `docs` | Change documentation |
-| `chore` | Maintain tooling or metadata |
+| `test`     | Add or revise tests                   |
+| `docs`     | Change documentation                  |
+| `chore`    | Maintain tooling or metadata          |
 
 NEVER add AI attribution or AI co-author footers.
 
@@ -29,15 +29,15 @@ Use a pull request to integrate changes into protected `main`.
 
 ## Commands
 
-| Action | Command |
-|--------|---------|
-| Preview | `just dry-run` |
-| Apply | `just apply` — human only |
-| Test | `just test` |
-| Lint | `just lint` |
-| Check | `just check` |
-| Format | `just fmt` |
-| Preflight | `just test && just lint` |
+| Action    | Command                   |
+| --------- | ------------------------- |
+| Preview   | `just dry-run`            |
+| Apply     | `just apply` — human only |
+| Test      | `just test`               |
+| Lint      | `just lint`               |
+| Check     | `just check`              |
+| Format    | `just fmt`                |
+| Preflight | `just test && just lint`  |
 
 NEVER run `just apply`.
 Run `just dry-run` to preview Ansible changes.
@@ -83,12 +83,12 @@ Keep discovered fixes in separate Conventional Commits.
 
 Agents MUST NOT dismiss reproducible failures with these phrases:
 
-| Banned dismissal | Required response |
-|------------------|-------------------|
-| Pre-existing issue | Reproduce and fix-or-log |
-| Unrelated to this session | Reproduce and fix-or-log |
+| Banned dismissal             | Required response                    |
+| ---------------------------- | ------------------------------------ |
+| Pre-existing issue           | Reproduce and fix-or-log             |
+| Unrelated to this session    | Reproduce and fix-or-log             |
 | Not introduced by my changes | Prove by comparison, then fix-or-log |
-| Out of scope | Stop forward work and fix-or-log |
+| Out of scope                 | Stop forward work and fix-or-log     |
 
 ## Tests and Validation
 
