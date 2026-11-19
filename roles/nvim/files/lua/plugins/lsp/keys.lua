@@ -1,6 +1,5 @@
 local M = {}
 
-local servers = require("plugins.lsp.servers").servers
 local lsp_on_attach = function(client, event)
   -- vim.notify("Attaching to " .. client.name .. " Lsp server")
   local bufnr = event.buf
@@ -55,26 +54,12 @@ local lsp_on_attach = function(client, event)
   map({ "v", "n" }, "<leader>ca", require("actions-preview").code_actions, "LSP: code actions")
   map("n", "<leader>cR", vim.lsp.buf.references, "LSP: references")
   map("n", "<leader>cr", vim.lsp.buf.rename, "LSP: rename symbol")
+  -- Buffer-local map wins over conform's global <leader>cf. Call conform here too,
+  -- so Markdown still reaches mdformat when an LSP (for example Obsidian) is attached.
+  -- lsp_format = "fallback" keeps LSP formatting for filetypes conform does not own.
   map({ "n", "v" }, "<leader>cf", function()
-    local formatting_options = nil
-    if servers[client.name] and servers[client.name].formatting_options then
-      formatting_options = servers[client.name].formatting_options
-    else
-      formatting_options = {}
-    end
-
-    local filter = function(_local_client)
-      -- vim.print(vim.inspect(local_client.name))
-      return true
-    end
-
-    vim.lsp.buf.format({
-      filter = filter,
-      async = true,
-      timeout_ms = 10000,
-      formatting_options = formatting_options,
-    })
-  end, "LSP: format buffer")
+    require("conform").format({ async = true, lsp_format = "fallback", timeout_ms = 10000 })
+  end, "Format buffer")
   map("i", "<C-h>", function()
     vim.lsp.buf.signature_help({ border = "rounded" })
   end, "LSP: signature help (insert mode)")

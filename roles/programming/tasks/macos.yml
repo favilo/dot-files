@@ -1,0 +1,72 @@
+- name: Ensure LaunchAgent directory exists
+  file:
+    path: "{{ dotfiles_user_home }}/Library/LaunchAgents"
+    state: directory
+    mode: "0755"
+
+- name: Ensure lspmux log directory exists
+  file:
+    path: "{{ dotfiles_user_home }}/Library/Logs"
+    state: directory
+    mode: "0755"
+
+- name: Check legacy Homebrew lspmux LaunchAgent state
+  command:
+    argv:
+      - launchctl
+      - print
+      - "gui/{{ ansible_facts.user_uid }}/sh.brew.lspmux"
+  register: legacy_lspmux_launch_agent_state
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
+- name: Unload legacy Homebrew lspmux LaunchAgent
+  command:
+    argv:
+      - launchctl
+      - bootout
+      - "gui/{{ ansible_facts.user_uid }}/sh.brew.lspmux"
+  when:
+    - not ansible_check_mode
+    - legacy_lspmux_launch_agent_state.rc == 0
+
+- name: Install lspmux LaunchAgent
+  template:
+    src: com.favilo.lspmux.plist.j2
+    dest: "{{ dotfiles_user_home }}/Library/LaunchAgents/com.favilo.lspmux.plist"
+    mode: "0644"
+  register: lspmux_launch_agent
+
+- name: Check lspmux LaunchAgent state
+  command:
+    argv:
+      - launchctl
+      - print
+      - "gui/{{ ansible_facts.user_uid }}/com.favilo.lspmux"
+  register: lspmux_launch_agent_state
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
+- name: Unload changed lspmux LaunchAgent
+  command:
+    argv:
+      - launchctl
+      - bootout
+      - "gui/{{ ansible_facts.user_uid }}/com.favilo.lspmux"
+  when:
+    - not ansible_check_mode
+    - lspmux_launch_agent.changed
+    - lspmux_launch_agent_state.rc == 0
+
+- name: Load lspmux LaunchAgent
+  command:
+    argv:
+      - launchctl
+      - bootstrap
+      - "gui/{{ ansible_facts.user_uid }}"
+      - "{{ dotfiles_user_home }}/Library/LaunchAgents/com.favilo.lspmux.plist"
+  when:
+    - not ansible_check_mode
+    - lspmux_launch_agent_state.rc != 0 or lspmux_launch_agent.changed

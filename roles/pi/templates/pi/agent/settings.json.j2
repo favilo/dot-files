@@ -1,0 +1,37 @@
+{% set base = {
+  "lastChangelogVersion": "1.5.2",
+  "theme": "dark",
+  "packages": [
+    "npm:pi-vim",
+    {
+      "source": "../../git/agents/bigpowers",
+      "prompts": []
+    },
+    "../../git/agents/pi-extensions",
+    "../../git/agents/pi-account-switcher",
+    "npm:pi-antigravity",
+    "npm:pi-wakatime",
+    "npm:pi-anthropic-oauth",
+    "npm:@billjr99/pi-openai-compat",
+    "npm:pi-context",
+    "npm:pi-effort",
+    "../../git/agents/pi-obsidian",
+    "../../git/agents/pi-cursor-sdk"
+  ]
+} -%}
+{% if pi_existing_settings.content is defined -%}
+  {% set existing = (pi_existing_settings.content | b64decode | from_json) -%}
+  {% if existing.deviceId is defined -%}
+    {% set _ = base.update({'deviceId': existing.deviceId}) -%}
+  {% endif -%}
+  {% if existing.defaultProvider is defined -%}
+    {% set _ = base.update({'defaultProvider': existing.defaultProvider}) -%}
+  {% endif -%}
+  {% if existing.defaultModel is defined -%}
+    {% set _ = base.update({'defaultModel': existing.defaultModel}) -%}
+  {% endif -%}
+  {% if existing.hideThinkingBlock is defined -%}
+    {% set _ = base.update({'hideThinkingBlock': existing.hideThinkingBlock}) -%}
+  {% endif -%}
+{% endif -%}
+{{ base | to_nice_json(indent=2) }}

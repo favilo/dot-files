@@ -1,0 +1,18 @@
+- name: Ensure systemd user directory exists
+  file:
+    path: "{{ dotfiles_user_home }}/.config/systemd/user"
+    state: directory
+
+- name: Install lspmux systemd user service unit
+  template:
+    src: lspmux.service.j2
+    dest: "{{ dotfiles_user_home }}/.config/systemd/user/lspmux.service"
+
+- name: Enable and start lspmux service
+  systemd:
+    name: lspmux
+    scope: user
+    enabled: yes
+    masked: no
+    state: started
+    daemon_reload: yes

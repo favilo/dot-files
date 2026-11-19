@@ -1,0 +1,12 @@
+- name: Ensure local bin directory exists
+  file:
+    path: "{{ dotfiles_user_home }}/.local/bin"
+    state: directory
+    mode: "0755"
+
+- name: Link bob Neovim shim
+  file:
+    src: "{{ dotfiles_user_home }}/.local/share/bob/nvim-bin/nvim"
+    dest: "{{ dotfiles_user_home }}/.local/bin/nvim"
+    state: link
+    force: true

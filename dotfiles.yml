@@ -17,6 +17,7 @@
         - "rust"
         - "packages"
         - "xinput"
+        - "pi"
 
 - name: Set up local development environment
   hosts: local
@@ -63,3 +64,7 @@
     - role: xinput
       tags:
         - "xinput"
+    - role: pi
+      tags:
+        - "pi"
+        - "pi-agent"

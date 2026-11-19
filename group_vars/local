@@ -12,3 +12,9 @@ git_user: favilo
 git_email: favilo@gmail.com
 
 git_signing_key: "{{ lookup('env', 'GIT_SIGNING_KEY_ID') }}"
+
+# Live ~/.cargo/bin names that role-drift should not suggest encoding into Ansible.
+# Ansible-declared crates remain the install baseline.
+dotfiles_cargo_encode_blocklist:
+  - taplo
+  - vtracer

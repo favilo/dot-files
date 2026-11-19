@@ -35,6 +35,10 @@ lint-ansible:
 lint-vim:
     just nvim lint
 
+# Report live→Ansible encode drift for managed role files. Optional role name.
+role-drift ROLE="":
+    ./bin/role-drift {{ ROLE }}
+
 # Run a dry run of the Ansible playbook to see what changes would be made
 dry-run *ARGS:
     ansible-playbook -i hosts dotfiles.yml -v --check --diff {{ ARGS }}

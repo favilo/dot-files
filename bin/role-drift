@@ -1,0 +1,442 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#   "pyyaml",
+# ]
+# ///
+"""Report live→Ansible encode drift for managed role files and cargo bins."""
+
+from __future__ import annotations
+
+import filecmp
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+from typing import Any
+
+import yaml
+
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+USER_HOME = Path(os.environ.get("HOME", str(Path.home())))
+XDG_CONFIG_HOME = Path(
+    os.environ.get("XDG_CONFIG_HOME", str(USER_HOME / ".config"))
+)
+PI_AGENT_DIR = Path(os.environ.get("PI_AGENT_DIR", str(USER_HOME / ".pi" / "agent")))
+PI_AGENTS_DIR = Path(
+    os.environ.get("PI_AGENTS_DIR", str(USER_HOME / "git" / "agents"))
+)
+
+# Rustup/toolchain noise and non-crate-install bins. Not read from Ansible
+# because these are not role cargo-binstall/cargo-install declarations.
+TOOLCHAIN_CARGO_BLOCKLIST = {
+    "cargo",
+    "cargo-clippy",
+    "cargo-fmt",
+    "cargo-miri",
+    "clippy-driver",
+    "favilo-penrose",
+    "rls",
+    "rust-analyzer",
+    "rust-gdb",
+    "rust-gdbgui",
+    "rust-lldb",
+    "rustc",
+    "rustdoc",
+    "rustfmt",
+    "rustup",
+    "zellij-terminal",
+}
+
+# Extra bins shipped by a declared crate install.
+CRATE_EXTRA_BINS = {
+    "cargo-edit": {"cargo-add", "cargo-rm", "cargo-set-version", "cargo-upgrade"},
+}
+
+
+class Reporter:
+    def __init__(self) -> None:
+        self.drift_count = 0
+
+    def note(self, message: str) -> None:
+        print(message)
+
+    def section(self, title: str) -> None:
+        print(f"\n== {title} ==")
+
+    def drift(self, message: str) -> None:
+        self.drift_count += 1
+        print(f"DRIFT: {message}")
+
+    def ok(self, message: str) -> None:
+        print(f"OK: {message}")
+
+    def skip(self, message: str) -> None:
+        print(f"SKIP: {message}")
+
+
+def load_yaml(path: Path) -> Any:
+    with path.open(encoding="utf-8") as handle:
+        return yaml.safe_load(handle)
+
+
+def expand_vars(value: str) -> str:
+    replacements = {
+        "{{ dotfiles_home }}": str(REPO_ROOT),
+        "{{dotfiles_home}}": str(REPO_ROOT),
+        "{{ dotfiles_user_home }}": str(USER_HOME),
+        "{{dotfiles_user_home}}": str(USER_HOME),
+        "{{ xdg_config_home }}": str(XDG_CONFIG_HOME),
+        "{{xdg_config_home}}": str(XDG_CONFIG_HOME),
+        "{{ pi_agent_dir }}": str(PI_AGENT_DIR),
+        "{{pi_agent_dir}}": str(PI_AGENT_DIR),
+        "{{ pi_agents_dir }}": str(PI_AGENTS_DIR),
+        "{{pi_agents_dir}}": str(PI_AGENTS_DIR),
+    }
+    for key, replacement in replacements.items():
+        value = value.replace(key, replacement)
+    return value
+
+
+def still_templated(value: str) -> bool:
+    return "{{" in value
+
+
+def role_from_src(src: str) -> str:
+    match = re.search(r"/roles/([^/]+)/", src)
+    return match.group(1) if match else ""
+
+
+def task_files() -> list[Path]:
+    return sorted((REPO_ROOT / "roles").glob("*/tasks/*.yml"))
+
+
+def role_name_from_task_file(task_file: Path) -> str:
+    return task_file.parts[task_file.parts.index("roles") + 1]
+
+
+def should_include_role(role: str, role_filter: str) -> bool:
+    return not role_filter or role == role_filter
+
+
+def inode(path: Path) -> str:
+    return str(path.stat().st_ino)
+
+
+def resolve_symlink_target(dest: Path) -> Path:
+    target = Path(os.readlink(dest))
+    if not target.is_absolute():
+        return (dest.parent / target).resolve()
+    return target.resolve()
+
+
+def module_args(task: dict[str, Any], *keys: str) -> dict[str, Any] | None:
+    for key in keys:
+        value = task.get(key)
+        if isinstance(value, dict):
+            return value
+    return None
+
+
+def compare_pair(
+    reporter: Reporter, role: str, state: str, src: Path, dest: Path
+) -> None:
+    label = f"{role}: {src.name} -> {dest}"
+
+    if not src.exists() and not src.is_symlink():
+        reporter.drift(f"{label}: role source missing ({src})")
+        return
+    if not dest.exists() and not dest.is_symlink():
+        reporter.drift(f"{label}: live destination missing ({dest})")
+        return
+
+    if state == "hard":
+        if inode(src) == inode(dest):
+            reporter.ok(f"{label} (hardlinked)")
+            return
+        if filecmp.cmp(src, dest, shallow=False):
+            reporter.drift(f"{label}: content matches but not hardlinked")
+            reporter.note(f"  encode/fix: ln -f '{src}' '{dest}'")
+            return
+        reporter.drift(f"{label}: content differs (encode live → role or re-apply)")
+        diff = subprocess.run(
+            ["diff", "-u", str(src), str(dest)],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        for line in diff.stdout.splitlines():
+            reporter.note(f"  {line}")
+        return
+
+    if state == "link":
+        if dest.is_symlink():
+            target = resolve_symlink_target(dest)
+            src_resolved = src.resolve()
+            if target == src_resolved or target == Path(str(src).rstrip("/")):
+                reporter.ok(f"{label} (symlink → role)")
+                return
+            reporter.drift(
+                f"{label}: symlink target is '{os.readlink(dest)}', expected '{src}'"
+            )
+            return
+        if src.is_file() and dest.is_file() and filecmp.cmp(src, dest, shallow=False):
+            reporter.drift(
+                f"{label}: plain file matches content but is not a symlink"
+            )
+            return
+        reporter.drift(f"{label}: content differs (encode live → role or re-apply)")
+        if src.is_file() and dest.is_file():
+            diff = subprocess.run(
+                ["diff", "-u", str(src), str(dest)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            for line in diff.stdout.splitlines():
+                reporter.note(f"  {line}")
+        return
+
+    reporter.skip(f"{label}: unsupported state '{state}'")
+
+
+def emit_file_pairs(task_file: Path) -> list[tuple[str, str, str, Any]]:
+    tasks = load_yaml(task_file) or []
+    pairs: list[tuple[str, str, str, Any]] = []
+    for task in tasks:
+        if not isinstance(task, dict):
+            continue
+        file_args = module_args(task, "file", "ansible.builtin.file")
+        if not file_args:
+            continue
+        state = file_args.get("state")
+        src = file_args.get("src")
+        dest = file_args.get("dest")
+        if state not in {"hard", "link"} or not src or not dest:
+            continue
+        items = task.get("with_items", task.get("loop"))
+        pairs.append((state, str(src), str(dest), items))
+    return pairs
+
+
+def expand_item_pairs(
+    state: str, src_tmpl: str, dest_tmpl: str, items: Any
+) -> list[tuple[str, str, str]]:
+    if not items:
+        return [(state, src_tmpl, dest_tmpl)]
+
+    expanded: list[tuple[str, str, str]] = []
+    for item in items:
+        if isinstance(item, dict):
+            item_src = item.get("src")
+        else:
+            item_src = item
+        if not item_src:
+            continue
+        src = src_tmpl.replace("{{ item.src }}", str(item_src)).replace(
+            "{{item.src}}", str(item_src)
+        )
+        dest = dest_tmpl.replace("{{ item.src }}", str(item_src)).replace(
+            "{{item.src}}", str(item_src)
+        )
+        expanded.append((state, src, dest))
+    return expanded
+
+
+def list_templates(task_file: Path) -> list[tuple[str, str]]:
+    tasks = load_yaml(task_file) or []
+    templates: list[tuple[str, str]] = []
+    for task in tasks:
+        if not isinstance(task, dict):
+            continue
+        template_args = module_args(task, "template", "ansible.builtin.template")
+        if not template_args:
+            continue
+        src = template_args.get("src")
+        dest = template_args.get("dest")
+        if src and dest:
+            templates.append((str(src), str(dest)))
+    return templates
+
+
+def is_cargo_install_command(command: str) -> bool:
+    return "cargo-binstall" in command or "cargo install" in command
+
+
+def declared_cargo_names() -> set[str]:
+    """Parse cargo install / cargo-binstall declarations from Ansible roles."""
+    names: set[str] = set()
+
+    for task_file in task_files():
+        tasks = load_yaml(task_file) or []
+        for task in tasks:
+            if not isinstance(task, dict):
+                continue
+
+            items = task.get("with_items", task.get("loop")) or []
+            if isinstance(items, list):
+                for item in items:
+                    if not isinstance(item, dict):
+                        continue
+                    if "name" in item and "exe" in item:
+                        names.add(str(item["name"]))
+                        names.add(str(item["exe"]))
+
+            command = str(task.get("command") or "")
+            if not is_cargo_install_command(command):
+                continue
+
+            args = task.get("args") or {}
+            creates = str(args.get("creates") or "")
+            if creates:
+                created_name = Path(creates).name
+                if created_name and "{{" not in created_name:
+                    names.add(created_name)
+
+            for token in command.split():
+                if token.startswith("-"):
+                    continue
+                if "cargo-binstall" in token or token.endswith("/cargo"):
+                    continue
+                if token in {"install", "crate-meta-data"}:
+                    continue
+                if "{{" in token:
+                    continue
+                names.add(token)
+
+    for crate, extras in CRATE_EXTRA_BINS.items():
+        if crate in names:
+            names.update(extras)
+
+    return names
+
+
+def machine_cargo_encode_blocklist() -> set[str]:
+    vars_file = REPO_ROOT / "group_vars" / "local"
+    if not vars_file.exists():
+        return set()
+    data = load_yaml(vars_file) or {}
+    values = data.get("dotfiles_cargo_encode_blocklist") or []
+    return {str(value) for value in values}
+
+
+def report_cargo_encode_candidates(reporter: Reporter) -> None:
+    reporter.section("cargo bins not declared in Ansible (encode candidates)")
+    cargo_bin = USER_HOME / ".cargo" / "bin"
+    if not cargo_bin.is_dir():
+        reporter.skip("~/.cargo/bin missing")
+        return
+
+    live = {path.name for path in cargo_bin.iterdir() if path.is_file()}
+    declared = declared_cargo_names()
+    blocked = TOOLCHAIN_CARGO_BLOCKLIST | machine_cargo_encode_blocklist()
+    candidates = sorted(live - declared - blocked)
+
+    if not candidates:
+        reporter.ok("no undeclared cargo bins outside encode blocklist")
+        return
+
+    for binary in candidates:
+        reporter.drift(
+            f"cargo bin '{binary}' is installed but not declared in Ansible"
+        )
+        reporter.note(
+            "  Encode into a role, or add to group_vars/local "
+            "dotfiles_cargo_encode_blocklist"
+        )
+
+
+def report_managed_links(reporter: Reporter, role_filter: str) -> None:
+    reporter.section("managed hardlinks and symlinks")
+    for task_file in task_files():
+        role = role_name_from_task_file(task_file)
+        if not should_include_role(role, role_filter):
+            continue
+
+        for state, src_tmpl, dest_tmpl, items in emit_file_pairs(task_file):
+            for state2, src_raw, dest_raw in expand_item_pairs(
+                state, src_tmpl, dest_tmpl, items
+            ):
+                src_exp = expand_vars(src_raw)
+                dest_exp = expand_vars(dest_raw)
+
+                if still_templated(src_exp) or still_templated(dest_exp):
+                    reporter.skip(
+                        f"{role}: unresolved template path ({src_raw} -> {dest_raw})"
+                    )
+                    continue
+
+                if not src_exp.startswith(str(REPO_ROOT / "roles") + os.sep):
+                    continue
+
+                pair_role = role_from_src(src_exp) or role
+                compare_pair(
+                    reporter, pair_role, state2, Path(src_exp), Path(dest_exp)
+                )
+
+
+def report_templates(reporter: Reporter, role_filter: str) -> None:
+    reporter.section("templated destinations (manual encode)")
+    for task_file in task_files():
+        role = role_name_from_task_file(task_file)
+        if not should_include_role(role, role_filter):
+            continue
+        for tmpl_src, tmpl_dest in list_templates(task_file):
+            dest_exp = expand_vars(tmpl_dest)
+            if still_templated(dest_exp):
+                reporter.note(
+                    f"{role}: template {tmpl_src} -> {tmpl_dest} "
+                    "(destination still dynamic)"
+                )
+            else:
+                reporter.note(f"{role}: template {tmpl_src} -> {dest_exp}")
+                reporter.note(
+                    "  Review live file when encoding; apply-direction check: "
+                    "just dry-run"
+                )
+
+
+def main(argv: list[str]) -> int:
+    role_filter = argv[1] if len(argv) > 1 else ""
+    reporter = Reporter()
+
+    reporter.note("Role drift report (live → Ansible encode)")
+    reporter.note(f"repo={REPO_ROOT}")
+    if role_filter:
+        reporter.note(f"role filter={role_filter}")
+
+    if role_filter == "cargo":
+        report_cargo_encode_candidates(reporter)
+        reporter.section("summary")
+        if reporter.drift_count == 0:
+            reporter.note("No cargo encode candidates.")
+            return 0
+        reporter.note(
+            f"{reporter.drift_count} cargo encode candidate(s). "
+            "Add to a role or to dotfiles_cargo_encode_blocklist."
+        )
+        return 1
+
+    report_managed_links(reporter, role_filter)
+
+    if not role_filter:
+        report_cargo_encode_candidates(reporter)
+
+    report_templates(reporter, role_filter)
+
+    reporter.section("summary")
+    if reporter.drift_count == 0:
+        reporter.note("No managed-file encode drift found.")
+        return 0
+    reporter.note(
+        f"{reporter.drift_count} drift finding(s). "
+        "Update role files under roles/*/files/ or re-link."
+    )
+    return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

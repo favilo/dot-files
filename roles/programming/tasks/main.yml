@@ -44,6 +44,14 @@
       exe: rg
     - name: zoxide
       exe: zoxide
+    - name: bacon
+      exe: bacon
+    - name: selene
+      exe: selene
+    - name: just
+      exe: just
+    - name: cargo-nextest
+      exe: cargo-nextest
   when: not ansible_check_mode
 
 - name: Kitty config dir
@@ -86,21 +94,8 @@
 #   args:
 #     chdir: "{{ dotfiles_user_home }}/git/utilities/rust-analyzer"
 
-- name: Ensure systemd user directory exists
-  file:
-    path: "{{ dotfiles_user_home }}/.config/systemd/user"
-    state: directory
+- include_tasks: after.linux.yml
+  when: ansible_facts.os_family in ["Debian", "Archlinux"]
 
-- name: Install lspmux systemd user service unit
-  template:
-    src: lspmux.service.j2
-    dest: "{{ dotfiles_user_home }}/.config/systemd/user/lspmux.service"
-
-- name: Enable and start lspmux service
-  systemd:
-    name: lspmux
-    scope: user
-    enabled: yes
-    masked: no
-    state: started
-    daemon_reload: yes
+- include_tasks: macos.yml
+  when: ansible_facts.os_family == "Darwin"
